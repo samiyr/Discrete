@@ -1,24 +1,413 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="6qi-nQ-AHP">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
+        <!--Arbitrary-->
+        <scene sceneID="Sbq-Fe-WJU">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                <tableViewController id="MCX-ze-p6S" customClass="MainTableViewController" customModule="Arbitrary" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="bO6-f3-Ls0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="SKE-YP-yJN" detailTextLabel="5GK-b3-RXN" style="IBUITableViewCellStyleSubtitle" id="9Uo-80-DRO">
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9Uo-80-DRO" id="avX-Au-6RG">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="SKE-YP-yJN">
+                                            <rect key="frame" x="16" y="2" width="51.5" height="20"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="5GK-b3-RXN">
+                                            <rect key="frame" x="16" y="22" width="61.5" height="20"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" name="Menlo-Bold" family="Menlo" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ErrorCell" textLabel="RhU-Qp-QxO" detailTextLabel="Or1-Pg-aaA" style="IBUITableViewCellStyleSubtitle" id="HR7-ga-dcC">
+                                <rect key="frame" x="0.0" y="99.5" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="HR7-ga-dcC" id="kv2-hL-mm3">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RhU-Qp-QxO">
+                                            <rect key="frame" x="16" y="2" width="51.5" height="20"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="Or1-Pg-aaA">
+                                            <rect key="frame" x="16" y="22" width="46.5" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                            <color key="textColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="MCX-ze-p6S" id="aB1-ka-JY2"/>
+                            <outlet property="delegate" destination="MCX-ze-p6S" id="Tr5-1Y-nT7"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Arbitrary" largeTitleDisplayMode="never" id="cVb-8Y-FL2">
+                        <barButtonItem key="leftBarButtonItem" systemItem="bookmarks" id="9UZ-Gf-xfe">
+                            <connections>
+                                <segue destination="xxg-8t-jzM" kind="show" id="Be7-fH-ox6"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="trash" id="0pQ-lY-chY">
+                            <connections>
+                                <action selector="clearAll:" destination="MCX-ze-p6S" id="VhO-Xy-cgE"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="auxiliaryToolbar" destination="MY3-ek-vT9" id="tZI-yw-l9n"/>
+                        <outlet property="cancelButton" destination="MT5-E0-xyw" id="Ecp-2l-kW8"/>
+                        <outlet property="clearAllButton" destination="0pQ-lY-chY" id="bzE-Et-72o"/>
+                        <outlet property="entryField" destination="ae4-xX-uoL" id="h4G-PK-iKV"/>
+                        <outlet property="inputAccessory" destination="BSK-RF-Bk1" id="BfE-JK-yhg"/>
+                        <outlet property="inputToolbar" destination="owW-ey-7AT" id="8yq-5K-EAJ"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="t5R-NP-UAT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="BSK-RF-Bk1">
+                    <rect key="frame" x="0.0" y="0.0" width="371" height="88"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="owW-ey-7AT">
+                            <rect key="frame" x="0.0" y="44" width="371" height="44"/>
+                            <items>
+                                <barButtonItem style="plain" id="E3T-vG-J32">
+                                    <textField key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Expression" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" id="ae4-xX-uoL">
+                                        <rect key="frame" x="16" y="7" width="339" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numbersAndPunctuation"/>
+                                    </textField>
+                                </barButtonItem>
+                            </items>
+                        </toolbar>
+                        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MY3-ek-vT9">
+                            <rect key="frame" x="0.0" y="0.0" width="371" height="44"/>
+                            <items>
+                                <barButtonItem title="+" id="xRI-Gb-lcn">
+                                    <connections>
+                                        <action selector="insertChar:" destination="MCX-ze-p6S" id="Kax-6J-Iyr"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem title="-" id="sc6-Zu-Caa">
+                                    <connections>
+                                        <action selector="insertChar:" destination="MCX-ze-p6S" id="qxh-p7-vut"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem title="×" id="dNz-Vj-BXo">
+                                    <connections>
+                                        <action selector="insertChar:" destination="MCX-ze-p6S" id="HXM-ne-0gR"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem title="÷" id="9to-d4-j77">
+                                    <connections>
+                                        <action selector="insertChar:" destination="MCX-ze-p6S" id="vhX-EO-LUn"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="5Ot-Tj-a2m"/>
+                                <barButtonItem title="**" id="q27-tQ-M4G">
+                                    <connections>
+                                        <action selector="insertChar:" destination="MCX-ze-p6S" id="JOc-9Y-eQo"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem title="!" id="dG8-4b-qQ0">
+                                    <connections>
+                                        <action selector="insertChar:" destination="MCX-ze-p6S" id="1S5-A9-aRF"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="aQ1-ca-pJW"/>
+                                <barButtonItem title="(" id="DTh-hT-CPv">
+                                    <connections>
+                                        <action selector="insertChar:" destination="MCX-ze-p6S" id="QKU-hd-Tt0"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem title=")" id="CgF-fd-A51">
+                                    <connections>
+                                        <action selector="insertChar:" destination="MCX-ze-p6S" id="HF9-ih-y9f"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem style="plain" systemItem="flexibleSpace" id="Vev-Qu-F23"/>
+                                <barButtonItem enabled="NO" systemItem="stop" id="MT5-E0-xyw">
+                                    <connections>
+                                        <action selector="cancelCurrent:" destination="MCX-ze-p6S" id="ebk-4O-CxP"/>
+                                    </connections>
+                                </barButtonItem>
+                            </items>
+                        </toolbar>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="owW-ey-7AT" firstAttribute="trailing" secondItem="BSK-RF-Bk1" secondAttribute="trailing" id="14a-nK-7Oo"/>
+                        <constraint firstItem="owW-ey-7AT" firstAttribute="top" secondItem="MY3-ek-vT9" secondAttribute="bottom" id="SsA-29-qWH"/>
+                        <constraint firstItem="owW-ey-7AT" firstAttribute="bottom" secondItem="Bky-CA-qjM" secondAttribute="bottom" id="cjE-c0-cZr"/>
+                        <constraint firstItem="owW-ey-7AT" firstAttribute="top" secondItem="MY3-ek-vT9" secondAttribute="bottom" id="evi-lV-dZF"/>
+                        <constraint firstItem="MY3-ek-vT9" firstAttribute="leading" secondItem="BSK-RF-Bk1" secondAttribute="leading" id="kFC-rJ-jHR"/>
+                        <constraint firstItem="MY3-ek-vT9" firstAttribute="top" secondItem="Bky-CA-qjM" secondAttribute="top" id="nAL-aN-muf"/>
+                        <constraint firstItem="owW-ey-7AT" firstAttribute="leading" secondItem="BSK-RF-Bk1" secondAttribute="leading" id="rS5-5N-hvc"/>
+                        <constraint firstItem="MY3-ek-vT9" firstAttribute="trailing" secondItem="BSK-RF-Bk1" secondAttribute="trailing" id="t63-mU-1Uv"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="Bky-CA-qjM"/>
+                </view>
             </objects>
+            <point key="canvasLocation" x="992.79999999999995" y="47.226386806596707"/>
+        </scene>
+        <!--Help-->
+        <scene sceneID="WZo-Mq-iDU">
+            <objects>
+                <viewController title="Help" id="vp9-Pf-Oy3" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="qQt-gd-CwP">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3td-sW-nUJ">
+                                <rect key="frame" x="8" y="64" width="359" height="554"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Introduction">
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="17" name=".AppleSystemUIFontEmphasized"/>
+                                            <font key="NSOriginalFont" size="17" name=".AppleSystemUIFontEmphasized"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <mutableString key="content">  Arbitrary is an arbitrary-precision calculator. Normal calculators use floating point numbers, which have limited precision due to memory constraints. This app represents numbers as fractions and stores the numerator and denominator as an arbitrary-precision integer (also known as BigInt). This allows certain calculations to be performed without loss of precision and also enables working with very large numbers. For example, try calculating 1000! (factorial) with a standard calculator. It will display an error, since the resulting number is simply too large. If you try the same thing with Arbitrary, you get an actual answer. This precision, however, comes with a cost. See Performance for more.   </mutableString>
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="17" name=".AppleSystemUIFont"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="Irrational numbers and functions">
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="17" name=".AppleSystemUIFontEmphasized"/>
+                                            <font key="NSOriginalFont" size="17" name=".AppleSystemUIFontEmphasized"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <mutableString key="content">  Many elementary functions, like roots and logarithms, produce irrational numbers. These are numbers with an infinite amount of non-repeating decimals and therefore cannot be represented as a fraction. Arbitrary is not a symbolic calculator, so these outputs will be stored as highly precise approximations. This is indicated by the approximate sign (≈).   </mutableString>
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="17" name=".AppleSystemUIFont"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="Performance">
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="17" name=".AppleSystemUIFontEmphasized"/>
+                                            <font key="NSOriginalFont" size="17" name=".AppleSystemUIFontEmphasized"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <mutableString key="content">  There is a reason most calculators don't use arbitrary-precision arithmetic. While normal operations are fast, some functions can take slightly longer to compute. This is especially true for computations that are not even possible for standard calculators. As an example, taking a factorial of a large number (&gt; 1000) can take seconds or even longer to compute as they produce absolutely huge numbers. This app is a specialized tool that enables more advanced computations, but it isn't magic and can't do everything. Arbitrary doesn't place any computational limits, so if you try to calculate the 100th Bell number, it will do that and absolutely clog your device. While the app and the rest of the system will remain responsive, don't be fooled by that: your device is constantly performing expensive operations in the background and will eat through the battery in no time. Only when the thermal impact becomes too large will Arbitrary stop the calculation.   </mutableString>
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="17" name=".AppleSystemUIFont"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="Open Source">
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="17" name=".AppleSystemUIFontEmphasized"/>
+                                            <font key="NSOriginalFont" size="17" name=".AppleSystemUIFontEmphasized"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="  Arbitrary uses BigInt by ">
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="17" name=".AppleSystemUIFont"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <string key="content">Károly Lőrentey as its basic number type. See the library on GitHub: https://github.com/attaswift/BigInt. The fractional representation is custom-built using standard and open algorithms, or sometimes just naive implementations.</string>
+                                        <attributes>
+                                            <color key="NSBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="16" name="HelveticaNeue"/>
+                                            <real key="NSKern" value="0.0"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                            <color key="NSStrokeColor" red="0.14118" green="0.16078000000000001" blue="0.18038999999999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Pqo-jJ-rQM" firstAttribute="trailing" secondItem="3td-sW-nUJ" secondAttribute="trailing" constant="8" id="Nuo-zH-GnJ"/>
+                            <constraint firstItem="Pqo-jJ-rQM" firstAttribute="bottom" secondItem="3td-sW-nUJ" secondAttribute="bottom" id="XvR-fC-gQS"/>
+                            <constraint firstItem="3td-sW-nUJ" firstAttribute="leading" secondItem="Pqo-jJ-rQM" secondAttribute="leading" constant="8" id="c4m-It-Caz"/>
+                            <constraint firstItem="3td-sW-nUJ" firstAttribute="top" secondItem="Pqo-jJ-rQM" secondAttribute="top" id="jNc-FY-kvZ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Pqo-jJ-rQM"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="About" id="f0z-Tf-g3A"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FPt-ns-SBe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2801" y="1163"/>
+        </scene>
+        <!--Options-->
+        <scene sceneID="71X-7E-g0V">
+            <objects>
+                <tableViewController title="Options" id="9jg-Fu-RPD" customClass="OptionsTableViewController" customModule="Arbitrary" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="lra-y3-yTH">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Basic" textLabel="zCS-I8-jAP" style="IBUITableViewCellStyleDefault" id="7cs-Ci-6i9">
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7cs-Ci-6i9" id="OOh-xg-EVE">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zCS-I8-jAP">
+                                            <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="9jg-Fu-RPD" id="W3f-v2-aN1"/>
+                            <outlet property="delegate" destination="9jg-Fu-RPD" id="koc-Wd-eNW"/>
+                        </connections>
+                    </tableView>
+                    <tabBarItem key="tabBarItem" title="Options" id="Q8M-Eb-ulH"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pet-pI-tUc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2801" y="483"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="SBz-9A-oI4">
+            <objects>
+                <tabBarController id="xxg-8t-jzM" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="oop-8Z-SeY">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="9jg-Fu-RPD" kind="relationship" relationship="viewControllers" id="Xeq-Be-oGA"/>
+                        <segue destination="vp9-Pf-Oy3" kind="relationship" relationship="viewControllers" id="I5F-sJ-3ui"/>
+                        <segue destination="hlt-rG-Oyx" kind="relationship" relationship="viewControllers" id="0bg-0I-YL1"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MA1-on-62Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1847" y="1163"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="pfq-oo-FUx">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6qi-nQ-AHP" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="RxW-vv-RTB">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="MCX-ze-p6S" kind="relationship" relationship="rootViewController" id="wxC-dI-YiL"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SQf-g0-vBQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="53.600000000000001" y="47.226386806596707"/>
+        </scene>
+        <!--Reference-->
+        <scene sceneID="0id-Q7-ed1">
+            <objects>
+                <tableViewController title="Reference" id="hlt-rG-Oyx" customClass="FunctionsTableViewController" customModule="Arbitrary" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="b01-tL-DMy">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="8Hx-2W-DH9" detailTextLabel="3w1-0q-ggB" style="IBUITableViewCellStyleValue1" id="3cA-mX-Ndb">
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3cA-mX-Ndb" id="ceJ-F1-Ieq">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8Hx-2W-DH9">
+                                            <rect key="frame" x="16" y="12" width="51.5" height="20"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="3w1-0q-ggB">
+                                            <rect key="frame" x="315" y="12" width="44" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="hlt-rG-Oyx" id="9he-i4-RMT"/>
+                            <outlet property="delegate" destination="hlt-rG-Oyx" id="cpt-YQ-ElA"/>
+                        </connections>
+                    </tableView>
+                    <tabBarItem key="tabBarItem" title="Reference" id="7he-aW-l0B"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Lye-ui-O3G" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2801" y="1841"/>
         </scene>
     </scenes>
 </document>
