@@ -26,14 +26,14 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="SKE-YP-yJN">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SKE-YP-yJN">
                                             <rect key="frame" x="16" y="2" width="51.5" height="20"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="5GK-b3-RXN">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5GK-b3-RXN">
                                             <rect key="frame" x="16" y="22" width="61.5" height="20"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" name="Menlo-Bold" family="Menlo" pointSize="17"/>
@@ -92,6 +92,7 @@
                         <outlet property="entryField" destination="ae4-xX-uoL" id="h4G-PK-iKV"/>
                         <outlet property="inputAccessory" destination="BSK-RF-Bk1" id="BfE-JK-yhg"/>
                         <outlet property="inputToolbar" destination="owW-ey-7AT" id="8yq-5K-EAJ"/>
+                        <segue destination="9VF-Lf-yXr" kind="show" identifier="result" id="0mX-dv-aBm"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t5R-NP-UAT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -136,7 +137,7 @@
                                         <action selector="insertChar:" destination="MCX-ze-p6S" id="vhX-EO-LUn"/>
                                     </connections>
                                 </barButtonItem>
-                                <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="5Ot-Tj-a2m"/>
+                                <barButtonItem style="plain" systemItem="flexibleSpace" id="k5W-L2-Z92"/>
                                 <barButtonItem title="**" id="q27-tQ-M4G">
                                     <connections>
                                         <action selector="insertChar:" destination="MCX-ze-p6S" id="JOc-9Y-eQo"/>
@@ -147,7 +148,7 @@
                                         <action selector="insertChar:" destination="MCX-ze-p6S" id="1S5-A9-aRF"/>
                                     </connections>
                                 </barButtonItem>
-                                <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="aQ1-ca-pJW"/>
+                                <barButtonItem style="plain" systemItem="flexibleSpace" id="GJq-6G-IcH"/>
                                 <barButtonItem title="(" id="DTh-hT-CPv">
                                     <connections>
                                         <action selector="insertChar:" destination="MCX-ze-p6S" id="QKU-hd-Tt0"/>
@@ -156,6 +157,17 @@
                                 <barButtonItem title=")" id="CgF-fd-A51">
                                     <connections>
                                         <action selector="insertChar:" destination="MCX-ze-p6S" id="HF9-ih-y9f"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem title="°" id="dwz-1c-72i">
+                                    <connections>
+                                        <action selector="insertChar:" destination="MCX-ze-p6S" id="zgQ-cy-bFy"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem style="plain" systemItem="flexibleSpace" id="pJ4-Gw-CcT"/>
+                                <barButtonItem title="Ans" id="YOA-D7-dcB">
+                                    <connections>
+                                        <action selector="insertChar:" destination="MCX-ze-p6S" id="IKw-xl-tJf"/>
                                     </connections>
                                 </barButtonItem>
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="Vev-Qu-F23"/>
@@ -182,6 +194,49 @@
                 </view>
             </objects>
             <point key="canvasLocation" x="992.79999999999995" y="47.226386806596707"/>
+        </scene>
+        <!--Result View Controller-->
+        <scene sceneID="Atv-d8-CpI">
+            <objects>
+                <viewController id="9VF-Lf-yXr" customClass="ResultViewController" customModule="Arbitrary" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="aet-CE-RfK">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Gk-1Z-bDm">
+                                <rect key="frame" x="16" y="80" width="343" height="20"/>
+                                <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="RkN-kj-0jv">
+                                <rect key="frame" x="11" y="108" width="353" height="543"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" name="Menlo-Bold" family="Menlo" pointSize="17"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="2Gk-1Z-bDm" firstAttribute="leading" secondItem="pcb-TV-8zR" secondAttribute="leading" constant="16" id="4BR-DC-0em"/>
+                            <constraint firstItem="RkN-kj-0jv" firstAttribute="top" secondItem="2Gk-1Z-bDm" secondAttribute="bottom" constant="8" id="CvE-fQ-dGV"/>
+                            <constraint firstItem="pcb-TV-8zR" firstAttribute="trailing" secondItem="RkN-kj-0jv" secondAttribute="trailing" constant="11" id="GCS-Ez-Utm"/>
+                            <constraint firstItem="RkN-kj-0jv" firstAttribute="leading" secondItem="pcb-TV-8zR" secondAttribute="leading" constant="11" id="IIs-JR-fCV"/>
+                            <constraint firstAttribute="bottom" secondItem="RkN-kj-0jv" secondAttribute="bottom" constant="16" id="QBr-Mr-7G7"/>
+                            <constraint firstItem="2Gk-1Z-bDm" firstAttribute="top" secondItem="pcb-TV-8zR" secondAttribute="top" constant="16" id="S69-cV-KI1"/>
+                            <constraint firstItem="pcb-TV-8zR" firstAttribute="trailing" secondItem="2Gk-1Z-bDm" secondAttribute="trailing" constant="16" id="zc1-Sa-pLe"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="pcb-TV-8zR"/>
+                    </view>
+                    <connections>
+                        <outlet property="expressionLabel" destination="2Gk-1Z-bDm" id="ecc-Lk-ODq"/>
+                        <outlet property="resultTextView" destination="RkN-kj-0jv" id="4ok-A6-fVs"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jgA-dI-aue" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1685.5999999999999" y="46.326836581709152"/>
         </scene>
         <!--Help-->
         <scene sceneID="WZo-Mq-iDU">
@@ -221,6 +276,52 @@
                                     </fragment>
                                     <fragment>
                                         <mutableString key="content">  Many elementary functions, like roots and logarithms, produce irrational numbers. These are numbers with an infinite amount of non-repeating decimals and therefore cannot be represented as a fraction. Arbitrary is not a symbolic calculator, so these outputs will be stored as highly precise approximations. This is indicated by the approximate sign (≈).   </mutableString>
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="17" name=".AppleSystemUIFont"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="Usage">
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="17" name=".AppleSystemUIFontEmphasized"/>
+                                            <font key="NSOriginalFont" size="17" name=".AppleSystemUIFontEmphasized"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <mutableString key="content">  Type expressions into the expression field. You can use the quick bar to do arithmetic. For example, to calculate 3 times 4 minus 1, enter 3 × 4 - 1 (with or without the spaces) and then press Return on the keyboard to evaluate. Use parenthesis to change the order of operations. For example, changing the previous example to </mutableString>
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="17" name=".AppleSystemUIFont"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="3 × (4 - 1) will now evaluate to 9 instead of 11.   ">
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="17" name="HelveticaNeue"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <mutableString key="content">To call a function, type its name and then use parenthesis and commas to specify the arguments. For example, to calculate the 4th root of 16, type root(4, 16). When using functions, the name must be written correctly and there must be a correct number of arguments. To learn more about the built-in functions, check out the Reference at the bottom of this screen.  Each evaluation is given a number and its value is stored. This number is marked by brackets, as in [1] and is then followed by = (or ≈). You can use these previous results as variables by prefixing them with the dollar sign ($). As an example, let's say you first evaluate 2 ** 4 (2 to the 4th power), which gives the result [1] = 16. Now, if you type $[1] + 4, you will get 20. For easy access to this powerful feature, just swipe left on any given evaluation to insert it into the current expression. Swiping right allows you to insert the original expression. You can also query the previous result by using the special variable $Ans. More on this in the next paragraph.  Evaluating an empty expression (pressing Return without typing anything) will re-evaluate the previous expression, if one exists. This allows you to calculate you own recursive functions. Let's take the example of multiplying the previous result by 3. First, enter a starting value, say 1. Now type 3 </mutableString>
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="17" name=".AppleSystemUIFont"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <mutableString key="content">× $Ans and evaluate it. This returns 3 as expected. Now, press Return without typing anything. You will notice that the expression is re-evaluated to 9. If you press again and again, you will get the multiples of 3, namely 9, 27, 81 and so forth.   Another powerful variable is $Idx. It gives you the current evaluation index (the number in the square brackets, like [3]). For instance, let's say you want to sum the squares from 0 to 5, which is the same as 0**2 + 1**2 + 2**2 + 3**2 + 4**2 + 5**2. Instead of typing it all out, you can instead supply an initial value (which is 0**2=0 in this case) and then type $Ans + $Idx**2 and hit Return 5 times. At each step, you will see the sum up to that number. On the 5th step, you have your final sum of 55. You can keep going for as long as you want to take the sum even higher.</mutableString>
+                                        <attributes>
+                                            <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                            <font key="NSFont" size="17" name="HelveticaNeue"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="  ">
                                         <attributes>
                                             <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                             <font key="NSFont" size="17" name=".AppleSystemUIFont"/>

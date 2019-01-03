@@ -10,24 +10,38 @@ import UIKit
 
 public struct TaylorSeries {
     public enum Expansion {
-        case sin, ln
+        case sin, ln, exp, expm1
     }
-    public let iterations: Int
+    public let decimals: Int
     public let series: Expansion
     
-    public init(series: Expansion, iterations: Int) {
+    public init(series: Expansion, to decimals: Int) {
         self.series = series
-        self.iterations = iterations
+        self.decimals = decimals
     }
-    
+    private func iterations(for series: Expansion, to decimals: Int, at x: BigDouble) -> BigDouble {
+        func error(t: BigDouble, x: BigDouble, M: BigDouble, n: BigDouble) -> BigDouble {
+            let k = n + 1
+            return (M * ((x - t) ** k)) / k.factorial
+        }
+        
+        switch series {
+        default:
+            return 2 * x * BigDouble(decimals)
+        }
+    }
     public func calculate(at x: BigDouble) -> BigDouble {
+        let iterations = self.iterations(for: series, to: decimals, at: x)
         var sum = BigDouble.zero
-        for k in 0...iterations {
-            let index = BigDouble(k)
+        var k = BigDouble.zero
+        while k < iterations {
             switch series {
-            case .sin: sum += sine(index, x)
-            case .ln: sum += log(index, x)
+            case .sin: sum += sine(k, x)
+            case .ln: sum += log(k, x)
+            case .exp: sum += exp(k, x)
+            case .expm1: sum += expm1(k, x)
             }
+            k += 1
         }
         /*for k in 0...outer {
                 for i in (k * inner)..<((k + 1) * inner) {
@@ -56,5 +70,13 @@ public struct TaylorSeries {
         let denominator = k
         if k.isEven { numerator.negate() }
         return numerator / denominator
+    }
+    private func exp(_ k: BigDouble, _ x: BigDouble) -> BigDouble {
+        let a = x ** k
+        let b = k.factorial
+        return a / b
+    }
+    private func expm1(_ k: BigDouble, _ x: BigDouble) -> BigDouble {
+        return exp(k + 1, x)
     }
 }

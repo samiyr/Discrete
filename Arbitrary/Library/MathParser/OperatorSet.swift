@@ -29,6 +29,10 @@ public final class OperatorSet {
         ops.append(Operator(builtInOperator: .logicalAnd, precedence: precedence))
         precedence += 1
         
+        ops.append(Operator(builtInOperator: .logicalImplication, precedence: precedence))
+        ops.append(Operator(builtInOperator: .logicalEquivalence, precedence: precedence))
+        precedence += 1
+        
         // == and != have the same precedence
         
         // ComparisonPrecedence

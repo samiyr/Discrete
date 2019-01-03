@@ -16,20 +16,18 @@ class MainTableViewController: UITableViewController {
     @IBOutlet weak var inputToolbar: UIToolbar!
     @IBOutlet weak var auxiliaryToolbar: UIToolbar!
     
-    var expressions = [String]()
-    var results = [BigDouble]()
-    var decimalPlaces = [Int]()
+    var evaluations = [Evaluation]()
     var variables = [BigDouble]()
-    var errors = [String : String]()
-    var errorRanges = [String : Range<Int>]()
     
     var timer: Timer?
     
     @IBOutlet var inputAccessory: UIView!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     
-    var currentWorkItem: Thread?
+    var currentWorkItem: DispatchWorkItem?
     var isExecuting = false
+    
+    let menlo = UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont(name: "Menlo", size: 17)!)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,13 +41,9 @@ class MainTableViewController: UITableViewController {
         entryField.becomeFirstResponder()
         entryField.delegate = self
         
-        let copyExpressionMenu = UIMenuItem(title: "Copy Expression", action: #selector(copyExpression))
-        let copyValueMenu = UIMenuItem(title: "Copy Value", action: #selector(copyValue))
-        UIMenuController.shared.menuItems = [copyExpressionMenu, copyValueMenu]
-        UIMenuController.shared.update()
-        
         auxiliaryToolbar.tintColor = UIApplication.shared.keyWindow?.tintColor
         
+        NotificationCenter.default.addObserver(self, selector: #selector(thermalStateChanged), name: ProcessInfo.thermalStateDidChangeNotification, object: nil)
     }
     override func viewWillDisappear(_ animated: Bool) {
         fakeField.resignFirstResponder()
@@ -61,70 +55,117 @@ class MainTableViewController: UITableViewController {
         entryField.becomeFirstResponder()
         super.viewWillAppear(animated)
     }
-    
+    @objc func thermalStateChanged() {
+        let state = ProcessInfo.processInfo.thermalState
+        if state == .critical, !Preferences.shared.thermalOverride {
+            ComputationLock.shared.requestLock()
+            navigationItem.title = "Stopping..."
+            let alert = UIAlertController(title: "Thermal alert", message: "The current computation has been stopped to prevent the device from overheating.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            present(alert, animated: true, completion: nil)
+        }
+    }
     @IBAction func insertChar(_ sender: UIBarButtonItem) {
-        entryField.text = (entryField.text ?? "") + (sender.title ?? "")
+        var insertion = sender.title ?? ""
+        if insertion == "Ans" {
+            insertion = "$Ans"
+        }
+        entryField.text = (entryField.text ?? "") + insertion
     }
     @IBAction func cancelCurrent(_ sender: Any) {
-        Thread.exit()
+        let alert = UIAlertController(title: "Stop computation?", message: nil, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Continue", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Stop", style: .default, handler: { _ in
+            ComputationLock.shared.requestLock()
+            self.navigationItem.title = "Stopping..."
+        }))
+        present(alert, animated: true, completion: nil)
     }
 
-    @objc func copyExpression() {}
-    @objc func copyValue() {}
     @IBOutlet weak var clearAllButton: UIBarButtonItem!
     @IBAction func clearAll(_ sender: Any) {
         let sheet = UIAlertController(title: "Clear history?", message: "This action cannot be undone", preferredStyle: .alert)
         sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         sheet.addAction(UIAlertAction(title: "Clear history", style: .destructive, handler: { _ in
-            self.expressions.removeAll()
-            self.results.removeAll()
+            self.evaluations.removeAll()
             self.variables.removeAll()
-            self.errors.removeAll()
-            self.errorRanges.removeAll()
             self.tableView.reloadData()
             self.clearAllButton.isEnabled = false
         }))
         present(sheet, animated: true, completion: nil)
     }
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "result", let destination = segue.destination as? ResultViewController, let indexPath = tableView.indexPathForSelectedRow, let cell = tableView.cellForRow(at: indexPath) {
+            let evaluation = evaluations[indexPath.row]
+            destination.expression = evaluation.expression
+            if let result = evaluation.result {
+                let sign = result.isApproximation ? "≈" : "="
+                if let variable = cell.detailTextLabel?.text?.components(separatedBy: " \(sign) ").first {
+                    var resultString = "\(result)"
+                    if result.isApproximation {
+                        resultString = result.decimalApproximation(to: evaluation.parameters.decimals).decimal
+                    }
+                    destination.result = "\(variable) \(sign) \(resultString)"
+                }
+            }
+        }
+    }
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return expressions.count
+        return evaluations.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if let error = errors["\(indexPath.row)"] {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ErrorCell", for: indexPath)
-            if let range = errorRanges["\(indexPath.row)"] {
-                let nsRange = NSRange(location: range.lowerBound, length: range.upperBound - range.lowerBound)
-                let attributedText = NSMutableAttributedString(string: expressions[indexPath.row])
-                attributedText.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: nsRange)
-                attributedText.addAttribute(.underlineColor, value: UIColor.red, range: nsRange)
-                cell.textLabel?.attributedText = attributedText
-            } else {
-                cell.textLabel?.text = expressions[indexPath.row]
-            }
-            cell.detailTextLabel?.text = error
-            return cell
-        } else {
+        func applyFont(_ label: UILabel?) {
+            label?.font = menlo
+            label?.adjustsFontForContentSizeCategory = true
+        }
+        func applyFonts(_ labels: [UILabel?]) {
+            labels.forEach { applyFont($0) }
+        }
+        let evaluation = evaluations[indexPath.row]
+        if let result = evaluation.result {
             let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-            cell.textLabel?.text = expressions[indexPath.row]
+            applyFonts([cell.textLabel, cell.detailTextLabel])
+            cell.detailTextLabel?.font = UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont(name: "Menlo-Bold", size: 17)!)
+            cell.textLabel?.text = evaluation.expression
             let variable = "\(variables.count)"
-            let result = results[indexPath.row]
             let sign = result.isApproximation ? "≈" : "="
-            // cell.accessoryType = result.isApproximation ? .disclosureIndicator : .none
-            var resultString = "\(result)"
+            cell.accessoryType = .none
+            var resultString = result.description
             if result.isApproximation {
-                resultString = result.decimalApproximation(to: decimalPlaces[indexPath.row]).decimal
+                resultString = result.decimalApproximation(to: evaluation.parameters.decimals).decimal
+            }
+            if resultString.count > 52 {
+                let start = resultString.startIndex
+                let end = resultString.index(start, offsetBy: 52)
+                resultString = String(resultString[start...end]) + "..."
+                cell.accessoryType = .disclosureIndicator
             }
             cell.detailTextLabel?.text = "[\(variable)] \(sign) \(resultString)"
             return cell
+        } else if let error = evaluation.error {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ErrorCell", for: indexPath)
+            applyFont(cell.textLabel)
+            let range = error.range
+                let nsRange = NSRange(location: range.lowerBound, length: range.upperBound - range.lowerBound)
+                let attributedText = NSMutableAttributedString(string: evaluation.expression)
+                attributedText.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: nsRange)
+                attributedText.addAttribute(.underlineColor, value: cell.detailTextLabel?.textColor ?? UIColor.red, range: nsRange)
+                cell.textLabel?.attributedText = attributedText
+            
+            cell.detailTextLabel?.text = error.description
+            return cell
         }
+        return UITableViewCell()
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if let cell = tableView.cellForRow(at: indexPath), cell.accessoryType == .disclosureIndicator {
+            performSegue(withIdentifier: "result", sender: self)
+        }
         /*if errors["\(indexPath.row)"] == nil {
             decimalPlaces[indexPath.row] += 10
             tableView.reloadRows(at: [indexPath], with: .automatic)
@@ -132,15 +173,8 @@ class MainTableViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        if let error = errors["\(indexPath.row)"] {
-            let resultAction = UIContextualAction(style: .normal, title: "Copy error") { (_, _, completion) in
-                let expression = self.expressions[indexPath.row]
-                UIPasteboard.general.string = "Expression: \(expression)\nError: \(error)"
-                completion(true)
-            }
-            resultAction.backgroundColor = UIColor.purple
-            return UISwipeActionsConfiguration(actions: [resultAction])
-        } else {
+        let evaluation = evaluations[indexPath.row]
+        if let _ = evaluation.result {
             let resultAction = UIContextualAction(style: .normal, title: "Use result") { (_, _, completion) in
                 if let cell = tableView.cellForRow(at: indexPath), let cellText = cell.detailTextLabel?.text {
                     var variable = ""
@@ -160,120 +194,96 @@ class MainTableViewController: UITableViewController {
                     completion(false)
                 }
             }
-            resultAction.backgroundColor = UIColor.purple
+            resultAction.backgroundColor = UIColor(named: "Purple")
+            let copyAction = UIContextualAction(style: .normal, title: "Copy result") { (_, _, completion) in
+                UIPasteboard.general.string = self.evaluations[indexPath.row].result?.description
+                completion(true)
+            }
+            copyAction.backgroundColor = UIColor(named: "Green")
+            return UISwipeActionsConfiguration(actions: [resultAction, copyAction])
+        } else if let error = evaluation.error {
+            let resultAction = UIContextualAction(style: .normal, title: "Copy error") { (_, _, completion) in
+                let expression = self.evaluations[indexPath.row].expression
+                UIPasteboard.general.string = "Expression: \(expression)\nError: \(error)"
+                completion(true)
+            }
+            resultAction.backgroundColor = UIColor(named: "Purple")
             return UISwipeActionsConfiguration(actions: [resultAction])
         }
+        return nil
     }
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        if let _ = errors["\(indexPath.row)"] {
+        let evaluation = evaluations[indexPath.row]
+        if let _ = evaluation.error {
             return nil
         }
         let expressionAction = UIContextualAction(style: .normal, title: "Use expression") { (_, _, completion) in
             var text = self.entryField.text
-            text?.append(self.expressions[indexPath.row])
+            text?.append(evaluation.expression)
             self.entryField.text = text
             completion(true)
         }
-        expressionAction.backgroundColor = UIColor.blue
-        return UISwipeActionsConfiguration(actions: [expressionAction])
-    }
-    override func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-        return action == #selector(copyExpression) || action == #selector(copyValue)
-    }
-    override func tableView(_ tableView: UITableView, performAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) {
-        switch action {
-        case #selector(copyExpression):
-            UIPasteboard.general.string = expressions[indexPath.row]
-        case #selector(copyValue):
-            UIPasteboard.general.string = results[indexPath.row].description
-        default:
-            return
+        expressionAction.backgroundColor = UIColor(named: "Blue")
+        let copyAction = UIContextualAction(style: .normal, title: "Copy expression") { (_, _, completion) in
+            UIPasteboard.general.string = evaluation.expression
+            completion(true)
         }
+        copyAction.backgroundColor = UIColor(named: "Orange")
+        return UISwipeActionsConfiguration(actions: [expressionAction, copyAction])
     }
-    
     let executionQueue = DispatchQueue(label: "execution queue", qos: .userInteractive, attributes: [], autoreleaseFrequency: .workItem, target: nil)
     func parseExpression(_ expression: String?, completion: @escaping (Bool) -> Void) {
         guard let expression = expression, !expression.isEmpty else {
-            if let previous = expressions.last {
-                self.parseExpression(previous, completion: completion)
+            if let previous = evaluations.last {
+                self.parseExpression(previous.expression, completion: completion)
             }
             completion(false)
             return
         }
-        let thread = Thread {
-            var flag: Bool
-            do {
-                var substitutions = [String : BigDouble]()
-                for i in 0..<self.variables.count {
-                    substitutions["[\(i + 1)]"] = self.variables[i]
-                }
-                substitutions["Ans"] = self.variables.last
-                let evaluation = try expression.evaluate(substitutions)
-                self.results.append(evaluation)
-                self.variables.append(evaluation)
+        let item = DispatchWorkItem {
+            var flag = false
+            
+            var substitutions = [String : BigDouble]()
+            for i in 0..<self.variables.count {
+                substitutions["[\(i + 1)]"] = self.variables[i]
+            }
+            substitutions["Ans"] = self.variables.last
+            substitutions["Idx"] = BigDouble(self.variables.count)
+            let evaluation = Evaluation(expression: expression, substitutions: substitutions)
+            try? evaluation.evaluate()
+            self.evaluations.append(evaluation)
+            if let result = evaluation.result {
+                self.variables.append(result)
                 flag = true
-            } catch {
-                var description = error.localizedDescription
-                let index = "\(self.expressions.count)"
-                if let error = error as? MathParserError {
-                    switch error.kind {
-                    case .cannotParseNumber: description = "Cannot parse number"
-                    case .cannotParseHexNumber: description = "Cannot parse hex number"
-                    case .cannotParseOctalNumber: description = "Cannot parse octal number"
-                    case .cannotParseFractionalNumber: description = "Cannot parse fraction"
-                    case .cannotParseExponent: description = "Cannot parse exponent"
-                    case .cannotParseIdentifier: description = "Cannot parse identifier"
-                    case .cannotParseVariable: description = "Cannot parse variable"
-                    case .cannotParseQuotedVariable:description = "Cannot parse variable"
-                    case .cannotParseOperator: description = "Cannot parse operator"
-                    case .zeroLengthVariable: description = "Zero length variable"
-                    case .cannotParseLocalizedNumber: description = "Cannot parse number"
-                    case .unknownOperator: description = "Unknown operator"
-                    case .ambiguousOperator: description = "Ambiguous operator"
-                    case .missingOpenParenthesis: description = "Missing open parenthesis"
-                    case .missingCloseParenthesis: description = "Missing closing parenthesis"
-                    case .emptyFunctionArgument: description = "Empty function argument"
-                    case .emptyGroup: description = "Empty group"
-                    case .invalidFormat: description = "Invalid format"
-                    case .missingLeftOperand(let operand): description = "Missing left operand '\(operand.description)'"
-                    case .missingRightOperand(let operand): description = "Missing right operand '\(operand.description)'"
-                    case .unknownFunction(let function): description = "Unknown function '\(function)'"
-                    case .unknownVariable(let variable): description = "Unknown variable '\(variable)'"
-                    case .divideByZero: description = "Division by zero"
-                    case .invalidArguments: description = "Invalid arguments"
-                    }
-                    self.errorRanges[index] = error.range
-                }
-                self.errors[index] = description
-                self.results.append(0)
-                print(error)
-                flag = false
             }
             DispatchQueue.main.async {
-                self.expressions.append(expression)
                 let newIndexPath = IndexPath(row: self.tableView.numberOfRows(inSection: 0), section: 0)
                 self.tableView.insertRows(at: [newIndexPath], with: .automatic)
                 self.tableView.scrollToRow(at: newIndexPath, at: .bottom, animated: true)
                 self.clearAllButton.isEnabled = true
                 self.cancelButton.isEnabled = false
+                self.navigationItem.title = "Arbitrary"
                 self.isExecuting = false
                 self.timer?.invalidate()
                 self.timer = nil
+                ComputationLock.shared.removeLock()
+                self.currentWorkItem = nil
                 completion(flag)
             }
 
         }
-        currentWorkItem = thread
+        currentWorkItem = item
         if !Preferences.shared.computationTimeWarning {
             timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(showComputationTimeWarning), userInfo: nil, repeats: false)
         }
-        thread.start()
+        executionQueue.async(execute: item)
         isExecuting = true
-        self.decimalPlaces.append(12)
         cancelButton.isEnabled = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if self.isExecuting {
+                self.navigationItem.title = "Computing..."
+            }
+        }
     }
     @objc func showComputationTimeWarning() {
         if Preferences.shared.computationTimeWarning { return }
@@ -305,9 +315,9 @@ extension MainTableViewController: UITextFieldDelegate {
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        parseExpression(textField.text) { (success) in
+        parseExpression(entryField.text) { (success) in
             if success {
-                textField.text = nil
+                self.entryField.text = nil
             }
         }
         return true

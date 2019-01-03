@@ -44,6 +44,11 @@ public struct MathParserError: Error {
         case unknownVariable(String)
         case divideByZero
         case invalidArguments
+        
+        // Argument errors
+        case argumentNotInteger
+        case argumentNotPositive
+        case argumentNotLogicalValue
     }
     
     public let kind: Kind

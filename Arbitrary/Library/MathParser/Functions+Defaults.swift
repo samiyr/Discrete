@@ -24,14 +24,14 @@ public extension Function {
     
     public static let standardFunctions: Array<Function> = [
         add, subtract, multiply, divide,
-        modulo, negate, factorial, factorial2, choose, variations, prime,
+        modulo, negate, factorial, factorial2, choose, variations, prime, cycles, stirling, lahNumber,
         pow, tetriate, sqrt, cuberoot, nthroot,/*
         random,*/ abs, percent,
         logarithm, loge, log2, exponential,
         and, or, not, xor, lshift, rshift,
         sum, product,
         count, minimum, maximum, average, median, stddev,
-        ceiling, truncation,
+        ceiling, truncation, digits,
         sine, cosine, tangent, /*asin, acos, atan, atan2,*/
         csc, sec, cotan, /*acsc, asec, acotan,*/
         sineh, cosineh, tangenth, asinh, acosh, atanh,
@@ -41,7 +41,8 @@ public extension Function {
         `true`, `false`,
         phi, pi, pi_2, pi_4, tau, sqrt2, e, log2e, log10e, ln2, ln10,
         l_and, l_or, l_not, l_eq, l_neq, l_implication, l_equivalence, l_lt, l_gt, l_ltoe, l_gtoe, l_if,
-        fibonacci, lucas, catalan, bell
+        fibonacci, lucas, catalan, bell,
+        thermalOverride
     ]
     
     // MARK: - Basic functions
@@ -62,7 +63,7 @@ public extension Function {
         return arg1 - arg2
     })
     
-    public static let multiply = Function(names: ["multiply", "implicitmultiply"], evaluator: { state throws -> BigDouble in
+    public static let multiply = Function(names: ["multiply", "implicitMultiply"], evaluator: { state throws -> BigDouble in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
@@ -156,38 +157,31 @@ public extension Function {
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let value = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        
-        return value.sqrt
+        guard !value.isNegative else { throw MathParserError(kind: .argumentNotPositive, range: state.expressionRange )}
+        let computation = Computation(value, state.evaluator.parameters)
+        return computation.sqrt()
     })
     
     public static let cuberoot = Function(name: "cuberoot", evaluator: { state throws -> BigDouble in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        
-        return arg1.cubeRoot
+        let computation = Computation(arg1, state.evaluator.parameters)
+        return computation.cubeRoot()
     })
     
     public static let nthroot = Function(name: "nthroot", evaluator: { state throws -> BigDouble in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
-        let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
+        let n = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
+        let x = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
         
+        guard !x.isZero else { throw MathParserError(kind: .divideByZero, range: state.expressionRange) }
+        guard n.isInteger else { throw MathParserError(kind: .argumentNotInteger, range: state.expressionRange )}
+        guard n.isPositive else { throw MathParserError(kind: .argumentNotPositive, range: state.expressionRange )}
         
-        guard arg2 != 0 else { throw MathParserError(kind: .divideByZero, range: state.expressionRange) }
-        
-        return root(arg1, arg2)
-        
-        /*
-        if arg1 < 0 && arg2.truncatingRemainder(dividingBy: 2) == 1 {
-            // for negative numbers with an odd root, the result will be negative
-            let root = Darwin.pow(-arg1, 1/arg2)
-            return -root
-        } else {
-            return Darwin.pow(arg1, 1/arg2)
-        }*/
-        
+        let computation = Computation(x, state.evaluator.parameters)
+        return computation.root(n: n)
     })
     
     /*
@@ -213,12 +207,16 @@ public extension Function {
     public static let logarithm = Function(names: ["log", "lg"], evaluator: { state throws -> BigDouble in
         if state.arguments.count == 1 {
             let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-            return log(10, arg1)
+            guard !arg1.isNegative else { throw MathParserError(kind: .argumentNotPositive, range: state.expressionRange )}
+            let computation = Computation.shell(state.evaluator.parameters)
+            return computation.log(10, arg1)
         } else if state.arguments.count == 2 {
             let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-            guard arg1.isInteger else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
             let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
-            return log(arg1, arg2)
+            guard arg1.isInteger else { throw MathParserError(kind: .argumentNotInteger, range: state.expressionRange) }
+            guard !arg2.isNegative else { throw MathParserError(kind: .argumentNotPositive, range: state.expressionRange )}
+            let computation = Computation.shell(state.evaluator.parameters)
+            return computation.log(arg1, arg2)
         } else {
             throw MathParserError(kind: .invalidArguments, range: state.expressionRange)
         }
@@ -228,14 +226,18 @@ public extension Function {
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        return ln(arg1)
+        guard !arg1.isNegative else { throw MathParserError(kind: .argumentNotPositive, range: state.expressionRange )}
+        let computation = Computation(arg1, state.evaluator.parameters)
+        return computation.ln()
     })
     
     public static let log2 = Function(names: ["log2", "lb"], evaluator: { state throws -> BigDouble in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        return log(2, arg1)
+        guard !arg1.isNegative else { throw MathParserError(kind: .argumentNotPositive, range: state.expressionRange )}
+        let computation = Computation.shell(state.evaluator.parameters)
+        return computation.log(2, arg1)
     })
 
     
@@ -243,7 +245,8 @@ public extension Function {
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        return exp(arg1)
+        let computation = Computation(arg1, state.evaluator.parameters)
+        return computation.exp()
     })
     
     public static let abs = Function(name: "abs", evaluator: { state throws -> BigDouble in
@@ -284,8 +287,8 @@ public extension Function {
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
-        
-        return BigDouble(Int(arg1.approximation ?? 0) & Int(arg2.approximation ?? 0))
+        guard arg1.isInteger, arg2.isInteger else { throw MathParserError(kind: .argumentNotInteger, range: state.expressionRange )}
+        return BigDouble(arg1.numerator & arg2.numerator)
     })
     
     public static let or = Function(name: "or", evaluator: { state throws -> BigDouble in
@@ -293,16 +296,16 @@ public extension Function {
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
-        
-        return BigDouble(Int(arg1.approximation ?? 0) | Int(arg2.approximation ?? 0))
+        guard arg1.isInteger, arg2.isInteger else { throw MathParserError(kind: .argumentNotInteger, range: state.expressionRange )}
+        return BigDouble(arg1.numerator | arg2.numerator)
     })
     
     public static let not = Function(name: "not", evaluator: { state throws -> BigDouble in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        
-        return BigDouble(~Int(arg1.approximation ?? 0))
+        guard arg1.isInteger else { throw MathParserError(kind: .argumentNotInteger, range: state.expressionRange )}
+        return BigDouble(~arg1.numerator)
     })
     
     public static let xor = Function(name: "xor", evaluator: { state throws -> BigDouble in
@@ -310,8 +313,8 @@ public extension Function {
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
-        
-        return BigDouble(Int(arg1.approximation ?? 0) ^ Int(arg2.approximation ?? 0))
+        guard arg1.isInteger, arg2.isInteger else { throw MathParserError(kind: .argumentNotInteger, range: state.expressionRange )}
+        return BigDouble(arg1.numerator ^ arg2.numerator)
     })
     
     public static let rshift = Function(name: "rshift", evaluator: { state throws -> BigDouble in
@@ -319,8 +322,8 @@ public extension Function {
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
-        
-        return BigDouble(Int(arg1.approximation ?? 0) >> Int(arg2.approximation ?? 0))
+        guard arg1.isInteger, arg2.isInteger else { throw MathParserError(kind: .argumentNotInteger, range: state.expressionRange )}
+        return BigDouble(arg1.numerator >> arg2.numerator)
     })
     
     public static let lshift = Function(name: "lshift", evaluator: { state throws -> BigDouble in
@@ -328,8 +331,8 @@ public extension Function {
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
-        
-        return BigDouble(Int(arg1.approximation ?? 0) << Int(arg2.approximation ?? 0))
+        guard arg1.isInteger, arg2.isInteger else { throw MathParserError(kind: .argumentNotInteger, range: state.expressionRange )}
+        return BigDouble(arg1.numerator << arg2.numerator)
     })
     
     // MARK: - Aggregate functions
@@ -441,21 +444,27 @@ public extension Function {
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        return sin(Function._dtor(arg1, evaluator: state.evaluator))
+        let angle = Function._dtor(arg1, evaluator: state.evaluator)
+        let computation = Computation(angle, state.evaluator.parameters)
+        return computation.sin()
     })
     
     public static let cosine = Function(name: "cos", evaluator: { state throws -> BigDouble in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        return cos(Function._dtor(arg1, evaluator: state.evaluator))
+        let angle = Function._dtor(arg1, evaluator: state.evaluator)
+        let computation = Computation(angle, state.evaluator.parameters)
+        return computation.cos()
     })
     
     public static let tangent = Function(name: "tan", evaluator: { state throws -> BigDouble in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        return tan(Function._dtor(arg1, evaluator: state.evaluator))
+        let angle = Function._dtor(arg1, evaluator: state.evaluator)
+        let computation = Computation(angle, state.evaluator.parameters)
+        return computation.tan()
     })
     
     /*public static let asin = Function(names: ["asin", "sin⁻¹"], evaluator: { state throws -> BigDouble in
@@ -544,42 +553,50 @@ public extension Function {
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        return sinh(arg1)
+        let computation = Computation(arg1, state.evaluator.parameters)
+        return computation.sinh()
     })
     
     public static let cosineh = Function(name: "cosh", evaluator: { state throws -> BigDouble in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        return cosh(arg1)
+        let computation = Computation(arg1, state.evaluator.parameters)
+        return computation.cosh()
     })
     
     public static let tangenth = Function(name: "tanh", evaluator: { state throws -> BigDouble in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        return tanh(arg1)
+        let computation = Computation(arg1, state.evaluator.parameters)
+        return computation.tanh()
     })
     
     public static let asinh = Function(names: ["asinh", "arsinh", "sinh⁻¹"], evaluator: { state throws -> BigDouble in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        return ln(arg1 + ((arg1 ** 2) + 1).sqrt)
+        let c1 = Computation((arg1 ** 2) + 1, state.evaluator.parameters)
+        let c2 = Computation(c1.sqrt(), state.evaluator.parameters)
+        return c2.ln()
     })
     
     public static let acosh = Function(names: ["acosh", "arcosh", "cosh⁻¹"], evaluator: { state throws -> BigDouble in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        return ln(arg1 + ((arg1 ** 2) - 1).sqrt)
+        let c1 = Computation((arg1 ** 2) - 1, state.evaluator.parameters)
+        let c2 = Computation(c1.sqrt(), state.evaluator.parameters)
+        return c2.ln()
     })
     
     public static let atanh = Function(names: ["atanh", "artanh", "tanh⁻¹"], evaluator: { state throws -> BigDouble in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        return 0.5 * ln((1 + arg1) / (1 - arg1))
+        let computation = Computation((1 + arg1) / (1 - arg1), state.evaluator.parameters)
+        return 0.5 * computation.ln()
     })
     
     public static let csch = Function(name: "csch", evaluator: { state throws -> BigDouble in
@@ -614,7 +631,9 @@ public extension Function {
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         guard arg1 != 0 else { throw MathParserError(kind: .divideByZero, range: state.expressionRange) }
-        return ln(arg1.inverse + ((arg1 ** 2).inverse + 1).sqrt)
+        let c1 = Computation((arg1 ** 2).inverse + 1, state.evaluator.parameters)
+        let c2 = Computation(arg1.inverse + c1.sqrt(), state.evaluator.parameters)
+        return c2.ln()
     })
     
     public static let asech = Function(names: ["asech", "arsech", "sech⁻¹"], evaluator: { state throws -> BigDouble in
@@ -622,7 +641,9 @@ public extension Function {
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         guard arg1 != 0 else { throw MathParserError(kind: .divideByZero, range: state.expressionRange) }
-        return ln(arg1.inverse + ((arg1 ** 2).inverse - 1).sqrt)
+        let c1 = Computation((arg1 ** 2).inverse - 1, state.evaluator.parameters)
+        let c2 = Computation(arg1.inverse + c1.sqrt(), state.evaluator.parameters)
+        return c2.ln()
     })
     
     public static let acotanh = Function(names: ["acotanh", "arcotanh", "cotanh⁻¹"], evaluator: { state throws -> BigDouble in
@@ -630,7 +651,8 @@ public extension Function {
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         guard arg1 != 0 else { throw MathParserError(kind: .divideByZero, range: state.expressionRange) }
-        return 0.5 * ln((1 - arg1) / (1 + arg1))
+        let computation = Computation((1 - arg1) / (1 + arg1), state.evaluator.parameters)
+        return 0.5 * computation.ln()
     })
     
     // MARK: - Geometric functions
@@ -656,7 +678,7 @@ public extension Function {
         return 1.0 - sin(Function._dtor(arg1, evaluator: state.evaluator))
     })
     
-    public static let covercosin = Function(name: "covercosin", evaluator: { state throws -> BigDouble in
+    public static let covercosin = Function(names: ["covercosin", "covercos"], evaluator: { state throws -> BigDouble in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
@@ -667,7 +689,7 @@ public extension Function {
         return try versin.evaluator(state) / 2.0
     })
     
-    public static let havercosin = Function(name: "havercosin", evaluator: { state throws -> BigDouble in
+    public static let havercosin = Function(names: ["havercosin", "havercos"], evaluator: { state throws -> BigDouble in
         return try vercosin.evaluator(state) / 2.0
     })
     
@@ -675,7 +697,7 @@ public extension Function {
         return try coversin.evaluator(state) / 2.0
     })
     
-    public static let hacovercosin = Function(name: "hacovercosin", evaluator: { state throws -> BigDouble in
+    public static let hacovercosin = Function(names: ["hacovercosin", "hacovercos"], evaluator: { state throws -> BigDouble in
         return try covercosin.evaluator(state) / 2.0
     })
     
@@ -787,13 +809,16 @@ public extension Function {
     })
     
     // MARK: - Logical Functions
-    
+
     public static let l_and = Function(name: "l_and", evaluator: { state throws -> BigDouble in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
-        return (arg1 != 0 && arg2 != 0) ? BigDouble.true : BigDouble.false
+        
+        let logicalValues = [BigDouble.true, BigDouble.false]
+        guard logicalValues.contains(arg1), logicalValues.contains(arg2) else { throw MathParserError(kind: .argumentNotLogicalValue, range: state.expressionRange )}
+        return (arg1 == .true && arg2 == .true) ? .true : .false
     })
     
     public static let l_or = Function(name: "l_or", evaluator: { state throws -> BigDouble in
@@ -801,14 +826,20 @@ public extension Function {
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
-        return (arg1 != 0 || arg2 != 0) ? BigDouble.true : BigDouble.false
+        
+        let logicalValues = [BigDouble.true, BigDouble.false]
+        guard logicalValues.contains(arg1), logicalValues.contains(arg2) else { throw MathParserError(kind: .argumentNotLogicalValue, range: state.expressionRange )}
+        return (arg1 == .true || arg2 == .true) ? .true : .false
     })
     
     public static let l_not = Function(name: "l_not", evaluator: { state throws -> BigDouble in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        return (arg1 == 0) ? BigDouble.true : BigDouble.false
+        
+        let logicalValues = [BigDouble.true, BigDouble.false]
+        guard logicalValues.contains(arg1) else { throw MathParserError(kind: .argumentNotLogicalValue, range: state.expressionRange )}
+        return arg1 == .false ? .true : .false
     })
     
     public static let l_eq = Function(name: "l_eq", evaluator: { state throws -> BigDouble in
@@ -816,7 +847,7 @@ public extension Function {
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
-        return (arg1 == arg2) ? BigDouble.true : BigDouble.false
+        return (arg1 == arg2) ? .true : .false
     })
     
     public static let l_neq = Function(name: "l_neq", evaluator: { state throws -> BigDouble in
@@ -824,7 +855,7 @@ public extension Function {
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
-        return (arg1 != arg2) ? BigDouble.true : BigDouble.false
+        return (arg1 != arg2) ? .true : .false
     })
     
     public static let l_lt = Function(name: "l_lt", evaluator: { state throws -> BigDouble in
@@ -832,7 +863,7 @@ public extension Function {
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
-        return (arg1 < arg2) ? BigDouble.true : BigDouble.false
+        return (arg1 < arg2) ? .true : .false
     })
     
     public static let l_gt = Function(name: "l_gt", evaluator: { state throws -> BigDouble in
@@ -840,7 +871,7 @@ public extension Function {
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
-        return (arg1 > arg2) ? BigDouble.true : BigDouble.false
+        return (arg1 > arg2) ? .true : .false
     })
     
     public static let l_ltoe = Function(name: "l_ltoe", evaluator: { state throws -> BigDouble in
@@ -848,7 +879,7 @@ public extension Function {
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
-        return (arg1 <= arg2) ? BigDouble.true : BigDouble.false
+        return (arg1 <= arg2) ? .true : .false
     })
     
     public static let l_gtoe = Function(name: "l_gtoe", evaluator: { state throws -> BigDouble in
@@ -856,7 +887,7 @@ public extension Function {
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         let arg2 = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
-        return (arg1 >= arg2) ? BigDouble.true : BigDouble.false
+        return (arg1 >= arg2) ? .true : .false
     })
     
     public static let l_if = Function(names: ["l_if", "if"], evaluator: { state throws -> BigDouble in
@@ -864,7 +895,10 @@ public extension Function {
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         
-        if arg1 != 0 {
+        let logicalValues = [BigDouble.true, BigDouble.false]
+        guard logicalValues.contains(arg1) else { throw MathParserError(kind: .argumentNotLogicalValue, range: state.expressionRange )}
+
+        if arg1 == .true {
             return try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
         } else {
             return try state.evaluator.evaluate(state.arguments[2], substitutions: state.substitutions)
@@ -876,26 +910,31 @@ public extension Function {
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        
-        return arg1.fibonacci
+        guard arg1.isInteger else { throw MathParserError(kind: .argumentNotInteger, range: state.expressionRange )}
+        let computation = Computation(arg1, state.evaluator.parameters)
+        return computation.fibonacci()
     })
     public static let lucas = Function(names: ["lucas", "L"], evaluator: { state throws -> BigDouble in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let arg1 = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         
+        guard arg1.isInteger else { throw MathParserError(kind: .argumentNotInteger, range: state.expressionRange )}
+
         if arg1 == 0 { return 2 }
         if arg1 == 1 { return 1 }
         
-        return (arg1 - 1).fibonacci + (arg1 + 1).fibonacci
+        let c1 = Computation(arg1 - 1, state.evaluator.parameters)
+        let c2 = Computation(arg1 + 1, state.evaluator.parameters)
+        return c1.fibonacci() + c2.fibonacci()
     })
     public static let catalan = Function(name: "catalan", evaluator: { state throws -> BigDouble in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let n = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         
-        if !n.isInteger { return BigDouble.nan }
-        if n.isNegative { return BigDouble.nan }
+        if !n.isInteger { throw MathParserError(kind: .argumentNotInteger, range: state.expressionRange ) }
+        if n.isNegative { throw MathParserError(kind: .argumentNotPositive, range: state.expressionRange ) }
         
         var product = BigDouble(1)
         var k = n
@@ -911,26 +950,35 @@ public extension Function {
         
         let n = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         
-        if !n.isInteger { return BigDouble.nan }
-        if n.isNegative { return BigDouble.nan }
-        
-        return n.bell
+        if !n.isInteger { throw MathParserError(kind: .argumentNotInteger, range: state.expressionRange ) }
+        if n.isNegative { throw MathParserError(kind: .argumentNotPositive, range: state.expressionRange ) }
+
+        let computation = Computation(n, state.evaluator.parameters)
+        return computation.bell()
     })
 
     public static let choose = Function(names: ["C", "choose"], evaluator: { state throws -> BigDouble in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let n = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        var k = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
-        return binomial(n, k)
+        let k = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
+        
+        if !n.isInteger || !k.isInteger { throw MathParserError(kind: .argumentNotInteger, range: state.expressionRange ) }
+        if n.isNegative || k.isNegative { throw MathParserError(kind: .argumentNotPositive, range: state.expressionRange ) }
+        let computation = Computation.shell(state.evaluator.parameters)
+        return computation.binomial(n, k)
     })
     public static let variations = Function(name: "P", evaluator: { state throws -> BigDouble in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let n = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        var k = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
+        let k = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
         
-        return n.factorial / (n - k).factorial
+        if !n.isInteger || !k.isInteger { throw MathParserError(kind: .argumentNotInteger, range: state.expressionRange ) }
+        if n.isNegative || k.isNegative { throw MathParserError(kind: .argumentNotPositive, range: state.expressionRange ) }
+        let c1 = Computation(n, state.evaluator.parameters)
+        let c2 = Computation(n - k, state.evaluator.parameters)
+        return c1.factorial() / c2.factorial()
     })
 
     public static let l_implication = Function(name: "l_impl", evaluator: { state throws -> BigDouble in
@@ -938,10 +986,14 @@ public extension Function {
         
         let p = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         let q = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
-        if p == 1, q == 0 {
-            return BigDouble.false
+        
+        let logicalValues = [BigDouble.true, BigDouble.false]
+        guard logicalValues.contains(p), logicalValues.contains(q) else { throw MathParserError(kind: .argumentNotLogicalValue, range: state.expressionRange )}
+        
+        if p == .true, q == .false {
+            return .false
         } else {
-            return BigDouble.true
+            return .true
         }
     })
     public static let l_equivalence = Function(name: "l_eqv", evaluator: { state throws -> BigDouble in
@@ -949,12 +1001,74 @@ public extension Function {
         
         let p = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
         let q = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
-        return (p == q) ? BigDouble.true : BigDouble.false
+        
+        let logicalValues = [BigDouble.true, BigDouble.false]
+        guard logicalValues.contains(p), logicalValues.contains(q) else { throw MathParserError(kind: .argumentNotLogicalValue, range: state.expressionRange )}
+        
+        return (p == q) ? .true : .false
     })
     public static let prime = Function(names: ["p", "prime"], evaluator: { state throws -> BigDouble in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let n = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
-        return n.isPrime ? BigDouble.true : BigDouble.false
+        return n.isPrime ? .true : .false
     })
+    public static let digits = Function(name: "digits", evaluator: { state throws -> BigDouble in
+        guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
+        
+        let n = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
+        let s = n.description.replacingOccurrences(of: ".", with: "").replacingOccurrences(of: "-", with: "").replacingOccurrences(of: "/", with: "")
+        return BigDouble(s.count)
+    })
+    public static let cycles = Function(names: ["s", "StirlingS1"], evaluator: { state throws -> BigDouble in
+        guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
+        
+        let n = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
+        let k = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
+        
+        if !n.isInteger || !k.isInteger { throw MathParserError(kind: .argumentNotInteger, range: state.expressionRange ) }
+        if n.isNegative || k.isNegative { throw MathParserError(kind: .argumentNotPositive, range: state.expressionRange ) }
+        let computation = Computation.shell(state.evaluator.parameters)
+        return computation.stirlingCycles(n, k)
+    })
+    public static let stirling = Function(names: ["S", "StirlingS2"], evaluator: { state throws -> BigDouble in
+        guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
+        
+        let n = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
+        let k = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
+        
+        if !n.isInteger || !k.isInteger { throw MathParserError(kind: .argumentNotInteger, range: state.expressionRange ) }
+        if n.isNegative || k.isNegative { throw MathParserError(kind: .argumentNotPositive, range: state.expressionRange ) }
+        let computation = Computation.shell(state.evaluator.parameters)
+        return computation.stirlingPartition(n, k)
+    })
+
+    public static let lahNumber = Function(names: ["lah"], evaluator: { state throws -> BigDouble in
+        guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
+        
+        let n = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
+        let k = try state.evaluator.evaluate(state.arguments[1], substitutions: state.substitutions)
+        
+        if !n.isInteger || !k.isInteger { throw MathParserError(kind: .argumentNotInteger, range: state.expressionRange ) }
+        if n.isNegative || k.isNegative { throw MathParserError(kind: .argumentNotPositive, range: state.expressionRange ) }
+        let computation = Computation.shell(state.evaluator.parameters)
+        return computation.lah(n, k)
+    })
+
+    // MARK: Overrides
+    public static let thermalOverride = Function(name: "thermalOverride", evaluator: { state throws -> BigDouble in
+        if state.arguments.count == 0 {
+            return Preferences.shared.thermalOverride ? BigDouble.true : BigDouble.false
+        } else if state.arguments.count == 1 {
+            let value = try state.evaluator.evaluate(state.arguments[0], substitutions: state.substitutions)
+            
+            let flag = value == BigDouble.true
+            Preferences.shared.thermalOverride = flag
+            return flag ? BigDouble.true : BigDouble.false
+        } else {
+            throw MathParserError(kind: .invalidArguments, range: state.expressionRange)
+        }
+        
+    })
+
 }

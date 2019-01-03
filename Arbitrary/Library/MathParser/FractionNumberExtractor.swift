@@ -11,21 +11,21 @@ import Foundation
 internal struct FractionNumberExtractor: TokenExtractor {
     
     internal static let fractions: Dictionary<Character, BigDouble> = [
-        "½": 0.5,
-        "⅓": 0.3333333,
-        "⅔": 0.6666666,
-        "¼": 0.25,
-        "¾": 0.75,
-        "⅕": 0.2,
-        "⅖": 0.4,
-        "⅗": 0.6,
-        "⅘": 0.8,
-        "⅙": 0.1666666,
-        "⅚": 0.8333333,
-        "⅛": 0.125,
-        "⅜": 0.375,
-        "⅝": 0.625,
-        "⅞": 0.875
+        "½": BigDouble(1,2),
+        "⅓": BigDouble(1,3),
+        "⅔": BigDouble(2,3),
+        "¼": BigDouble(1,4),
+        "¾": BigDouble(3,4),
+        "⅕": BigDouble(1,5),
+        "⅖": BigDouble(2,5),
+        "⅗": BigDouble(3,5),
+        "⅘": BigDouble(4,5),
+        "⅙": BigDouble(1,6),
+        "⅚": BigDouble(5,6),
+        "⅛": BigDouble(1,8),
+        "⅜": BigDouble(3,8),
+        "⅝": BigDouble(5,8),
+        "⅞": BigDouble(7,8)
     ]
     
     func matchesPreconditions(_ buffer: TokenCharacterBuffer) -> Bool {

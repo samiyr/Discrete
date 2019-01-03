@@ -146,8 +146,11 @@ extension TokenResolver {
             
             case is DecimalNumberToken:
                 let cleaned = rawToken.string.replacingOccurrences(of: "−", with: "-")
-                let number = NSDecimalNumber(string: cleaned)
-                resolvedTokens.append(ResolvedToken(kind: .number(BigDouble(number.doubleValue)!), string: rawToken.string, range: rawToken.range))
+                if let number = BigDouble(cleaned) {
+                    resolvedTokens.append(ResolvedToken(kind: .number(number), string: rawToken.string, range: rawToken.range))
+                } else {
+                    throw MathParserError(kind: .cannotParseNumber, range: rawToken.range)
+            }
             
             case is LocalizedNumberToken:
                 resolvedTokens.append(try resolveLocalizedNumber(rawToken))

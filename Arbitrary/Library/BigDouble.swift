@@ -10,15 +10,6 @@ import UIKit
 import BigInt
 import Darwin
 
-public let BigDoubleComputationHaltNotification = Notification.Name("BigDoubleComputationHaltNotification")
-
-private let fibonacciSequence: [BigDouble] =
-    [0,1,1,2,3,5,8,13,21,34,55,89,144,233,377,610,987,
-     1597,2584,4181,6765,10946,17711,28657,46368,75025,
-     121393,196418,317811,514229,832040,1346269,
-     2178309,3524578,5702887,9227465,14930352,24157817,
-     39088169,63245986,102334155]
-private let bellSequence: [String] = ["1", "1", "2", "5", "15", "52", "203", "877", "4140", "21147", "115975", "678570", "4213597", "27644437", "190899322", "1382958545", "10480142147", "82864869804", "682076806159", "5832742205057", "51724158235372", "474869816156751", "4506715738447323", "44152005855084346", "445958869294805289", "4638590332229999353", "49631246523618756274", "545717047936059989389", "6160539404599934652455", "71339801938860275191172", "846749014511809332450147"]
 
 public struct BigDouble: CustomDebugStringConvertible, ExpressibleByIntegerLiteral, ExpressibleByFloatLiteral {
     public typealias FloatLiteralType = Double
@@ -35,6 +26,7 @@ public struct BigDouble: CustomDebugStringConvertible, ExpressibleByIntegerLiter
     public private(set) var isBoolean = false
     
     public var description: String {
+        // Special cases
         if isNaN {
             return "NaN"
         }
@@ -50,30 +42,54 @@ public struct BigDouble: CustomDebugStringConvertible, ExpressibleByIntegerLiter
         }
         if isZero {
             return "0"
-        } else if isInteger {
-            return "\(numerator)"
-        } else if isApproximation {
+        }
+        func fractionalString(_ numerator: BigInt, _ denominator: BigInt) -> String {
+            if denominator == 1 { return numerator.description }
+            var fraction = numerator.description + "/" + denominator.description
+            if Preferences.shared.fractionDisplayMode == .small {
+                fraction = numerator.description.superscripted + "/" + denominator.description.subscripted
+            }
+            let decimal = decimalApproximation(to: 12)
+            let displayMode = Preferences.shared.displayMode
+            switch displayMode {
+            case .automatic:
+                if decimal.isFinite, fraction.count > decimal.decimal.count {
+                    return decimal.decimal
+                } else {
+                    return fraction
+                }
+            case .fractional:
+                return fraction
+            case .decimal:
+                return decimal.decimal
+            }
+        }
+        func scientificString(_ numerator: BigInt, _ denominator: BigInt, _ representation: ExponentRepresentation) -> String {
+            let displayMode = Preferences.shared.displayMode
+            let decimal = fractionalString(numerator, denominator)
+            let exponent = representation.exponent.description.superscripted
+            let scientific = "\(representation.mantissa) × \(representation.base)\(exponent)"
+            switch displayMode {
+            case .automatic: return scientific.count < decimal.count ? scientific : decimal
+            case .fractional: return scientific
+            case .decimal: return decimal
+            }
+        }
+        // Describe with a representation if possible
+        if let representation = exponentRepresentation {
+            return scientificString(numerator, denominator, representation)
+        }
+        // If not, check if it's an approximation
+        if isApproximation {
             return decimalApproximation(to: 12).decimal
         }
-        let fraction = "\(numerator)/\(denominator)"
-        let decimal = decimalApproximation(to: 12)
-        let displayMode = Preferences.shared.displayMode
-        switch displayMode {
-        case .automatic:
-            if decimal.isFinite, fraction.count > decimal.decimal.count {
-                return decimal.decimal
-            } else {
-                return fraction
-            }
-        case .fractional:
-            return fraction
-        case .decimal:
-            return decimal.decimal
-        }
+        // If not that either, it must be just a regular fraction
+        return fractionalString(numerator, denominator)
     }
     public var debugDescription: String {
         return description
     }
+    
     public func decimalApproximation(to decimals: Int) -> (decimal: String, isFinite: Bool) {
         func longDivision(_ num: BigInt, _ den: BigInt) -> (quotient: BigInt, remainder: BigInt) {
             return num.quotientAndRemainder(dividingBy: den)
@@ -87,18 +103,26 @@ public struct BigDouble: CustomDebugStringConvertible, ExpressibleByIntegerLiter
         }
         var iteratedRemainder = longDivision(remainder, denominator)
         var quotientString = "\(quotient)."
-        var index = 1
+        var index = quotientString.count
         while (quotientString.count - 2) < decimals {
             iteratedRemainder = longDivision(iteratedRemainder.remainder * BigInt(Int(pow(10, Double(index)))), denominator)
             let string = "\(iteratedRemainder.quotient)".replacingOccurrences(of: "-", with: "")
+            let delta = index - string.count
+            if delta > 0 {
+                for _ in 0..<delta {
+                    quotientString.append("0")
+                }
+            }
             quotientString.append(string)
-            index += 1
+            index = quotientString.count
             if iteratedRemainder.remainder.isZero {
                 isFinite = true
                 break
             }
         }
-        
+        if quotientString.count > decimals - 2 {
+            quotientString = String(quotientString[quotientString.startIndex...quotientString.index(quotientString.startIndex, offsetBy: decimals + 2)])
+        }
         return (quotientString, isFinite)
     }
     public var approximation: Double? {
@@ -110,16 +134,31 @@ public struct BigDouble: CustomDebugStringConvertible, ExpressibleByIntegerLiter
         assert(!denominator.isZero, "Denominator cannot be zero")
         if checkDivisor {
             let divisor = Computation.shell.gcd(a: numerator, denominator)
-            if divisor == 1 {
+            if divisor == 1 || divisor.isNaN {
                 self.numerator = numerator
                 self.denominator = denominator
             } else {
-                self.numerator = numerator / divisor
-                self.denominator = denominator / divisor
+                self.numerator = numerator / divisor.numerator
+                self.denominator = denominator / divisor.numerator
             }
         } else {
             self.numerator = numerator
             self.denominator = denominator
+        }
+        if self.denominator.description.replacingOccurrences(of: "1", with: "").replacingOccurrences(of: "0", with: "").isEmpty {
+            let string = "\(self.numerator)"
+            if string.contains(".") {
+                let components = string.components(separatedBy: ".")
+                if let first = components.first, let last = components.last, let mantissa = BigInt(first + last) {
+                    exponentRepresentation = ExponentRepresentation(mantissa: mantissa, base: 10, exponent: BigInt(last.count))
+                }
+            } else {
+                let trimmedDecimals = string.replacingOccurrences(of: "0+", with: "", options: .regularExpression)
+                let trailingZeroes = string.count - trimmedDecimals.count
+                if let mantissa = BigInt(trimmedDecimals) {
+                    exponentRepresentation = ExponentRepresentation(mantissa: mantissa, base: 10, exponent: BigInt(trailingZeroes))
+                }
+            }
         }
     }
     public init(_ numerator: BigInt, _ denominator: BigInt) {
@@ -174,7 +213,10 @@ public struct BigDouble: CustomDebugStringConvertible, ExpressibleByIntegerLiter
         } else if value.contains("e") {
             let components = value.components(separatedBy: "e")
             if let significandString = components.first, let exponentString = components.last, let significand = BigDouble(significandString), let exponent = BigDouble(exponentString) {
-                
+                let representation = ExponentRepresentation(mantissa: significand.numerator, base: 10, exponent: exponent.numerator)
+                self.init(significand * (10 ** exponent))
+                self.exponentRepresentation = representation
+                return
             }
         }
         return nil
@@ -233,6 +275,7 @@ extension BigDouble {
         return !isZero && !isPositive
     }
     public var isInteger: Bool {
+        if isNaN { return false }
         return denominator == 1
     }
     public var isZero: Bool {
@@ -317,27 +360,7 @@ extension BigDouble {
         return r
     }
     public static func ** (lhs: BigDouble, rhs: BigDouble) -> BigDouble {
-        if rhs.isInteger {
-            if rhs.isZero {
-                if lhs.isZero { return BigDouble.nan }
-                return 1
-            } else if rhs.isPositive {
-                var n = rhs
-                var a = lhs
-                var r = BigDouble(1)
-                while n > 0 {
-                    if !n.isEven {
-                        r *= a
-                    }
-                    a *= a
-                    n = floor(n / 2)
-                }
-                return r
-            } else {
-                return 1 / (lhs ** (-rhs))
-            }
-        }
-        return BigDouble.nan
+        return Computation.shell.pow(lhs, rhs)
     }
     // Modulo
     public static func % (lhs: BigDouble, rhs: BigDouble) -> BigDouble {
@@ -474,11 +497,20 @@ extension BigDouble {
 public func binomial(_ n: BigDouble, _ k: BigDouble) -> BigDouble {
     return Computation.shell.binomial(n, k)
 }
+public func stirlingCycles(_ n: BigDouble , _ k: BigDouble) -> BigDouble {
+    return Computation.shell.stirlingCycles(n, k)
+}
+public func stirlingPartition(_ n: BigDouble, _ k: BigDouble) -> BigDouble {
+    return Computation.shell.stirlingPartition(n, k)
+}
+public func lah(_ n: BigDouble, _ k: BigDouble) -> BigDouble {
+    return Computation.shell.lah(n, k)
+}
 public func tetriation(_ a: BigDouble, _ b: BigInt) -> BigDouble {
     return Computation.shell.tetriation(a, b)
 }
 public func root(_ a: BigDouble, _ n: BigDouble) -> BigDouble {
-    return Computation(a).root(n: n, to: 1e-3)
+    return Computation(a).root(n: n)
 }
 public func log(_ b: BigDouble, _ x: BigDouble) -> BigDouble {
     return Computation.shell.log(b, x)
@@ -526,10 +558,12 @@ public func max(_ a: BigDouble, _ b: BigDouble) -> BigDouble {
     }
 }
 public func ceil(_ x: BigDouble) -> BigDouble {
+    if ComputationLock.shared.executionLock { return BigDouble.nan }
     let quotient = x.numerator.quotientAndRemainder(dividingBy: x.denominator).quotient
     return BigDouble(quotient + 1)
 }
 public func floor(_ x: BigDouble) -> BigDouble {
+    if ComputationLock.shared.executionLock { return BigDouble.nan }
     let quotient = x.numerator.quotientAndRemainder(dividingBy: x.denominator).quotient
     return BigDouble(quotient)
 }
@@ -553,6 +587,12 @@ extension String {
         let tokens = components(separatedBy: string)
         return tokens.count - 1
     }
+    public var superscripted: String {
+        return replacingOccurrences(of: "0", with: "⁰").replacingOccurrences(of: "1", with: "¹").replacingOccurrences(of: "2", with: "²").replacingOccurrences(of: "3", with: "³").replacingOccurrences(of: "4", with: "⁴").replacingOccurrences(of: "5", with: "⁵").replacingOccurrences(of: "6", with: "⁶").replacingOccurrences(of: "7", with: "⁷").replacingOccurrences(of: "8", with: "⁸").replacingOccurrences(of: "9", with: "⁹").replacingOccurrences(of: "-", with: "⁻")
+    }
+    public var subscripted: String {
+        return replacingOccurrences(of: "0", with: "₀").replacingOccurrences(of: "1", with: "₁").replacingOccurrences(of: "2", with: "₂").replacingOccurrences(of: "3", with: "₃").replacingOccurrences(of: "4", with: "₄").replacingOccurrences(of: "5", with: "₅").replacingOccurrences(of: "6", with: "₆").replacingOccurrences(of: "7", with: "₇").replacingOccurrences(of: "8", with: "₈").replacingOccurrences(of: "9", with: "₉").replacingOccurrences(of: "-", with: "₋")
+    }
 }
 
 // MARK: Exponent representation
@@ -567,30 +607,59 @@ public struct ExponentRepresentation {
 
 public class Computation: NSObject {
     public let number: BigDouble
-    
-    public init(_ number: BigDouble) {
+    public let parameters: EvaluationParameters
+    fileprivate var executionLock: Bool {
+        return ComputationLock.shared.executionLock
+    }
+    public init(_ number: BigDouble, _ parameters: EvaluationParameters = .default) {
         self.number = number
+        self.parameters = parameters
     }
     public static var shell: Computation {
         return Computation(0)
     }
+    public static func shell(_ params: EvaluationParameters) -> Computation {
+        return Computation(0, params)
+    }
     
+}
+
+private let _lockInstance = ComputationLock()
+public class ComputationLock: NSObject {
+
+    public static var shared: ComputationLock {
+        return _lockInstance
+    }
+    public func requestLock() {
+        executionLock = true
+    }
+    public func removeLock() {
+        executionLock = false
+    }
+    public private(set) var executionLock = false
+    public override init() {
+        super.init()
+    }
+}
+
+extension Computation {
     // Roots
     public func sqrt() -> BigDouble {
-        return root(n: 2, to: 1e-3)
+        return root(n: 2)
     }
     public func cubeRoot() -> BigDouble {
-        return root(n: 3, to: 1e-3)
+        return root(n: 3)
     }
     /**
      Calculates n:th root up to epsilon precision using Halley's method
      */
-    public func root(n: BigDouble, to epsilon: BigDouble) -> BigDouble {
+    public func root(n: BigDouble) -> BigDouble {
         if number == 0 { return 0 }
         if number == 1 { return 1 }
         if n == 1 { return number }
         var i = BigDouble(2)
         while i < number {
+            if executionLock { return BigDouble.nan }
             let square = i ** 2
             if square == number {
                 return i
@@ -615,7 +684,9 @@ public class Computation: NSObject {
         let initialGuess = number / n
         var iteratedValue = initialGuess
         var nextIteration = iterate(iteratedValue)
+        let epsilon = 0.5 * (10 ** parameters.decimals)
         while distance(iteratedValue, y: nextIteration) >= epsilon {
+            if executionLock { return BigDouble.nan }
             iteratedValue = nextIteration
             nextIteration = iterate(iteratedValue)
         }
@@ -633,76 +704,121 @@ public class Computation: NSObject {
         } else if number.isInteger {
             return integerFactorial(number.numerator)
         } else {
-            return gamma(number - 1)
+            return gamma(number + 1)
         }
     }
     private func integerFactorial(_ n: BigInt) -> BigDouble {
         var n = n
         var result = BigInt(1)
         while n > 1 {
+            if executionLock { return BigDouble.nan }
             result *= n
             n -= 1
         }
         return BigDouble(result)
     }
     private func gamma(_ x: BigDouble) -> BigDouble {
-        let p = [676.5203681218851
-            ,-1259.1392167224028
-            ,771.32342877765313
-            ,-176.61502916214059
-            ,12.507343278686905
-            ,-0.13857109526572012
-            ,9.9843695780195716e-6
-            ,1.5056327351493116e-7
-        ]
-        
-        if x < 0.5 {
-            return BigDouble.pi / (Computation(BigDouble.pi * x).sin() * gamma(1 - x))
-        } else {
-            var z = x - 1
-            var k = BigDouble(0.99999999999980993)!
-            for (index, element) in p.enumerated() {
-                k = k + ((BigDouble(element) ?? 0) / ((z + BigDouble(index)) + 1))
-            }
-            let t = (z + BigDouble(p.count)) - 0.5
-            //let y = sqrt(BigDouble.tau) * t**(z+0.5) * exp(-t) * x
-            let y = BigDouble(1)
-            return y
-        }
-        
+        let a = BigDouble.pi.sqrt
+        let b = Computation(x).exp().inverse
+        let c = x ** x
+        let d = 8 * (x ** 3)
+        let e = 4 * (x ** 2)
+        let f = BigDouble(1, 30)
+        let g = (d + e + x + f) ** (BigDouble(1, 6))
+        return a * (b / c) * g
     }
     /**
-     Calculates n:th Fibonacci number using a closed form
+     Calculates n:th Fibonacci number.
      */
     public func fibonacci() -> BigDouble {
-        if number < BigDouble(fibonacciSequence.count) {
-            return fibonacciSequence[Int(number.approximation!)]
+        if !number.isInteger { return BigDouble.nan }
+        if number.isNaN { return BigDouble .nan }
+        if number < BigDouble(Constants.fibonacciSequence.count), !number.isNegative {
+            return Constants.fibonacciSequence[Int(number.approximation!)]
         }
         let n = floor(number)
-        return floor(((BigDouble.phi ** n) / BigDouble.sqrt5) + 0.5)
+        if n.isNegative {
+            let sign: BigDouble = (1 - n).isEven ? 1 : -1
+            return Computation(-n).fibonacci() * sign
+        }
+        if n.isEven {
+            return (2 * (Computation(n / 2 - 1).fibonacci()) + Computation(n / 2).fibonacci()) * Computation(n / 2).fibonacci()
+        } else {
+            return ((Computation((n + 1) / 2).fibonacci()) ** 2) + ((Computation(n / 2 - BigDouble(1,2)).fibonacci()) ** 2)
+        }
+    }
+    public func stirlingCycles(_ n: BigDouble, _ k: BigDouble) -> BigDouble {
+        if executionLock { return BigDouble.nan }
+        if !n.isInteger || !k.isInteger { return BigDouble.nan }
+        if n.isNegative || k.isNegative { return BigDouble.nan }
+        
+        if n.isZero, k.isZero { return 1 }
+        if n.isZero || k.isZero { return 0 }
+        if k == 1 { return (n - 1).factorial }
+        if n == k { return 1 }
+        if k == n - 1 { return binomial(n, 2) }
+        
+        return (n - 1) * stirlingCycles(n - 1, k) + stirlingCycles(n - 1, k - 1)
+    }
+    public func stirlingPartition(_ n: BigDouble, _ k: BigDouble) -> BigDouble {
+        if executionLock { return BigDouble.nan }
+        if !n.isInteger || !k.isInteger { return BigDouble.nan }
+        if n.isNegative || k.isNegative { return BigDouble.nan }
+
+        if n == k { return 1 }
+        if k > n { return 0 }
+        if k.isZero { return 0 }
+        if k == 1 { return 1 }
+        if k == n - 1 { return binomial(n, 2) }
+        
+        return k * stirlingPartition(n - 1, k) + stirlingPartition(n - 1, k - 1)
+    }
+    public func lah(_ n: BigDouble, _ k: BigDouble) -> BigDouble {
+        if executionLock { return BigDouble.nan }
+        if !n.isInteger || !k.isInteger { return BigDouble.nan }
+        if n.isNegative || k.isNegative { return BigDouble.nan }
+        
+        if n.isZero, k.isZero { return 1 }
+        if k > n { return 0 }
+        if k == 1 { return n.factorial }
+        if k == 2 { return ((n - 1) * n.factorial) / 2}
+        if k == n - 1 { return n * (n - 1) }
+        if n == k { return 1 }
+        return ((n - k + 1) / (k * (k - 1))) * lah(n, k - 1)
     }
     public func bell() -> BigDouble {
-        if number < BigDouble(bellSequence.count) {
-            return BigDouble(bellSequence[Int(number.approximation!)])!
+        if number < BigDouble(Constants.bellSequence.count) {
+            return BigDouble(Constants.bellSequence[Int(number.approximation!)])!
         }
         func iterate(_ a: BigDouble) -> BigDouble {
+            if executionLock { return BigDouble.nan }
             let n = floor(a)
             var i = BigDouble.zero
             var sum = BigDouble.zero
             while i < n {
+                if executionLock { return BigDouble.nan }
                 sum += (binomial(n, i) * iterate(a - 1))
                 i += 1
             }
             return sum
         }
+//        let n = number
+//        var k = BigDouble.zero
+//        var sum = BigDouble.zero
+//        while k < n {
+//            sum += stirlingPartition(n, k)
+//            k += 1
+//        }
+//        return sum
         return iterate(number)
     }
-    public func gcd(a: BigInt, _ b: BigInt) -> BigInt {
+    public func gcd(a: BigInt, _ b: BigInt) -> BigDouble {
         var (a, b) = (a, b)
         while !b.isZero {
+            if executionLock { return BigDouble.nan }
             (a, b) = (b, a % b)
         }
-        return a
+        return BigDouble(a)
     }
     public func binomial(_ n: BigDouble, _ k: BigDouble) -> BigDouble {
         if k.isZero { return BigDouble(1) }
@@ -711,22 +827,65 @@ public class Computation: NSObject {
         var product = BigDouble(1)
         var k = k
         while k > 0 {
+            if executionLock { return BigDouble.nan }
             product *= (n + 1 - k) / k
             k -= 1
         }
         
         return product
     }
+    public func pow(_ lhs: BigDouble, _ rhs: BigDouble) -> BigDouble {
+        if lhs.isNaN || rhs.isNaN { return BigDouble.nan }
+        if !lhs.isInteger { return pow(BigDouble(lhs.numerator), rhs) / pow(BigDouble(lhs.denominator), rhs) }
+        if lhs.isZero, rhs.isZero { return BigDouble.nan }
+        if lhs.isZero { return BigDouble.zero }
+        if lhs == 1 { return 1 }
+        if rhs.isZero {
+            return 1
+        } else if rhs.isPositive {
+            if rhs.isInteger {
+                var n = rhs
+                var a = lhs
+                var r = BigDouble(1)
+                while n > 0 {
+                    if executionLock { return BigDouble.nan }
+                    if !n.isEven {
+                        r *= a
+                    }
+                    a *= a
+                    if executionLock { return BigDouble.nan }
+                    n = floor(n / 2)
+                }
+                return r
+            } else {
+                let lnb = Computation(rhs).ln()
+                return Computation(rhs * lnb).exp()
+                var r = pow(Computation(lhs).root(n: BigDouble(rhs.denominator)), BigDouble(rhs.numerator))
+                r.isApproximation = !r.isInteger
+                return r
+            }
+        } else {
+            if executionLock { return BigDouble.nan }
+            return 1 / (lhs ** (-rhs))
+        }
+    }
     public func tetriation(_ a: BigDouble, _ n: BigInt) -> BigDouble {
         if n == 0 { return 1 }
+        if executionLock { return BigDouble.nan }
         return a ** tetriation(a, n - 1)
-        
     }
     /**
      Calculates e-based exponential
-    */
+     */
     public func exp() -> BigDouble {
-        return BigDouble.e ** number
+        if number.isZero { return 1 }
+        if number == 1 { return BigDouble.e }
+        let series = TaylorSeries(series: .exp, to: parameters.decimals)
+        return series.calculate(at: number)
+    }
+    public func expm1() -> BigDouble {
+        let series = TaylorSeries(series: .expm1, to: parameters.decimals)
+        return series.calculate(at: number)
     }
     /*
      Natural log using Taylor series expansion
@@ -754,7 +913,7 @@ public class Computation: NSObject {
         if number > 1 { return -Computation(number.inverse).ln() }
         
         // Series expansion
-        let series = TaylorSeries(series: .ln, iterations: 50)
+        let series = TaylorSeries(series: .ln, to: parameters.decimals)
         return series.calculate(at: number)
     }
     public func log(_ b: BigDouble, _ x: BigDouble) -> BigDouble {
@@ -797,7 +956,7 @@ public class Computation: NSObject {
         if remainder == 7 * BigDouble.pi / 6 { return -0.5 }
         if remainder == 3 * BigDouble.pi / 2 { return -1 }
         if remainder == 11 * BigDouble.pi / 6 { return -0.5 }
-        let series = TaylorSeries(series: .sin, iterations: 50)
+        let series = TaylorSeries(series: .sin, to: parameters.decimals)
         return series.calculate(at: remainder)
     }
     public func cos() -> BigDouble {

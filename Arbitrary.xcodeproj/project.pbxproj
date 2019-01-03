@@ -52,12 +52,13 @@
 		8861E3EE21D634D50082E088 /* DecimalNumberExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8861E3C521D634D50082E088 /* DecimalNumberExtractor.swift */; };
 		8861E3EF21D634D50082E088 /* TokenCharacterBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8861E3C621D634D50082E088 /* TokenCharacterBuffer.swift */; };
 		8861E3F021D634D50082E088 /* Expressionizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8861E3C721D634D50082E088 /* Expressionizer.swift */; };
-		886C84B521D665C200394A81 /* InputAssistantCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886C84B321D665C200394A81 /* InputAssistantCollectionView.swift */; };
-		886C84B621D665C200394A81 /* InputAssistantView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 886C84B421D665C200394A81 /* InputAssistantView.swift */; };
 		887182D821D77E9000142C6C /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887182D721D77E9000142C6C /* Preferences.swift */; };
 		887182DA21D7B6B100142C6C /* FunctionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887182D921D7B6B100142C6C /* FunctionsTableViewController.swift */; };
 		887182DC21D7C15F00142C6C /* OptionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887182DB21D7C15F00142C6C /* OptionsTableViewController.swift */; };
 		887182DE21D8D94D00142C6C /* TaylorSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887182DD21D8D94D00142C6C /* TaylorSeries.swift */; };
+		887182E021DBAA5700142C6C /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887182DF21DBAA5700142C6C /* ResultViewController.swift */; };
+		887182E221DD332E00142C6C /* Evaluation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887182E121DD332E00142C6C /* Evaluation.swift */; };
+		88A6366621DE51FD005915AB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88A6366521DE51FD005915AB /* Constants.swift */; };
 		B5C4889142B70F01BFCC6AB5 /* Pods_Arbitrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8559AC844E71CA3C4F302D2D /* Pods_Arbitrary.framework */; };
 /* End PBXBuildFile section */
 
@@ -111,12 +112,13 @@
 		8861E3C521D634D50082E088 /* DecimalNumberExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DecimalNumberExtractor.swift; sourceTree = "<group>"; };
 		8861E3C621D634D50082E088 /* TokenCharacterBuffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenCharacterBuffer.swift; sourceTree = "<group>"; };
 		8861E3C721D634D50082E088 /* Expressionizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Expressionizer.swift; sourceTree = "<group>"; };
-		886C84B321D665C200394A81 /* InputAssistantCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputAssistantCollectionView.swift; sourceTree = "<group>"; };
-		886C84B421D665C200394A81 /* InputAssistantView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputAssistantView.swift; sourceTree = "<group>"; };
 		887182D721D77E9000142C6C /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		887182D921D7B6B100142C6C /* FunctionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionsTableViewController.swift; sourceTree = "<group>"; };
 		887182DB21D7C15F00142C6C /* OptionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsTableViewController.swift; sourceTree = "<group>"; };
 		887182DD21D8D94D00142C6C /* TaylorSeries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaylorSeries.swift; sourceTree = "<group>"; };
+		887182DF21DBAA5700142C6C /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
+		887182E121DD332E00142C6C /* Evaluation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Evaluation.swift; sourceTree = "<group>"; };
+		88A6366521DE51FD005915AB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CA19E59AF7ABD3FCCB5369AE /* Pods-Arbitrary.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Arbitrary.release.xcconfig"; path = "Pods/Target Support Files/Pods-Arbitrary/Pods-Arbitrary.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -162,14 +164,10 @@
 		8804E83621D239B400959CF3 /* Arbitrary */ = {
 			isa = PBXGroup;
 			children = (
-				886C84B321D665C200394A81 /* InputAssistantCollectionView.swift */,
-				886C84B421D665C200394A81 /* InputAssistantView.swift */,
-				8861E39D21D634D50082E088 /* MathParser */,
+				88A6366421DE3D78005915AB /* Library */,
 				8804E83721D239B400959CF3 /* AppDelegate.swift */,
 				8804E84921D37B1800959CF3 /* MainTableViewController.swift */,
-				8861E39B21D3D4D70082E088 /* BigDouble.swift */,
-				887182DD21D8D94D00142C6C /* TaylorSeries.swift */,
-				887182D721D77E9000142C6C /* Preferences.swift */,
+				887182DF21DBAA5700142C6C /* ResultViewController.swift */,
 				887182D921D7B6B100142C6C /* FunctionsTableViewController.swift */,
 				887182DB21D7C15F00142C6C /* OptionsTableViewController.swift */,
 				8804E83B21D239B400959CF3 /* Main.storyboard */,
@@ -232,6 +230,19 @@
 				8861E3C721D634D50082E088 /* Expressionizer.swift */,
 			);
 			path = MathParser;
+			sourceTree = "<group>";
+		};
+		88A6366421DE3D78005915AB /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				8861E39B21D3D4D70082E088 /* BigDouble.swift */,
+				88A6366521DE51FD005915AB /* Constants.swift */,
+				887182DD21D8D94D00142C6C /* TaylorSeries.swift */,
+				887182E121DD332E00142C6C /* Evaluation.swift */,
+				887182D721D77E9000142C6C /* Preferences.swift */,
+				8861E39D21D634D50082E088 /* MathParser */,
+			);
+			path = Library;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -356,7 +367,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				886C84B621D665C200394A81 /* InputAssistantView.swift in Sources */,
 				8861E3CA21D634D50082E088 /* VariableExtractor.swift in Sources */,
 				8861E3C921D634D50082E088 /* LocalizedNumberExtractor.swift in Sources */,
 				887182DE21D8D94D00142C6C /* TaylorSeries.swift in Sources */,
@@ -372,11 +382,11 @@
 				8861E3CC21D634D50082E088 /* SubstitutionExtensions.swift in Sources */,
 				8861E3DB21D634D50082E088 /* Tokenizer.swift in Sources */,
 				8861E3DD21D634D50082E088 /* RewriteRule+Defaults.swift in Sources */,
+				887182E021DBAA5700142C6C /* ResultViewController.swift in Sources */,
 				8861E3D321D634D50082E088 /* IdentifierExtractor.swift in Sources */,
 				8861E3E121D634D50082E088 /* Operator+Defaults.swift in Sources */,
 				887182D821D77E9000142C6C /* Preferences.swift in Sources */,
 				8861E3D621D634D50082E088 /* DynamicResolution.swift in Sources */,
-				886C84B521D665C200394A81 /* InputAssistantCollectionView.swift in Sources */,
 				8861E3CE21D634D50082E088 /* Evaluator.swift in Sources */,
 				8861E3D121D634D50082E088 /* ExpressionRewriter.swift in Sources */,
 				8861E3DC21D634D50082E088 /* GroupedToken.swift in Sources */,
@@ -384,6 +394,7 @@
 				8861E3E421D634D50082E088 /* FractionNumberExtractor.swift in Sources */,
 				8861E3CB21D634D50082E088 /* OctalNumberExtractor.swift in Sources */,
 				8861E3E021D634D50082E088 /* String.swift in Sources */,
+				887182E221DD332E00142C6C /* Evaluation.swift in Sources */,
 				8861E3CF21D634D50082E088 /* PeekingIterator.swift in Sources */,
 				8804E84A21D37B1800959CF3 /* MainTableViewController.swift in Sources */,
 				8861E3F021D634D50082E088 /* Expressionizer.swift in Sources */,
@@ -402,6 +413,7 @@
 				8861E3E221D634D50082E088 /* OperatorSet.swift in Sources */,
 				8861E3D021D634D50082E088 /* Expression.swift in Sources */,
 				8861E3D421D634D50082E088 /* Functions+Defaults.swift in Sources */,
+				88A6366621DE51FD005915AB /* Constants.swift in Sources */,
 				8861E3E521D634D50082E088 /* Double.swift in Sources */,
 				8861E3D721D634D50082E088 /* Character.swift in Sources */,
 			);

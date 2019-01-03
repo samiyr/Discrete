@@ -15,7 +15,7 @@ public enum FunctionRegistrationError: Error {
 
 public struct Evaluator {
     
-    public enum AngleMode {
+    public enum AngleMode: Int {
         case radians
         case degrees
     }
@@ -27,6 +27,8 @@ public struct Evaluator {
     public var functionOverrider: FunctionOverrider?
     public var functionResolver: FunctionResolver?
     public var variableResolver: VariableResolver?
+    
+    public var parameters = EvaluationParameters.default
     
     public init(caseSensitive: Bool = true) {
         functionSet = FunctionSet(caseSensitive: caseSensitive)
