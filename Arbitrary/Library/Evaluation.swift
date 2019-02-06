@@ -13,7 +13,7 @@ public class Evaluation: NSObject {
     public let substitutions: Substitutions
     public var parameters: EvaluationParameters
     
-    public private(set) var result: BigDouble? = nil
+    public private(set) var result: Result? = nil
     public private(set) var error: EvaluationError? = nil
     
     public init(expression: String, substitutions: Substitutions, parameters: EvaluationParameters = .default) {

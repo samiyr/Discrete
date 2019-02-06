@@ -28,8 +28,8 @@ class FunctionsTableViewController: UITableViewController {
                   "Mathematical constants"]
     let symbols = [naturalSymbol, integerSymbol, rationalSymbol, realSymbol, listSymbol]
     let arithmetic = [add, subtraction, multiply, division, exponentiation, modularExponentiation]
-    let discrete = [factorial, doubleFactorial, tetriation, binomial, variations, stirlingCycles, stirlingPartitions, lah]
-    let binary = [abs, percent, modulus, ceil, floor, min, max, digits, primality]
+    let discrete = [factorial, doubleFactorial, tetriation, binomial, variations, stirlingCycles, stirlingPartitions, lah, derivative]
+    let binary = [abs, percent, modulus, gcd, ceil, floor, min, max, digits, decimals, primality]
     let elementary = [sqrt, cubeRoot, root, exp, ln, lg, lb, log]
     let trig = [sin, cos, tan, sec, csc, cotan]
     let inverseTrig = [asin, acos, atan, asec, acsc, acotan]
@@ -112,6 +112,7 @@ let stirlingCycles = FunctionDetail(name: "s(n,k), StirlingS1(n,k)", description
 let stirlingPartitions = FunctionDetail(name: "S(n,k), StirlingS2(n,k)", description: "Stirling number of the 2nd kind", url: "https://en.m.wikipedia.org/wiki/Stirling_numbers_of_the_second_kind")
 let lah = FunctionDetail(name: "lah(n,k)", description: "Lah number", url: "https://en.m.wikipedia.org/wiki/Lah_number")
 let primality = FunctionDetail(name: "p(n), prime(n)", description: "Primality", url: "https://en.m.wikipedia.org/wiki/Prime_number")
+let derivative = FunctionDetail(name: "q', derivative(q)", description: "Arithmetic derivative", url: "https://en.m.wikipedia.org/wiki/Arithmetic_derivative")
 
 let sqrt = FunctionDetail(name: "sqrt(x)", description: "Square root", url: "https://en.m.wikipedia.org/wiki/Prime_number")
 let cubeRoot = FunctionDetail(name: "cuberoot(x)", description: "Cube root", url: "https://en.m.wikipedia.org/wiki/Cube_root")
@@ -120,11 +121,13 @@ let root = FunctionDetail(name: "root(n,x)", description: "Root", url: "https://
 let abs = FunctionDetail(name: "abs(x)", description: "Absolute value", url: "https://en.m.wikipedia.org/wiki/Absolute_value")
 let percent = FunctionDetail(name: "%", description: "Percent", url: "https://en.m.wikipedia.org/wiki/Percentage")
 let modulus = FunctionDetail(name: "x % y, mod(x,y)", description: "Modulo", url: "https://en.m.wikipedia.org/wiki/Modulo_operation")
+let gcd = FunctionDetail(name: "gcd(n,k)", description: "Greatest common divisor", url: "https://en.m.wikipedia.org/wiki/Greatest_common_divisor")
 let ceil = FunctionDetail(name: "ceil(x)", description: "Ceiling", url: "https://en.m.wikipedia.org/wiki/Floor_and_ceiling_functions")
 let floor = FunctionDetail(name: "floor(x)", description: "Floor", url: "https://en.m.wikipedia.org/wiki/Floor_and_ceiling_functions")
 let min = FunctionDetail(name: "min(x,y)", description: "Minimum", url: nil)
 let max = FunctionDetail(name: "max(x,y)", description: "Maximum", url: nil)
 let digits = FunctionDetail(name: "digits(x)", description: "Number of digits", url: nil)
+let decimals = FunctionDetail(name: "decimal(x, n)", description: "Decimal expansion to n decimals", url: "https://en.wikipedia.org/wiki/Decimal_representation")
 
 let sin = FunctionDetail(name: "sin(x)", description: "Sine", url: "https://en.m.wikipedia.org/wiki/Sine")
 let cos = FunctionDetail(name: "cos(x)", description: "Cosine", url: "https://en.m.wikipedia.org/wiki/Cosine")

@@ -12,6 +12,8 @@
 		8804E83F21D239B600959CF3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8804E83E21D239B600959CF3 /* Assets.xcassets */; };
 		8804E84221D239B600959CF3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8804E84021D239B600959CF3 /* LaunchScreen.storyboard */; };
 		8804E84A21D37B1800959CF3 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8804E84921D37B1800959CF3 /* MainTableViewController.swift */; };
+		885F23492208B959009F4D89 /* Computation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885F23482208B959009F4D89 /* Computation.swift */; };
+		885F234B2208B98C009F4D89 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885F234A2208B98C009F4D89 /* Result.swift */; };
 		8861E39C21D3D4D70082E088 /* BigDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8861E39B21D3D4D70082E088 /* BigDouble.swift */; };
 		8861E3C821D634D50082E088 /* MathParserErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8861E39E21D634D50082E088 /* MathParserErrors.swift */; };
 		8861E3C921D634D50082E088 /* LocalizedNumberExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8861E39F21D634D50082E088 /* LocalizedNumberExtractor.swift */; };
@@ -55,9 +57,10 @@
 		887182D821D77E9000142C6C /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887182D721D77E9000142C6C /* Preferences.swift */; };
 		887182DA21D7B6B100142C6C /* FunctionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887182D921D7B6B100142C6C /* FunctionsTableViewController.swift */; };
 		887182DC21D7C15F00142C6C /* OptionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887182DB21D7C15F00142C6C /* OptionsTableViewController.swift */; };
-		887182DE21D8D94D00142C6C /* TaylorSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887182DD21D8D94D00142C6C /* TaylorSeries.swift */; };
+		887182DE21D8D94D00142C6C /* Series.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887182DD21D8D94D00142C6C /* Series.swift */; };
 		887182E021DBAA5700142C6C /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887182DF21DBAA5700142C6C /* ResultViewController.swift */; };
 		887182E221DD332E00142C6C /* Evaluation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887182E121DD332E00142C6C /* Evaluation.swift */; };
+		88728DF521EE24D600A555D3 /* Factorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88728DF421EE24D600A555D3 /* Factorization.swift */; };
 		88A6366621DE51FD005915AB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88A6366521DE51FD005915AB /* Constants.swift */; };
 		B5C4889142B70F01BFCC6AB5 /* Pods_Arbitrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8559AC844E71CA3C4F302D2D /* Pods_Arbitrary.framework */; };
 /* End PBXBuildFile section */
@@ -72,6 +75,8 @@
 		8804E84121D239B600959CF3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8804E84321D239B600959CF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8804E84921D37B1800959CF3 /* MainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
+		885F23482208B959009F4D89 /* Computation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Computation.swift; sourceTree = "<group>"; };
+		885F234A2208B98C009F4D89 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		8861E39B21D3D4D70082E088 /* BigDouble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigDouble.swift; sourceTree = "<group>"; };
 		8861E39E21D634D50082E088 /* MathParserErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathParserErrors.swift; sourceTree = "<group>"; };
 		8861E39F21D634D50082E088 /* LocalizedNumberExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizedNumberExtractor.swift; sourceTree = "<group>"; };
@@ -115,9 +120,10 @@
 		887182D721D77E9000142C6C /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		887182D921D7B6B100142C6C /* FunctionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionsTableViewController.swift; sourceTree = "<group>"; };
 		887182DB21D7C15F00142C6C /* OptionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsTableViewController.swift; sourceTree = "<group>"; };
-		887182DD21D8D94D00142C6C /* TaylorSeries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaylorSeries.swift; sourceTree = "<group>"; };
+		887182DD21D8D94D00142C6C /* Series.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Series.swift; sourceTree = "<group>"; };
 		887182DF21DBAA5700142C6C /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		887182E121DD332E00142C6C /* Evaluation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Evaluation.swift; sourceTree = "<group>"; };
+		88728DF421EE24D600A555D3 /* Factorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Factorization.swift; sourceTree = "<group>"; };
 		88A6366521DE51FD005915AB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CA19E59AF7ABD3FCCB5369AE /* Pods-Arbitrary.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Arbitrary.release.xcconfig"; path = "Pods/Target Support Files/Pods-Arbitrary/Pods-Arbitrary.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -236,8 +242,11 @@
 			isa = PBXGroup;
 			children = (
 				8861E39B21D3D4D70082E088 /* BigDouble.swift */,
+				885F23482208B959009F4D89 /* Computation.swift */,
+				885F234A2208B98C009F4D89 /* Result.swift */,
+				88728DF421EE24D600A555D3 /* Factorization.swift */,
 				88A6366521DE51FD005915AB /* Constants.swift */,
-				887182DD21D8D94D00142C6C /* TaylorSeries.swift */,
+				887182DD21D8D94D00142C6C /* Series.swift */,
 				887182E121DD332E00142C6C /* Evaluation.swift */,
 				887182D721D77E9000142C6C /* Preferences.swift */,
 				8861E39D21D634D50082E088 /* MathParser */,
@@ -369,7 +378,7 @@
 			files = (
 				8861E3CA21D634D50082E088 /* VariableExtractor.swift in Sources */,
 				8861E3C921D634D50082E088 /* LocalizedNumberExtractor.swift in Sources */,
-				887182DE21D8D94D00142C6C /* TaylorSeries.swift in Sources */,
+				887182DE21D8D94D00142C6C /* Series.swift in Sources */,
 				8861E3DF21D634D50082E088 /* QuotedVariableExtractor.swift in Sources */,
 				8861E39C21D3D4D70082E088 /* BigDouble.swift in Sources */,
 				8861E3C821D634D50082E088 /* MathParserErrors.swift in Sources */,
@@ -381,6 +390,7 @@
 				8861E3D221D634D50082E088 /* RewriteRule.swift in Sources */,
 				8861E3CC21D634D50082E088 /* SubstitutionExtensions.swift in Sources */,
 				8861E3DB21D634D50082E088 /* Tokenizer.swift in Sources */,
+				885F234B2208B98C009F4D89 /* Result.swift in Sources */,
 				8861E3DD21D634D50082E088 /* RewriteRule+Defaults.swift in Sources */,
 				887182E021DBAA5700142C6C /* ResultViewController.swift in Sources */,
 				8861E3D321D634D50082E088 /* IdentifierExtractor.swift in Sources */,
@@ -414,7 +424,9 @@
 				8861E3D021D634D50082E088 /* Expression.swift in Sources */,
 				8861E3D421D634D50082E088 /* Functions+Defaults.swift in Sources */,
 				88A6366621DE51FD005915AB /* Constants.swift in Sources */,
+				88728DF521EE24D600A555D3 /* Factorization.swift in Sources */,
 				8861E3E521D634D50082E088 /* Double.swift in Sources */,
+				885F23492208B959009F4D89 /* Computation.swift in Sources */,
 				8861E3D721D634D50082E088 /* Character.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

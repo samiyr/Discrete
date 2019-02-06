@@ -86,6 +86,7 @@ public final class OperatorSet {
         ops.append(Operator(builtInOperator: .factorial, precedence: precedence))
         // NOTE: percent-as-percent precedence goes here (same as Factorial)
         ops.append(Operator(builtInOperator: .degree, precedence: precedence))
+        ops.append(Operator(builtInOperator: .derivative, precedence: precedence))
         precedence += 1
         
         powerOperator = Operator(builtInOperator: .power, precedence: precedence)

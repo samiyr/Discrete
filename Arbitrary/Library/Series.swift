@@ -8,9 +8,9 @@
 
 import UIKit
 
-public struct TaylorSeries {
+public struct Series {
     public enum Expansion {
-        case sin, ln, exp, expm1
+        case sin, ln, exp, expm1, pi
     }
     public let decimals: Int
     public let series: Expansion
@@ -40,6 +40,7 @@ public struct TaylorSeries {
             case .ln: sum += log(k, x)
             case .exp: sum += exp(k, x)
             case .expm1: sum += expm1(k, x)
+            case .pi: sum += pi(k)
             }
             k += 1
         }
@@ -78,5 +79,14 @@ public struct TaylorSeries {
     }
     private func expm1(_ k: BigDouble, _ x: BigDouble) -> BigDouble {
         return exp(k + 1, x)
+    }
+    private func pi(_ k: BigDouble) -> BigDouble {
+        let a = Computation(6 * k).factorial()
+        let b = 545140134 * k + 13591409
+        let c = Computation(3 * k).factorial()
+        let d = Computation(k).factorial() ** 3
+        let sign: BigDouble = k.isEven ? 1 : -1
+        let e = 262537412640768000 ** k
+        return (a * b) / (c * d * sign * e)
     }
 }

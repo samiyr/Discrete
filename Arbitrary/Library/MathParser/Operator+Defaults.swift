@@ -44,6 +44,7 @@ public enum BuiltInOperator: String {
     case unaryPlus = "positive"
     case squareRoot = "sqrt"
     case cubeRoot = "cuberoot"
+    case derivative = "derivative"
 }
 
 public extension Operator {
@@ -188,6 +189,10 @@ public extension Operator {
             arity = .unary
             associativity = .left
             tokens = ["%"]
+        case .derivative:
+            arity = .unary
+            associativity = .left
+            tokens = ["'", "ʼ", "＇", "ߴ", "‘", "’"]
             
         case .power:
             arity = .binary

@@ -99,12 +99,9 @@ class MainTableViewController: UITableViewController {
             let evaluation = evaluations[indexPath.row]
             destination.expression = evaluation.expression
             if let result = evaluation.result {
-                let sign = result.isApproximation ? "≈" : "="
+                let sign = ((result as? NumericResult)?.isApproximation ?? false) ? "≈" : "="
                 if let variable = cell.detailTextLabel?.text?.components(separatedBy: " \(sign) ").first {
                     var resultString = "\(result)"
-                    if result.isApproximation {
-                        resultString = result.decimalApproximation(to: evaluation.parameters.decimals).decimal
-                    }
                     destination.result = "\(variable) \(sign) \(resultString)"
                 }
             }
@@ -133,19 +130,15 @@ class MainTableViewController: UITableViewController {
             cell.detailTextLabel?.font = UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont(name: "Menlo-Bold", size: 17)!)
             cell.textLabel?.text = evaluation.expression
             let variable = "\(variables.count)"
-            let sign = result.isApproximation ? "≈" : "="
             cell.accessoryType = .none
             var resultString = result.description
-            if result.isApproximation {
-                resultString = result.decimalApproximation(to: evaluation.parameters.decimals).decimal
-            }
             if resultString.count > 52 {
                 let start = resultString.startIndex
                 let end = resultString.index(start, offsetBy: 52)
                 resultString = String(resultString[start...end]) + "..."
                 cell.accessoryType = .disclosureIndicator
             }
-            cell.detailTextLabel?.text = "[\(variable)] \(sign) \(resultString)"
+            cell.detailTextLabel?.text = "[\(variable)] \(result.signString) \(resultString)"
             return cell
         } else if let error = evaluation.error {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ErrorCell", for: indexPath)
@@ -252,7 +245,7 @@ class MainTableViewController: UITableViewController {
             let evaluation = Evaluation(expression: expression, substitutions: substitutions)
             try? evaluation.evaluate()
             self.evaluations.append(evaluation)
-            if let result = evaluation.result {
+            if let result = evaluation.result as? BigDouble {
                 self.variables.append(result)
                 flag = true
             }
