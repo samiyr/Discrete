@@ -11,8 +11,9 @@ import UIKit
 public protocol Result {
     var description: String { get }
     var signString: String { get }
+    func isEqual(to result: Result) -> Bool
 }
-public protocol NumericResult: Result {
+public protocol NumericResult: Result, Substitution {
     var value: BigDouble { get }
     var isApproximation: Bool { get }
 }

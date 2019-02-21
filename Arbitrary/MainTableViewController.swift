@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Computation
 
 class MainTableViewController: UITableViewController {
 

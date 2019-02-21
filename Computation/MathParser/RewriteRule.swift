@@ -57,8 +57,10 @@ public struct RewriteRule {
         // if there's an error evaluating the condition, then we don't match
         guard let result = try? evaluator.evaluate(matchingCondition, substitutions: substitutions) else { return nil }
         
+        guard let numeric = result as? NumericResult else { return nil }
+        
         // non-zero => we match
-        return (result != 0) ? replacements : nil
+        return (numeric.value != 0) ? replacements : nil
     }
     
     private func match(_ expression: Expression, toExpression target: Expression, replacementsSoFar: Dictionary<String, Expression>) -> Dictionary<String, Expression>? {

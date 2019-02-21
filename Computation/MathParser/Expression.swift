@@ -10,7 +10,7 @@ import Foundation
 
 public final class Expression {
     public enum Kind {
-        case number(BigDouble)
+        case number(Result)
         case variable(String)
         case function(String, Array<Expression>)
         
@@ -90,7 +90,7 @@ public final class Expression {
 }
 
 extension Expression: Substitution {
-    public func substitutionValue(using evaluator: Evaluator, substitutions: Substitutions) throws -> BigDouble {
+    public func substitutionValue(using evaluator: Evaluator, substitutions: Substitutions) throws -> Result {
         return try evaluator.evaluate(self, substitutions: substitutions)
     }
     
@@ -137,7 +137,7 @@ extension Expression: Equatable { }
 
 public func ==(lhs: Expression, rhs: Expression) -> Bool {
     switch (lhs.kind, rhs.kind) {
-        case (.number(let l), .number(let r)): return l == r
+        case (.number(let l), .number(let r)): return l.isEqual(to: r)
         case (.variable(let l), .variable(let r)): return l == r
         case (.function(let lf, let lArg), .function(let rf, let rArg)): return lf == rf && lArg == rArg
         default: return false

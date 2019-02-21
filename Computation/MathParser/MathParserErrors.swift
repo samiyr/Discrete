@@ -49,6 +49,8 @@ public struct MathParserError: Error {
         case argumentNotInteger
         case argumentNotPositive
         case argumentNotLogicalValue
+        
+        case internalError
     }
     
     public let kind: Kind

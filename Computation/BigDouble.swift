@@ -18,6 +18,8 @@ public struct BigDouble: CustomDebugStringConvertible, ExpressibleByIntegerLiter
     public fileprivate(set) var numerator: BigInt
     public fileprivate(set) var denominator: BigInt
     
+    public var integer: BigInt { return numerator }
+    
     public private(set) var exponentRepresentation: ExponentRepresentation?
     
     public internal(set) var isApproximation = false
@@ -97,6 +99,19 @@ public struct BigDouble: CustomDebugStringConvertible, ExpressibleByIntegerLiter
     }
     public var signString: String {
         return isApproximation ? "≈" : "="
+    }
+    public func simplified(using evaluator: Evaluator, substitutions: Substitutions) -> Substitution {
+        return self
+    }
+    
+    public func substitutionValue(using evaluator: Evaluator, substitutions: Substitutions) throws -> Result {
+        return self
+    }
+    public func isEqual(to result: Result) -> Bool {
+        if let number = result as? BigDouble {
+            return self == number
+        }
+        return false
     }
     public func decimalApproximation(to decimals: Int) -> (decimal: String, isFinite: Bool) {
         func longDivision(_ num: BigInt, _ den: BigInt) -> (quotient: BigInt, remainder: BigInt) {

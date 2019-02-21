@@ -84,4 +84,12 @@ public class Preferences: NSObject {
             Preferences.local.set(newValue, forKey: "thermalOverride")
         }
     }
+    public var irrationalFunctionOverride: Bool {
+        get {
+            return Preferences.local.bool(forKey: "irrationalFunctionOverride")
+        }
+        set {
+            Preferences.local.set(newValue, forKey: "irrationalFunctionOverride")
+        }
+    }
 }

@@ -72,6 +72,7 @@ public struct EvaluationError {
         case .argumentNotInteger: return "Argument(s) must be integer(s)"
         case .argumentNotPositive: return "Argument(s) must be positive"
         case .argumentNotLogicalValue: return "Argument(s) must be either true/1 or false/0"
+        case .internalError: return "An internal error has occured"
         }
     }
     public var range: Range<Int> {

@@ -23,14 +23,16 @@ public struct Factorization {
             factors.append(Factor(n))
             return
         }
-        let wheel: [BigInt] = [2, 3, 5]
+        let wheel: [BigInt] = [2, 3, 5, 7]
         for k in wheel {
             var count: BigInt = 0
             while n % k == 0 {
                 count += 1
                 n /= k
             }
-            factors.append(Factor(k, count))
+            if count > 0 {
+                factors.append(Factor(k, count))
+            }
         }
         var k: BigInt = 7, i = 1
         let increments: [BigInt] = [4, 2, 4, 2, 6, 2, 6]
@@ -40,8 +42,10 @@ public struct Factorization {
                 count += 1
                 n /= k
             } else {
-                factors.append(Factor(k, count))
-                
+                if count > 0 {
+                    factors.append(Factor(k, count))
+                }
+
                 k += increments[i]
                 if i < 8 {
                     i += 1
@@ -54,10 +58,18 @@ public struct Factorization {
 }
 
 extension Factorization: Result {
+    public func isEqual(to result: Result) -> Bool {
+        if let factorization = result as? Factorization {
+            return factors == factorization.factors && integer == factorization.integer
+        }
+        return false
+    }
+    
     public var description: String {
         var string = ""
         for factor in factors {
-            string.append(factor.factor.description + factor.count.description.superscripted + " × ")
+            let superscript = factor.count == 1 ? "" : factor.count.description.superscripted
+            string.append(factor.factor.description + superscript + " × ")
         }
         return String(string.dropLast().dropLast().dropLast())
     }
@@ -71,7 +83,7 @@ extension Factorization: Result {
     
 }
 
-public struct Factor {
+public struct Factor: Equatable {
     let factor: BigInt
     let count: BigInt
     public init(_ factor: BigInt, _ count: BigInt) {

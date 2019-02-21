@@ -34,7 +34,7 @@ public struct Evaluator {
         functionSet = FunctionSet(caseSensitive: caseSensitive)
     }
     
-    public func evaluate(_ expression: Expression, substitutions: Substitutions = [:]) throws -> BigDouble {
+    public func evaluate(_ expression: Expression, substitutions: Substitutions = [:]) throws -> Result {
         switch expression.kind {
             case .number(let d):
                 return d
@@ -53,7 +53,7 @@ public struct Evaluator {
         try functionSet.addAlias(alias, forFunctionName: name)
     }
     
-    private func evaluateVariable(_ name: String, substitutions: Substitutions, range: Range<Int>) throws -> BigDouble {
+    private func evaluateVariable(_ name: String, substitutions: Substitutions, range: Range<Int>) throws -> Result {
         if let value = try substitutions[name]?.substitutionValue(using: self, substitutions: substitutions) {
             return value
         }
@@ -68,7 +68,7 @@ public struct Evaluator {
         throw MathParserError(kind: .unknownVariable(name), range: range)
     }
     
-    private func evaluateFunction(_ name: String, arguments: Array<Expression>, substitutions: Substitutions, range: Range<Int>) throws -> BigDouble {
+    private func evaluateFunction(_ name: String, arguments: Array<Expression>, substitutions: Substitutions, range: Range<Int>) throws -> Result {
         let state = EvaluationState(expressionRange: range, arguments: arguments, substitutions: substitutions, evaluator: self)
         
         // check for function overrides

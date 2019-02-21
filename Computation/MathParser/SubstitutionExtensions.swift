@@ -8,18 +8,9 @@
 
 import Foundation
 
-extension BigDouble: Substitution {
-    public func substitutionValue(using evaluator: Evaluator, substitutions: Substitutions) throws -> BigDouble {
-        return self
-    }
-    
-    public func simplified(using evaluator: Evaluator, substitutions: Substitutions) -> Substitution {
-        return self
-    }
-}
 
 extension Int: Substitution {
-    public func substitutionValue(using evaluator: Evaluator, substitutions: Substitutions) throws -> BigDouble {
+    public func substitutionValue(using evaluator: Evaluator, substitutions: Substitutions) throws -> Result {
         return BigDouble(self)
     }
     
@@ -29,7 +20,7 @@ extension Int: Substitution {
 }
 
 extension String: Substitution {
-    public func substitutionValue(using evaluator: Evaluator, substitutions: Substitutions) throws -> BigDouble {
+    public func substitutionValue(using evaluator: Evaluator, substitutions: Substitutions) throws -> Result {
         return try evaluate(using: evaluator, substitutions)
     }
     

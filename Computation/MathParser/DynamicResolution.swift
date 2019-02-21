@@ -9,11 +9,11 @@
 import Foundation
 
 public protocol FunctionOverrider {
-    func overrideFunction(_ function: String, state: EvaluationState) throws -> BigDouble?
+    func overrideFunction(_ function: String, state: EvaluationState) throws -> Result?
 }
 
 public protocol FunctionResolver {
-    func resolveFunction(_ function: String, state: EvaluationState) throws -> BigDouble?
+    func resolveFunction(_ function: String, state: EvaluationState) throws -> Result?
 }
 
 public protocol VariableResolver {
@@ -21,15 +21,15 @@ public protocol VariableResolver {
 }
 
 public protocol Substitution {
-    func substitutionValue(using evaluator: Evaluator, substitutions: Substitutions) throws -> BigDouble
-    func substitutionValue(using evaluator: Evaluator) throws -> BigDouble
+    func substitutionValue(using evaluator: Evaluator, substitutions: Substitutions) throws -> Result
+    func substitutionValue(using evaluator: Evaluator) throws -> Result
     
     func simplified(using evaluator: Evaluator, substitutions: Substitutions) -> Substitution
     func simplified(using evaluator: Evaluator) -> Substitution
 }
 
 public extension Substitution {
-    func substitutionValue(using evaluator: Evaluator) throws -> BigDouble {
+    func substitutionValue(using evaluator: Evaluator) throws -> Result {
         return try substitutionValue(using: evaluator, substitutions: [:])
     }
     
