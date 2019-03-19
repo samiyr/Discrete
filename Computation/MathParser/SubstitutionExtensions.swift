@@ -7,15 +7,16 @@
 //
 
 import Foundation
+import BigInt
 
 
 extension Int: Substitution {
     public func substitutionValue(using evaluator: Evaluator, substitutions: Substitutions) throws -> Result {
-        return BigDouble(self)
+        return DiscreteInt(self)
     }
     
     public func simplified(using evaluator: Evaluator, substitutions: Substitutions) -> Substitution {
-        return BigDouble(self)
+        return DiscreteInt(self)
     }
 }
 
@@ -25,8 +26,8 @@ extension String: Substitution {
     }
     
     public func simplified(using evaluator: Evaluator, substitutions: Substitutions) -> Substitution {
-        // If it's just a BigDouble as String -> Return it as such
-        if let double = BigDouble(self) {
+        // If it's just a DiscreteInt as String -> Return it as such
+        if let double = DiscreteInt(self) {
             return double
         }
         

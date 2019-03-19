@@ -7,10 +7,11 @@
 //
 
 import Foundation
+import BigInt
 
 public struct GroupedToken {
     public enum Kind {
-        case number(BigDouble)
+        case number(DiscreteInt)
         case variable(String)
         case `operator`(Operator)
         case function(String, Array<GroupedToken>)

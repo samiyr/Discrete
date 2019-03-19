@@ -7,25 +7,26 @@
 //
 
 import UIKit
-import BigInt
 
 public struct Factorization {
     var factors: [Factor] = []
-    let integer: BigInt
-    public init(_ integer: BigInt) {
+    let integer: DiscreteInt
+    public init(_ integer: DiscreteInt) {
         self.integer = integer
     }
+    
+    // TODO: Factoring doesn't work for factors >= 11, for example factor(22) = 2, factor(121) = <nothing>
     public mutating func factor() {
         var n = integer
         guard n > 1 else { return }
-        guard !n.isPrime() else {
+        guard !n.isPrime else {
             factors.append(Factor(1))
             factors.append(Factor(n))
             return
         }
-        let wheel: [BigInt] = [2, 3, 5, 7]
+        let wheel: [DiscreteInt] = [2, 3, 5, 7]
         for k in wheel {
-            var count: BigInt = 0
+            var count: DiscreteInt = 0
             while n % k == 0 {
                 count += 1
                 n /= k
@@ -34,10 +35,10 @@ public struct Factorization {
                 factors.append(Factor(k, count))
             }
         }
-        var k: BigInt = 7, i = 1
-        let increments: [BigInt] = [4, 2, 4, 2, 6, 2, 6]
+        var k: DiscreteInt = 7, i = 1
+        let increments: [DiscreteInt] = [4, 2, 4, 2, 6, 2, 6]
         while k * k <= n {
-            var count: BigInt = 0
+            var count: DiscreteInt = 0
             if n % k == 0 {
                 count += 1
                 n /= k
@@ -84,13 +85,13 @@ extension Factorization: Result {
 }
 
 public struct Factor: Equatable {
-    let factor: BigInt
-    let count: BigInt
-    public init(_ factor: BigInt, _ count: BigInt) {
+    let factor: DiscreteInt
+    let count: DiscreteInt
+    public init(_ factor: DiscreteInt, _ count: DiscreteInt) {
         self.factor = factor
         self.count = count
     }
-    public init(_ factor: BigInt) {
+    public init(_ factor: DiscreteInt) {
         self.init(factor, 1)
     }
 }

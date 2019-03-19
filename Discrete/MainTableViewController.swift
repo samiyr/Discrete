@@ -8,6 +8,7 @@
 
 import UIKit
 import Computation
+import BigInt
 
 class MainTableViewController: UITableViewController {
 
@@ -18,7 +19,7 @@ class MainTableViewController: UITableViewController {
     @IBOutlet weak var auxiliaryToolbar: UIToolbar!
     
     var evaluations = [Evaluation]()
-    var variables = [BigDouble]()
+    var variables = [DiscreteInt]()
     
     var timer: Timer?
     
@@ -28,11 +29,13 @@ class MainTableViewController: UITableViewController {
     var currentWorkItem: DispatchWorkItem?
     var isExecuting = false
     
-    let menlo = UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont(name: "Menlo", size: 17)!)
+    var menlo: UIFont {
+        return UIFontMetrics(forTextStyle: .body).scaledFont(for: UIFont(name: "Menlo", size: 17)!)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         fakeField.inputAccessoryView = inputAccessory
         fakeField.becomeFirstResponder()
         fakeField.delegate = self
@@ -99,12 +102,9 @@ class MainTableViewController: UITableViewController {
         if segue.identifier == "result", let destination = segue.destination as? ResultViewController, let indexPath = tableView.indexPathForSelectedRow, let cell = tableView.cellForRow(at: indexPath) {
             let evaluation = evaluations[indexPath.row]
             destination.expression = evaluation.expression
-            if let result = evaluation.result {
-                let sign = ((result as? NumericResult)?.isApproximation ?? false) ? "≈" : "="
-                if let variable = cell.detailTextLabel?.text?.components(separatedBy: " \(sign) ").first {
-                    var resultString = "\(result)"
-                    destination.result = "\(variable) \(sign) \(resultString)"
-                }
+            if let result = evaluation.result, let variable = cell.detailTextLabel?.text?.components(separatedBy: " = ").first {
+                let resultString = result.description
+                destination.result = "\(variable) = \(resultString)"
             }
         }
     }
@@ -139,7 +139,7 @@ class MainTableViewController: UITableViewController {
                 resultString = String(resultString[start...end]) + "..."
                 cell.accessoryType = .disclosureIndicator
             }
-            cell.detailTextLabel?.text = "[\(variable)] \(result.signString) \(resultString)"
+            cell.detailTextLabel?.text = "[\(variable)] = \(resultString)"
             return cell
         } else if let error = evaluation.error {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ErrorCell", for: indexPath)
@@ -237,16 +237,16 @@ class MainTableViewController: UITableViewController {
         let item = DispatchWorkItem {
             var flag = false
             
-            var substitutions = [String : BigDouble]()
+            var substitutions = [String : DiscreteInt]()
             for i in 0..<self.variables.count {
                 substitutions["[\(i + 1)]"] = self.variables[i]
             }
             substitutions["Ans"] = self.variables.last
-            substitutions["Idx"] = BigDouble(self.variables.count)
+            substitutions["Idx"] = DiscreteInt(self.variables.count)
             let evaluation = Evaluation(expression: expression, substitutions: substitutions)
             try? evaluation.evaluate()
             self.evaluations.append(evaluation)
-            if let result = evaluation.result as? BigDouble {
+            if let result = evaluation.result as? DiscreteInt {
                 self.variables.append(result)
                 flag = true
             }

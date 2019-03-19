@@ -18,10 +18,8 @@
 		885EE2D0221EC0D100449F68 /* Computation.h in Headers */ = {isa = PBXBuildFile; fileRef = 885EE2C0221EC0D100449F68 /* Computation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		885EE2D3221EC0D100449F68 /* Computation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 885EE2BE221EC0D100449F68 /* Computation.framework */; };
 		885EE2D4221EC0D100449F68 /* Computation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 885EE2BE221EC0D100449F68 /* Computation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		885EE2E3221EC0EB00449F68 /* Series.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887182DD21D8D94D00142C6C /* Series.swift */; };
 		885EE2E4221EC0EB00449F68 /* Factorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88728DF421EE24D600A555D3 /* Factorization.swift */; };
 		885EE2E5221EC0EB00449F68 /* Computation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885F23482208B959009F4D89 /* Computation.swift */; };
-		885EE2E6221EC0EB00449F68 /* BigDouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8861E39B21D3D4D70082E088 /* BigDouble.swift */; };
 		885EE2E7221EC0EB00449F68 /* Evaluation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887182E121DD332E00142C6C /* Evaluation.swift */; };
 		885EE2E8221EC0EB00449F68 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 885F234A2208B98C009F4D89 /* Result.swift */; };
 		885EE2E9221EC0EB00449F68 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88A6366521DE51FD005915AB /* Constants.swift */; };
@@ -68,6 +66,8 @@
 		887182DA21D7B6B100142C6C /* FunctionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887182D921D7B6B100142C6C /* FunctionsTableViewController.swift */; };
 		887182DC21D7C15F00142C6C /* OptionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887182DB21D7C15F00142C6C /* OptionsTableViewController.swift */; };
 		887182E021DBAA5700142C6C /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 887182DF21DBAA5700142C6C /* ResultViewController.swift */; };
+		888BA60322414A0500872D82 /* FunctionDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888BA60222414A0500872D82 /* FunctionDetailTableViewController.swift */; };
+		8899A92B223FD0E400D5FA06 /* DiscreteInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8899A92A223FD0E400D5FA06 /* DiscreteInt.swift */; };
 		B5C4889142B70F01BFCC6AB5 /* Pods_Arbitrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8559AC844E71CA3C4F302D2D /* Pods_Arbitrary.framework */; };
 /* End PBXBuildFile section */
 
@@ -114,7 +114,7 @@
 		77BB78EC9FF253F49989AA93 /* Pods-Arbitrary.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Arbitrary.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Arbitrary/Pods-Arbitrary.debug.xcconfig"; sourceTree = "<group>"; };
 		8419D1E0AFA18AB97C5D90CA /* Pods-Computation.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Computation.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Computation/Pods-Computation.debug.xcconfig"; sourceTree = "<group>"; };
 		8559AC844E71CA3C4F302D2D /* Pods_Arbitrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Arbitrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8804E83421D239B400959CF3 /* Arbitrary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Arbitrary.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8804E83421D239B400959CF3 /* Discrete.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Discrete.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8804E83721D239B400959CF3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8804E83C21D239B400959CF3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8804E83E21D239B600959CF3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -129,7 +129,6 @@
 		885EE2CF221EC0D100449F68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		885F23482208B959009F4D89 /* Computation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Computation.swift; sourceTree = "<group>"; };
 		885F234A2208B98C009F4D89 /* Result.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
-		8861E39B21D3D4D70082E088 /* BigDouble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigDouble.swift; sourceTree = "<group>"; };
 		8861E39E21D634D50082E088 /* MathParserErrors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathParserErrors.swift; sourceTree = "<group>"; };
 		8861E39F21D634D50082E088 /* LocalizedNumberExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalizedNumberExtractor.swift; sourceTree = "<group>"; };
 		8861E3A021D634D50082E088 /* VariableExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VariableExtractor.swift; sourceTree = "<group>"; };
@@ -172,10 +171,11 @@
 		887182D721D77E9000142C6C /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		887182D921D7B6B100142C6C /* FunctionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionsTableViewController.swift; sourceTree = "<group>"; };
 		887182DB21D7C15F00142C6C /* OptionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsTableViewController.swift; sourceTree = "<group>"; };
-		887182DD21D8D94D00142C6C /* Series.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Series.swift; sourceTree = "<group>"; };
 		887182DF21DBAA5700142C6C /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		887182E121DD332E00142C6C /* Evaluation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Evaluation.swift; sourceTree = "<group>"; };
 		88728DF421EE24D600A555D3 /* Factorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Factorization.swift; sourceTree = "<group>"; };
+		888BA60222414A0500872D82 /* FunctionDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionDetailTableViewController.swift; sourceTree = "<group>"; };
+		8899A92A223FD0E400D5FA06 /* DiscreteInt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscreteInt.swift; sourceTree = "<group>"; };
 		88A6366521DE51FD005915AB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C096037A0BEF136F168C8EA3 /* Pods-Computation.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Computation.release.xcconfig"; path = "Pods/Target Support Files/Pods-Computation/Pods-Computation.release.xcconfig"; sourceTree = "<group>"; };
 		CA19E59AF7ABD3FCCB5369AE /* Pods-Arbitrary.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Arbitrary.release.xcconfig"; path = "Pods/Target Support Files/Pods-Arbitrary/Pods-Arbitrary.release.xcconfig"; sourceTree = "<group>"; };
@@ -224,7 +224,7 @@
 		8804E82B21D239B400959CF3 = {
 			isa = PBXGroup;
 			children = (
-				8804E83621D239B400959CF3 /* Arbitrary */,
+				8804E83621D239B400959CF3 /* Discrete */,
 				885EE2BF221EC0D100449F68 /* Computation */,
 				885EE2CC221EC0D100449F68 /* ComputationTests */,
 				8804E83521D239B400959CF3 /* Products */,
@@ -236,14 +236,14 @@
 		8804E83521D239B400959CF3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8804E83421D239B400959CF3 /* Arbitrary.app */,
+				8804E83421D239B400959CF3 /* Discrete.app */,
 				885EE2BE221EC0D100449F68 /* Computation.framework */,
 				885EE2C6221EC0D100449F68 /* ComputationTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8804E83621D239B400959CF3 /* Arbitrary */ = {
+		8804E83621D239B400959CF3 /* Discrete */ = {
 			isa = PBXGroup;
 			children = (
 				88A6366421DE3D78005915AB /* Library */,
@@ -251,13 +251,14 @@
 				8804E84921D37B1800959CF3 /* MainTableViewController.swift */,
 				887182DF21DBAA5700142C6C /* ResultViewController.swift */,
 				887182D921D7B6B100142C6C /* FunctionsTableViewController.swift */,
+				888BA60222414A0500872D82 /* FunctionDetailTableViewController.swift */,
 				887182DB21D7C15F00142C6C /* OptionsTableViewController.swift */,
 				8804E83B21D239B400959CF3 /* Main.storyboard */,
 				8804E83E21D239B600959CF3 /* Assets.xcassets */,
 				8804E84021D239B600959CF3 /* LaunchScreen.storyboard */,
 				8804E84321D239B600959CF3 /* Info.plist */,
 			);
-			path = Arbitrary;
+			path = Discrete;
 			sourceTree = "<group>";
 		};
 		8804E85721D37D7B00959CF3 /* Frameworks */ = {
@@ -273,12 +274,11 @@
 			isa = PBXGroup;
 			children = (
 				885EE2C0221EC0D100449F68 /* Computation.h */,
-				8861E39B21D3D4D70082E088 /* BigDouble.swift */,
 				885F23482208B959009F4D89 /* Computation.swift */,
+				8899A92A223FD0E400D5FA06 /* DiscreteInt.swift */,
 				885F234A2208B98C009F4D89 /* Result.swift */,
 				88728DF421EE24D600A555D3 /* Factorization.swift */,
 				88A6366521DE51FD005915AB /* Constants.swift */,
-				887182DD21D8D94D00142C6C /* Series.swift */,
 				887182E121DD332E00142C6C /* Evaluation.swift */,
 				887182D721D77E9000142C6C /* Preferences.swift */,
 				8861E39D21D634D50082E088 /* MathParser */,
@@ -363,9 +363,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8804E83321D239B400959CF3 /* Arbitrary */ = {
+		8804E83321D239B400959CF3 /* Discrete */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8804E84621D239B600959CF3 /* Build configuration list for PBXNativeTarget "Arbitrary" */;
+			buildConfigurationList = 8804E84621D239B600959CF3 /* Build configuration list for PBXNativeTarget "Discrete" */;
 			buildPhases = (
 				CBA15D15A5E3B85737822C26 /* [CP] Check Pods Manifest.lock */,
 				8804E83021D239B400959CF3 /* Sources */,
@@ -379,9 +379,9 @@
 			dependencies = (
 				885EE2D2221EC0D100449F68 /* PBXTargetDependency */,
 			);
-			name = Arbitrary;
+			name = Discrete;
 			productName = Arbitrary;
-			productReference = 8804E83421D239B400959CF3 /* Arbitrary.app */;
+			productReference = 8804E83421D239B400959CF3 /* Discrete.app */;
 			productType = "com.apple.product-type.application";
 		};
 		885EE2BD221EC0D100449F68 /* Computation */ = {
@@ -444,7 +444,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8804E82F21D239B400959CF3 /* Build configuration list for PBXProject "Arbitrary" */;
+			buildConfigurationList = 8804E82F21D239B400959CF3 /* Build configuration list for PBXProject "Discrete" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -457,7 +457,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8804E83321D239B400959CF3 /* Arbitrary */,
+				8804E83321D239B400959CF3 /* Discrete */,
 				885EE2BD221EC0D100449F68 /* Computation */,
 				885EE2C5221EC0D100449F68 /* ComputationTests */,
 			);
@@ -571,6 +571,7 @@
 				8804E84A21D37B1800959CF3 /* MainTableViewController.swift in Sources */,
 				887182DC21D7C15F00142C6C /* OptionsTableViewController.swift in Sources */,
 				887182DA21D7B6B100142C6C /* FunctionsTableViewController.swift in Sources */,
+				888BA60322414A0500872D82 /* FunctionDetailTableViewController.swift in Sources */,
 				8804E83821D239B400959CF3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -595,13 +596,13 @@
 				885EE30D221EC21800449F68 /* ExponentExtractor.swift in Sources */,
 				885EE300221EC21800449F68 /* RewriteRule+Defaults.swift in Sources */,
 				885EE305221EC21800449F68 /* OperatorSet.swift in Sources */,
+				8899A92B223FD0E400D5FA06 /* DiscreteInt.swift in Sources */,
 				885EE2F1221EC21800449F68 /* Evaluator.swift in Sources */,
 				885EE2F5221EC21800449F68 /* RewriteRule.swift in Sources */,
 				885EE30F221EC21800449F68 /* DecimalNumberExtractor.swift in Sources */,
 				885EE303221EC21800449F68 /* String.swift in Sources */,
 				885EE302221EC21800449F68 /* QuotedVariableExtractor.swift in Sources */,
 				885EE2F9221EC21800449F68 /* DynamicResolution.swift in Sources */,
-				885EE2E3221EC0EB00449F68 /* Series.swift in Sources */,
 				885EE2E5221EC0EB00449F68 /* Computation.swift in Sources */,
 				885EE2E4221EC0EB00449F68 /* Factorization.swift in Sources */,
 				885EE2F6221EC21800449F68 /* IdentifierExtractor.swift in Sources */,
@@ -615,7 +616,6 @@
 				885EE311221EC21800449F68 /* Expressionizer.swift in Sources */,
 				885EE2F7221EC21800449F68 /* Functions+Defaults.swift in Sources */,
 				885EE2FC221EC21800449F68 /* OperatorExtractor.swift in Sources */,
-				885EE2E6221EC0EB00449F68 /* BigDouble.swift in Sources */,
 				885EE2FB221EC21800449F68 /* RawToken.swift in Sources */,
 				885EE2EA221EC1B500449F68 /* Preferences.swift in Sources */,
 				885EE2F2221EC21800449F68 /* PeekingIterator.swift in Sources */,
@@ -647,7 +647,7 @@
 		};
 		885EE2CB221EC0D100449F68 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8804E83321D239B400959CF3 /* Arbitrary */;
+			target = 8804E83321D239B400959CF3 /* Discrete */;
 			targetProxy = 885EE2CA221EC0D100449F68 /* PBXContainerItemProxy */;
 		};
 		885EE2D2221EC0D100449F68 /* PBXTargetDependency */ = {
@@ -801,12 +801,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 382EB97XNX;
-				INFOPLIST_FILE = Arbitrary/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Discrete/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.samiyrjanheikki.Arbitrary;
+				PRODUCT_BUNDLE_IDENTIFIER = com.samiyrjanheikki.Discrete;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -821,12 +821,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 382EB97XNX;
-				INFOPLIST_FILE = Arbitrary/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Discrete/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.samiyrjanheikki.Arbitrary;
+				PRODUCT_BUNDLE_IDENTIFIER = com.samiyrjanheikki.Discrete;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -907,7 +907,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Arbitrary.app/Arbitrary";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Discrete.app/Discrete";
 			};
 			name = Debug;
 		};
@@ -927,14 +927,14 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Arbitrary.app/Arbitrary";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Discrete.app/Discrete";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8804E82F21D239B400959CF3 /* Build configuration list for PBXProject "Arbitrary" */ = {
+		8804E82F21D239B400959CF3 /* Build configuration list for PBXProject "Discrete" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8804E84421D239B600959CF3 /* Debug */,
@@ -943,7 +943,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8804E84621D239B600959CF3 /* Build configuration list for PBXNativeTarget "Arbitrary" */ = {
+		8804E84621D239B600959CF3 /* Build configuration list for PBXNativeTarget "Discrete" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8804E84721D239B600959CF3 /* Debug */,

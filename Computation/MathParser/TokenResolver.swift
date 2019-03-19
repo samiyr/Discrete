@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import BigInt
 
 public struct TokenResolverOptions: OptionSet {
     public let rawValue: UInt
@@ -118,14 +119,14 @@ extension TokenResolver {
         switch rawToken {
             case is HexNumberToken:
                 if let number = UInt(rawToken.string, radix: 16) {
-                    resolvedTokens.append(ResolvedToken(kind: .number(BigDouble(number)), string: rawToken.string, range: rawToken.range))
+                    resolvedTokens.append(ResolvedToken(kind: .number(DiscreteInt(number)), string: rawToken.string, range: rawToken.range))
                 } else {
                     throw MathParserError(kind: .cannotParseHexNumber, range: rawToken.range)
                 }
             
             case is OctalNumberToken:
                 if let number = UInt(rawToken.string, radix: 8) {
-                    resolvedTokens.append(ResolvedToken(kind: .number(BigDouble(number)), string: rawToken.string, range: rawToken.range))
+                    resolvedTokens.append(ResolvedToken(kind: .number(DiscreteInt(number)), string: rawToken.string, range: rawToken.range))
                 } else {
                     throw MathParserError(kind: .cannotParseOctalNumber, range: rawToken.range)
                 }
@@ -146,7 +147,7 @@ extension TokenResolver {
             
             case is DecimalNumberToken:
                 let cleaned = rawToken.string.replacingOccurrences(of: "−", with: "-")
-                if let number = BigDouble(cleaned) {
+                if let number = DiscreteInt(cleaned) {
                     resolvedTokens.append(ResolvedToken(kind: .number(number), string: rawToken.string, range: rawToken.range))
                 } else {
                     throw MathParserError(kind: .cannotParseNumber, range: rawToken.range)
@@ -176,7 +177,7 @@ extension TokenResolver {
     private func resolveLocalizedNumber(_ raw: RawToken) throws -> ResolvedToken {
         for formatter in numberFormatters {
             if let number = formatter.number(from: raw.string) {
-                return ResolvedToken(kind: .number(BigDouble(number.doubleValue)!), string: raw.string, range: raw.range)
+                return ResolvedToken(kind: .number(DiscreteInt(number.doubleValue)), string: raw.string, range: raw.range)
             }
         }
         

@@ -82,6 +82,4 @@ public struct EvaluationError {
 }
 public struct EvaluationParameters {
     public static let `default` = EvaluationParameters()
-    public var decimals: Int = 12
-    public var angleMode = Preferences.shared.angleMode
 }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import BigInt
 
 public protocol FunctionOverrider {
     func overrideFunction(_ function: String, state: EvaluationState) throws -> Result?
@@ -17,7 +18,7 @@ public protocol FunctionResolver {
 }
 
 public protocol VariableResolver {
-    func resolveVariable(_ variable: String) -> BigDouble?
+    func resolveVariable(_ variable: String) -> DiscreteInt?
 }
 
 public protocol Substitution {

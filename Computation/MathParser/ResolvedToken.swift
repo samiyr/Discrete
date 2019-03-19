@@ -7,10 +7,11 @@
 //
 
 import Foundation
+import BigInt
 
 public struct ResolvedToken {
     public enum Kind {
-        case number(BigDouble)
+        case number(DiscreteInt)
         case variable(String)
         case identifier(String)
         case `operator`(Operator)
@@ -23,7 +24,7 @@ public struct ResolvedToken {
 
 public extension ResolvedToken.Kind {
     
-    public var number: BigDouble? {
+    public var number: DiscreteInt? {
         guard case .number(let o) = self else { return nil }
         return o
     }

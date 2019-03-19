@@ -6,14 +6,15 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Arbitrary-->
+        <!--Discrete-->
         <scene sceneID="Sbq-Fe-WJU">
             <objects>
-                <tableViewController id="MCX-ze-p6S" customClass="MainTableViewController" customModule="Arbitrary" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="MCX-ze-p6S" customClass="MainTableViewController" customModule="Discrete" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="bO6-f3-Ls0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -73,7 +74,7 @@
                             <outlet property="delegate" destination="MCX-ze-p6S" id="Tr5-1Y-nT7"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Arbitrary" largeTitleDisplayMode="never" id="cVb-8Y-FL2">
+                    <navigationItem key="navigationItem" title="Discrete" largeTitleDisplayMode="never" id="cVb-8Y-FL2">
                         <barButtonItem key="leftBarButtonItem" systemItem="bookmarks" id="9UZ-Gf-xfe">
                             <connections>
                                 <segue destination="xxg-8t-jzM" kind="show" id="Be7-fH-ox6"/>
@@ -159,11 +160,6 @@
                                         <action selector="insertChar:" destination="MCX-ze-p6S" id="HF9-ih-y9f"/>
                                     </connections>
                                 </barButtonItem>
-                                <barButtonItem title="°" id="dwz-1c-72i">
-                                    <connections>
-                                        <action selector="insertChar:" destination="MCX-ze-p6S" id="zgQ-cy-bFy"/>
-                                    </connections>
-                                </barButtonItem>
                                 <barButtonItem style="plain" systemItem="flexibleSpace" id="pJ4-Gw-CcT"/>
                                 <barButtonItem title="Ans" id="YOA-D7-dcB">
                                     <connections>
@@ -198,7 +194,7 @@
         <!--Result View Controller-->
         <scene sceneID="Atv-d8-CpI">
             <objects>
-                <viewController id="9VF-Lf-yXr" customClass="ResultViewController" customModule="Arbitrary" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="9VF-Lf-yXr" customClass="ResultViewController" customModule="Discrete" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="aet-CE-RfK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -259,7 +255,7 @@
                                         </attributes>
                                     </fragment>
                                     <fragment>
-                                        <mutableString key="content">  Arbitrary is an arbitrary-precision calculator. Normal calculators use floating point numbers, which have limited precision due to memory constraints. This app represents numbers as fractions and stores the numerator and denominator as an arbitrary-precision integer (also known as BigInt). This allows certain calculations to be performed without loss of precision and also enables working with very large numbers. For example, try calculating 1000! (factorial) with a standard calculator. It will display an error, since the resulting number is simply too large. If you try the same thing with Arbitrary, you get an actual answer. This precision, however, comes with a cost. See Performance for more.   </mutableString>
+                                        <string key="content">  Arbitrary is an arbitrary-precision calculator. Normal calculators use floating point numbers, which have limited precision due to memory constraints. This app represents numbers as fractions and stores the numerator and denominator as an arbitrary-precision integer (also known as BigInt). This allows certain calculations to be performed without loss of precision and also enables working with very large numbers. For example, try calculating 1000! (factorial) with a standard calculator. It will display an error, since the resulting number is simply too large. If you try the same thing with Arbitrary, you get an actual answer. This precision, however, comes with a cost. See Performance for more.   </string>
                                         <attributes>
                                             <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                             <font key="NSFont" size="17" name=".AppleSystemUIFont"/>
@@ -275,7 +271,7 @@
                                         </attributes>
                                     </fragment>
                                     <fragment>
-                                        <mutableString key="content">  Many elementary functions, like roots and logarithms, produce irrational numbers. These are numbers with an infinite amount of non-repeating decimals and therefore cannot be represented as a fraction. Arbitrary is not a symbolic calculator, so these outputs will be stored as highly precise approximations. This is indicated by the approximate sign (≈).   </mutableString>
+                                        <string key="content">  Many elementary functions, like roots and logarithms, produce irrational numbers. These are numbers with an infinite amount of non-repeating decimals and therefore cannot be represented as a fraction. Arbitrary is not a symbolic calculator, so these outputs will be stored as highly precise approximations. This is indicated by the approximate sign (≈).   </string>
                                         <attributes>
                                             <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                             <font key="NSFont" size="17" name=".AppleSystemUIFont"/>
@@ -291,7 +287,7 @@
                                         </attributes>
                                     </fragment>
                                     <fragment>
-                                        <mutableString key="content">  Type expressions into the expression field. You can use the quick bar to do arithmetic. For example, to calculate 3 times 4 minus 1, enter 3 × 4 - 1 (with or without the spaces) and then press Return on the keyboard to evaluate. Use parenthesis to change the order of operations. For example, changing the previous example to </mutableString>
+                                        <string key="content">  Type expressions into the expression field. You can use the quick bar to do arithmetic. For example, to calculate 3 times 4 minus 1, enter 3 × 4 - 1 (with or without the spaces) and then press Return on the keyboard to evaluate. Use parenthesis to change the order of operations. For example, changing the previous example to </string>
                                         <attributes>
                                             <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                             <font key="NSFont" size="17" name=".AppleSystemUIFont"/>
@@ -306,7 +302,7 @@
                                         </attributes>
                                     </fragment>
                                     <fragment>
-                                        <mutableString key="content">To call a function, type its name and then use parenthesis and commas to specify the arguments. For example, to calculate the 4th root of 16, type root(4, 16). When using functions, the name must be written correctly and there must be a correct number of arguments. To learn more about the built-in functions, check out the Reference at the bottom of this screen.  Each evaluation is given a number and its value is stored. This number is marked by brackets, as in [1] and is then followed by = (or ≈). You can use these previous results as variables by prefixing them with the dollar sign ($). As an example, let's say you first evaluate 2 ** 4 (2 to the 4th power), which gives the result [1] = 16. Now, if you type $[1] + 4, you will get 20. For easy access to this powerful feature, just swipe left on any given evaluation to insert it into the current expression. Swiping right allows you to insert the original expression. You can also query the previous result by using the special variable $Ans. More on this in the next paragraph.  Evaluating an empty expression (pressing Return without typing anything) will re-evaluate the previous expression, if one exists. This allows you to calculate you own recursive functions. Let's take the example of multiplying the previous result by 3. First, enter a starting value, say 1. Now type 3 </mutableString>
+                                        <string key="content">To call a function, type its name and then use parenthesis and commas to specify the arguments. For example, to calculate the 4th root of 16, type root(4, 16). When using functions, the name must be written correctly and there must be a correct number of arguments. To learn more about the built-in functions, check out the Reference at the bottom of this screen.  Each evaluation is given a number and its value is stored. This number is marked by brackets, as in [1] and is then followed by = (or ≈). You can use these previous results as variables by prefixing them with the dollar sign ($). As an example, let's say you first evaluate 2 ** 4 (2 to the 4th power), which gives the result [1] = 16. Now, if you type $[1] + 4, you will get 20. For easy access to this powerful feature, just swipe left on any given evaluation to insert it into the current expression. Swiping right allows you to insert the original expression. You can also query the previous result by using the special variable $Ans. More on this in the next paragraph.  Evaluating an empty expression (pressing Return without typing anything) will re-evaluate the previous expression, if one exists. This allows you to calculate you own recursive functions. Let's take the example of multiplying the previous result by 3. First, enter a starting value, say 1. Now type 3 </string>
                                         <attributes>
                                             <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                             <font key="NSFont" size="17" name=".AppleSystemUIFont"/>
@@ -314,7 +310,7 @@
                                         </attributes>
                                     </fragment>
                                     <fragment>
-                                        <mutableString key="content">× $Ans and evaluate it. This returns 3 as expected. Now, press Return without typing anything. You will notice that the expression is re-evaluated to 9. If you press again and again, you will get the multiples of 3, namely 9, 27, 81 and so forth.   Another powerful variable is $Idx. It gives you the current evaluation index (the number in the square brackets, like [3]). For instance, let's say you want to sum the squares from 0 to 5, which is the same as 0**2 + 1**2 + 2**2 + 3**2 + 4**2 + 5**2. Instead of typing it all out, you can instead supply an initial value (which is 0**2=0 in this case) and then type $Ans + $Idx**2 and hit Return 5 times. At each step, you will see the sum up to that number. On the 5th step, you have your final sum of 55. You can keep going for as long as you want to take the sum even higher.</mutableString>
+                                        <string key="content">× $Ans and evaluate it. This returns 3 as expected. Now, press Return without typing anything. You will notice that the expression is re-evaluated to 9. If you press again and again, you will get the multiples of 3, namely 9, 27, 81 and so forth.   Another powerful variable is $Idx. It gives you the current evaluation index (the number in the square brackets, like [3]). For instance, let's say you want to sum the squares from 0 to 5, which is the same as 0**2 + 1**2 + 2**2 + 3**2 + 4**2 + 5**2. Instead of typing it all out, you can instead supply an initial value (which is 0**2=0 in this case) and then type $Ans + $Idx**2 and hit Return 5 times. At each step, you will see the sum up to that number. On the 5th step, you have your final sum of 55. You can keep going for as long as you want to take the sum even higher.</string>
                                         <attributes>
                                             <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                             <font key="NSFont" size="17" name="HelveticaNeue"/>
@@ -337,7 +333,7 @@
                                         </attributes>
                                     </fragment>
                                     <fragment>
-                                        <mutableString key="content">  There is a reason most calculators don't use arbitrary-precision arithmetic. While normal operations are fast, some functions can take slightly longer to compute. This is especially true for computations that are not even possible for standard calculators. As an example, taking a factorial of a large number (&gt; 1000) can take seconds or even longer to compute as they produce absolutely huge numbers. This app is a specialized tool that enables more advanced computations, but it isn't magic and can't do everything. Arbitrary doesn't place any computational limits, so if you try to calculate the 100th Bell number, it will do that and absolutely clog your device. While the app and the rest of the system will remain responsive, don't be fooled by that: your device is constantly performing expensive operations in the background and will eat through the battery in no time. Only when the thermal impact becomes too large will Arbitrary stop the calculation.   </mutableString>
+                                        <string key="content">  There is a reason most calculators don't use arbitrary-precision arithmetic. While normal operations are fast, some functions can take slightly longer to compute. This is especially true for computations that are not even possible for standard calculators. As an example, taking a factorial of a large number (&gt; 1000) can take seconds or even longer to compute as they produce absolutely huge numbers. This app is a specialized tool that enables more advanced computations, but it isn't magic and can't do everything. Arbitrary doesn't place any computational limits, so if you try to calculate the 100th Bell number, it will do that and absolutely clog your device. While the app and the rest of the system will remain responsive, don't be fooled by that: your device is constantly performing expensive operations in the background and will eat through the battery in no time. Only when the thermal impact becomes too large will Arbitrary stop the calculation.   </string>
                                         <attributes>
                                             <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                             <font key="NSFont" size="17" name=".AppleSystemUIFont"/>
@@ -393,7 +389,7 @@
         <!--Options-->
         <scene sceneID="71X-7E-g0V">
             <objects>
-                <tableViewController title="Options" id="9jg-Fu-RPD" customClass="OptionsTableViewController" customModule="Arbitrary" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Options" id="9jg-Fu-RPD" customClass="OptionsTableViewController" customModule="Discrete" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="lra-y3-yTH">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -438,9 +434,8 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="9jg-Fu-RPD" kind="relationship" relationship="viewControllers" id="Xeq-Be-oGA"/>
-                        <segue destination="vp9-Pf-Oy3" kind="relationship" relationship="viewControllers" id="I5F-sJ-3ui"/>
                         <segue destination="hlt-rG-Oyx" kind="relationship" relationship="viewControllers" id="0bg-0I-YL1"/>
+                        <segue destination="vp9-Pf-Oy3" kind="relationship" relationship="viewControllers" id="I5F-sJ-3ui"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MA1-on-62Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -468,30 +463,30 @@
         <!--Reference-->
         <scene sceneID="0id-Q7-ed1">
             <objects>
-                <tableViewController title="Reference" id="hlt-rG-Oyx" customClass="FunctionsTableViewController" customModule="Arbitrary" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Reference" id="hlt-rG-Oyx" customClass="FunctionsTableViewController" customModule="Discrete" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="b01-tL-DMy">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="8Hx-2W-DH9" detailTextLabel="3w1-0q-ggB" style="IBUITableViewCellStyleValue1" id="3cA-mX-Ndb">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="8Hx-2W-DH9" detailTextLabel="eET-jY-8yd" style="IBUITableViewCellStyleValue1" id="3cA-mX-Ndb">
                                 <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3cA-mX-Ndb" id="ceJ-F1-Ieq">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8Hx-2W-DH9">
-                                            <rect key="frame" x="16" y="12" width="51.5" height="20"/>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8Hx-2W-DH9">
+                                            <rect key="frame" x="16" y="12" width="33.5" height="20.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" id="3w1-0q-ggB">
-                                            <rect key="frame" x="315" y="12" width="44" height="20.5"/>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="eET-jY-8yd">
+                                            <rect key="frame" x="278.5" y="12" width="61.5" height="20"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -510,5 +505,96 @@
             </objects>
             <point key="canvasLocation" x="2801" y="1841"/>
         </scene>
+        <!--Reference-->
+        <scene sceneID="Bd6-EJ-uSL">
+            <objects>
+                <tableViewController storyboardIdentifier="FunctionDetail" title="Reference" id="0g5-Xg-kOM" customClass="FunctionDetailTableViewController" customModule="Discrete" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="ceB-sq-x8X">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NameCell" textLabel="CN6-VH-aNd" detailTextLabel="bhu-iV-GeA" style="IBUITableViewCellStyleValue1" id="NLh-q1-Phx">
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NLh-q1-Phx" id="XOw-Ki-Fj1">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="CN6-VH-aNd">
+                                            <rect key="frame" x="16" y="12" width="45" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bhu-iV-GeA">
+                                            <rect key="frame" x="297.5" y="12" width="61.5" height="20"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" name="Menlo-Regular" family="Menlo" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DescriptionCell" textLabel="V2w-Km-l1P" detailTextLabel="9fz-mE-Nra" style="IBUITableViewCellStyleValue1" id="qqn-vX-ATz">
+                                <rect key="frame" x="0.0" y="99.5" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qqn-vX-ATz" id="JnK-6j-u0g">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="V2w-Km-l1P">
+                                            <rect key="frame" x="16" y="12" width="88" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Detail" textAlignment="right" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9fz-mE-Nra">
+                                            <rect key="frame" x="315" y="12" width="44" height="20.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="URLCell" textLabel="a59-Fs-Qv0" style="IBUITableViewCellStyleDefault" id="fkA-My-C8D">
+                                <rect key="frame" x="0.0" y="143.5" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fkA-My-C8D" id="n9X-io-qry">
+                                    <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="a59-Fs-Qv0">
+                                            <rect key="frame" x="16" y="0.0" width="324" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" name="Blue"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="0g5-Xg-kOM" id="MbW-uQ-fFP"/>
+                            <outlet property="delegate" destination="0g5-Xg-kOM" id="2si-Cm-PIO"/>
+                        </connections>
+                    </tableView>
+                    <tabBarItem key="tabBarItem" title="Reference" id="WFD-wa-hjR"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="M3q-7v-6st" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3470" y="1841"/>
+        </scene>
     </scenes>
+    <resources>
+        <namedColor name="Blue">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+    </resources>
 </document>

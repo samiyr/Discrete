@@ -1,5 +1,5 @@
 //
-//  BigDouble.swift
+//  BigInt.swift
 //  DDMathParser
 //
 //  Created by Dave DeLong on 9/5/15.
@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import BigInt
 
 internal extension Int {
     
@@ -22,22 +23,22 @@ internal extension Int {
     
 }
 
-internal extension BigDouble {
+internal extension DiscreteInt {
     
-    /*func factorial() -> BigDouble {
+    /*func factorial() -> DiscreteInt {
         
         if Darwin.floor(self) == self && self > 1 {
             // it's a factorial of an integer
             
-            if self <= BigDouble(Int.largestSupportedIntegerFactorial) {
+            if self <= DiscreteInt(Int.largestSupportedIntegerFactorial) {
                 // it's a factorial of an integer representable as an Int
                 let arg1Int = Int(self)
-                return BigDouble((1...arg1Int).reduce(1, *))
-            } else if self <= BigDouble(Int.max) {
+                return DiscreteInt((1...arg1Int).reduce(1, *))
+            } else if self <= DiscreteInt(Int.max) {
                 // it's a factorial of an integer NOT representable as an Int
                 var result = 1.0
                 for i in 2 ... Int(self) {
-                    result *= BigDouble(i)
+                    result *= DiscreteInt(i)
                 }
                 return result
             }

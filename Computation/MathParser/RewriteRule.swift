@@ -60,7 +60,7 @@ public struct RewriteRule {
         guard let numeric = result as? NumericResult else { return nil }
         
         // non-zero => we match
-        return (numeric.value != 0) ? replacements : nil
+        return (numeric.numericValue != 0) ? replacements : nil
     }
     
     private func match(_ expression: Expression, toExpression target: Expression, replacementsSoFar: Dictionary<String, Expression>) -> Dictionary<String, Expression>? {

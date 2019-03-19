@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import BigInt
 
 public struct EvaluationState {
     public let expressionRange: Range<Int>
@@ -18,8 +19,8 @@ public struct EvaluationState {
         let evaluated = try arguments.map { try evaluator.evaluate($0, substitutions: substitutions) }
         return evaluated.compactMap { $0 as? NumericResult }
     }
-    public func defaultArguments() throws -> [BigDouble] {
-        return try numericArguments().map { $0.value }
+    public func defaultArguments() throws -> [DiscreteInt] {
+        return try numericArguments().map { $0.numericValue }
     }
 }
 
