@@ -175,7 +175,7 @@
 		887182E121DD332E00142C6C /* Evaluation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Evaluation.swift; sourceTree = "<group>"; };
 		88728DF421EE24D600A555D3 /* Factorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Factorization.swift; sourceTree = "<group>"; };
 		888BA60222414A0500872D82 /* FunctionDetailTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionDetailTableViewController.swift; sourceTree = "<group>"; };
-		888BA6042241532200872D82 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		888BA6042241532200872D82 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		8899A92A223FD0E400D5FA06 /* DiscreteInt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscreteInt.swift; sourceTree = "<group>"; };
 		88A6366521DE51FD005915AB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C096037A0BEF136F168C8EA3 /* Pods-Computation.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Computation.release.xcconfig"; path = "Pods/Target Support Files/Pods-Computation/Pods-Computation.release.xcconfig"; sourceTree = "<group>"; };
