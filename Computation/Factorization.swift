@@ -14,47 +14,52 @@ public struct Factorization {
     public init(_ integer: DiscreteInt) {
         self.integer = integer
     }
-    
-    // TODO: Factoring doesn't work for factors >= 11, for example factor(22) = 2, factor(121) = <nothing>
+    fileprivate var executionLock: Bool {
+        return ComputationLock.shared.executionLock
+    }
+    /**
+     Factors a given integer (positive of negative) into its prime factors. Interrupting will still produce a partial factorization, ideal for large numbers. Algorithm is still pretty basic.
+    */
+    // TODO: is checking for primality going to be faster that just trying to factor it?
     public mutating func factor() {
+        func abortFactoring(_ current: [DiscreteInt] = []) {
+            self.factors = process(factors: current)
+            self.factors.append(Factor(.nan))
+        }
+        func process(factors: [DiscreteInt]) -> [Factor] {
+            var returnValue = [Factor]()
+            let uniqueFactors = factors.removeDuplicates()
+            for factor in uniqueFactors {
+                let count = factors.reduce(0) { $1 == factor ? $0 + 1 : $0}
+                returnValue.append(Factor(factor, DiscreteInt(count)))
+            }
+            return returnValue
+        }
+        if integer.isZero { self.factors = [Factor(0)]; return }
+        var factors: [DiscreteInt] = []
+        var d: DiscreteInt = 2
         var n = integer
-        guard n > 1 else { return }
-        guard !n.isPrime else {
-            factors.append(Factor(1))
-            factors.append(Factor(n))
-            return
+        if integer.isNegative {
+            self.factors.append(Factor(-1))
+            n = integer.magnitude
         }
-        let wheel: [DiscreteInt] = [2, 3, 5, 7]
-        for k in wheel {
-            var count: DiscreteInt = 0
-            while n % k == 0 {
-                count += 1
-                n /= k
+        while n > 1 {
+            if executionLock { abortFactoring(factors); return }
+            while n % d == 0 {
+                if executionLock { abortFactoring(factors); return }
+                factors.append(d)
+                n /= d
             }
-            if count > 0 {
-                factors.append(Factor(k, count))
-            }
-        }
-        var k: DiscreteInt = 7, i = 1
-        let increments: [DiscreteInt] = [4, 2, 4, 2, 6, 2, 6]
-        while k * k <= n {
-            var count: DiscreteInt = 0
-            if n % k == 0 {
-                count += 1
-                n /= k
-            } else {
-                if count > 0 {
-                    factors.append(Factor(k, count))
+            d += 1
+            if executionLock { abortFactoring(factors); return }
+            if (d ** 2) > integer.magnitude {
+                if n > 1 {
+                    factors.append(n)
                 }
-
-                k += increments[i]
-                if i < 8 {
-                    i += 1
-                } else {
-                    i = 1
-                }
+                break
             }
         }
+        self.factors.append(contentsOf: process(factors: factors))
     }
 }
 
@@ -93,5 +98,19 @@ public struct Factor: Equatable {
     }
     public init(_ factor: DiscreteInt) {
         self.init(factor, 1)
+    }
+}
+
+extension Array where Element : Equatable {
+    func removeDuplicates() -> [Element] {
+        var result = [Element]()
+        
+        for value in self {
+            if result.contains(value) == false {
+                result.append(value)
+            }
+        }
+        
+        return result
     }
 }

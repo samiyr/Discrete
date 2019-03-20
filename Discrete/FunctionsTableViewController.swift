@@ -20,7 +20,7 @@ class FunctionsTableViewController: UITableViewController {
 
     let arithmetic = [add, subtraction, multiply, division, exponentiation, modularExponentiation]
     let discrete = [factorial, doubleFactorial, tetriation, binomial, variations, stirlingCycles, stirlingPartitions, lah, derivative]
-    let binary = [abs, percent, modulus, gcd, min, max, digits, primality]
+    let binary = [abs, percent, modulus, gcd, min, max, digits, primality, factor]
     let stat = [sum, product]
     let sequences = [fibonacci, lucas, catalan, bell]
     let logic = [eq, neq, greater, greaterEq, less, lessEq, and, or, xor, implication, equivalence, truth, falsehood]
@@ -88,6 +88,7 @@ let stirlingPartitions = FunctionDetail(name: "S(n,k), StirlingS2(n,k)", short: 
 let lah = FunctionDetail(name: "lah(n,k)", short: "Lah number", description: "Lah number", url: "https://en.m.wikipedia.org/wiki/Lah_number")
 let primality = FunctionDetail(name: "p(n), prime(n)", short: "Primality", description: "Primality", url: "https://en.m.wikipedia.org/wiki/Prime_number")
 let derivative = FunctionDetail(name: "q', derivative(q)", short: "Derivative", description: "Arithmetic derivative", url: "https://en.m.wikipedia.org/wiki/Arithmetic_derivative")
+let factor = FunctionDetail(name: "factor(n)", short: "Factorization", description: "Finds the prime factorization of an integer. Factoring a large number is an intense computation, but interrupting the factorization will still return all the factors found so far.", url: "https://en.wikipedia.org/wiki/Integer_factorization")
 
 let abs = FunctionDetail(name: "abs(x)", short: "Absolute value", description: "Absolute value", url: "https://en.m.wikipedia.org/wiki/Absolute_value")
 let percent = FunctionDetail(name: "%", short: "Percent", description: "Percent", url: "https://en.m.wikipedia.org/wiki/Percentage")

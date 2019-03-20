@@ -63,11 +63,18 @@ extension DiscreteInt: NumericResult {
         return value.description
     }
     
+    
     public func isEqual(to result: Result) -> Bool {
         if let number = result as? DiscreteInt {
             return self.value == number.value
         }
         return false
+    }
+}
+
+extension DiscreteInt: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        return description
     }
 }
 
