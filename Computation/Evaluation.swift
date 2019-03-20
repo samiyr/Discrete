@@ -8,20 +8,47 @@
 
 import UIKit
 
+/**
+ Represents a single expression evaluation.
+ */
 public class Evaluation: NSObject {
+    /**
+     The user-inputted expression to be evaluated.
+    */
     public let expression: String
+    /**
+     Substitutions for variables in the expression.
+    */
     public let substitutions: Substitutions
+    /**
+     Evaluation parameters.
+    */
     public var parameters: EvaluationParameters
     
+    /**
+     The result of the computation. Nil if no result.
+    */
     public private(set) var result: Result? = nil
+    /**
+     The possible error during evaluation.
+    */
     public private(set) var error: EvaluationError? = nil
     
+    /**
+     Initializes an evaluation object.
+     - parameter expression: User-inputted expression
+     - parameter substitutions: Substitutions for variables
+     - parameter parameters: Evaluation parameters
+    */
     public init(expression: String, substitutions: Substitutions, parameters: EvaluationParameters = .default) {
         self.expression = expression
         self.substitutions = substitutions
         self.parameters = parameters
     }
     
+    /**
+     Tries to evaluate the given expression or will throw an error.
+    */
     public func evaluate() throws {
         do {
             let expressionToken = try Expression(string: expression)
@@ -41,8 +68,17 @@ public class Evaluation: NSObject {
     }
 }
 
+/**
+ Describes the possible errors thrown in an evaluation attempt.
+ */
 public struct EvaluationError {
+    /**
+     Error thrown.
+    */
     public let error: MathParserError
+    /**
+     User-readble description of the error.
+    */
     public var description: String {
         switch error.kind {
         case .cannotParseNumber: return "Cannot parse number"
@@ -75,11 +111,17 @@ public struct EvaluationError {
         case .internalError: return "An internal error has occured"
         }
     }
+    /**
+     Range of the error in the expression, either the whole range or a subrange.
+    */
     public var range: Range<Int> {
         return error.range
     }
     
 }
+/**
+ A struct describing evaluation parameters.
+ */
 public struct EvaluationParameters {
     public static let `default` = EvaluationParameters()
 }

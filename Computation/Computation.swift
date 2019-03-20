@@ -9,18 +9,39 @@
 import UIKit
 
 public class Computation: NSObject {
+    /**
+     Number on which to perform computations. Computations can still take in additional inputs or not use this at all.
+    */
     public let number: DiscreteInt
+    /**
+     Parameters used for controlling evaluation.
+    */
     public let parameters: EvaluationParameters
+    /**
+     A flag for determining if computation should be halted. Retrieves a global value.
+    */
     fileprivate var executionLock: Bool {
         return ComputationLock.shared.executionLock
     }
+    /**
+     Initializes a computation object, from which all the algorithms are available. Optionally takes in evaluation parameters.
+     - parameter number: the number on which computations should be performed
+     - parameter parameters: evaluation parameters (optional)
+    */
     public init(_ number: DiscreteInt, _ parameters: EvaluationParameters = .default) {
         self.number = number
         self.parameters = parameters
     }
+    /**
+     Initializes a shell computation object. This should be used for algorithms which require more than one input as a shorthand.
+    */
     public static var shell: Computation {
         return Computation(0)
     }
+    /**
+     Initializes a shell computation object with evaluation parameters. This should be used for algorithms which require more than one input as a shorthand.
+     - parameter: params: evaluation parameters
+    */
     public static func shell(_ params: EvaluationParameters) -> Computation {
         return Computation(0, params)
     }
@@ -28,23 +49,41 @@ public class Computation: NSObject {
 }
 
 private let _lockInstance = ComputationLock()
+
+/**
+ Global instance for handling computation locks
+ */
 public class ComputationLock: NSObject {
-    
+    /**
+     Returns the global computation lock object.
+    */
     public static var shared: ComputationLock {
         return _lockInstance
     }
+    /**
+     Requests a global lock for computation.
+    */
     public func requestLock() {
         executionLock = true
     }
+    /**
+     Removes the global lock on computation.
+    */
     public func removeLock() {
         executionLock = false
     }
+    /**
+     Current value of the computation lock flag.
+    */
     public private(set) var executionLock = false
     public override init() {
         super.init()
     }
 }
 
+/**
+ Algorithms for computation
+*/
 extension Computation {
     /**
      Calculates the factorial
@@ -84,6 +123,9 @@ extension Computation {
             return ((Computation((n + 1) / 2).fibonacci()) ** 2) + ((Computation(n / 2 - 1).fibonacci()) ** 2)
         }
     }
+    /**
+     Stirling numbers of the 1st kind
+    */
     public func stirlingCycles(_ n: DiscreteInt, _ k: DiscreteInt) -> DiscreteInt {
         if executionLock { return .nan }
         if n.isNegative || k.isNegative { return .nan }
@@ -96,6 +138,9 @@ extension Computation {
         
         return (n - 1) * stirlingCycles(n - 1, k) + stirlingCycles(n - 1, k - 1)
     }
+    /**
+     Stirling numbers of the 2nd kind
+    */
     public func stirlingPartition(_ n: DiscreteInt, _ k: DiscreteInt) -> DiscreteInt {
         if executionLock { return .nan }
         if n.isNegative || k.isNegative { return .nan }
@@ -108,6 +153,9 @@ extension Computation {
         
         return k * stirlingPartition(n - 1, k) + stirlingPartition(n - 1, k - 1)
     }
+    /**
+     Lah numbers (Stirling numbers of the 3rd kind)
+    */
     public func lah(_ n: DiscreteInt, _ k: DiscreteInt) -> DiscreteInt {
         if executionLock { return .nan }
         if n.isNegative || k.isNegative { return .nan }
@@ -120,6 +168,9 @@ extension Computation {
         if n == k { return 1 }
         return ((n - k + 1) / (k * (k - 1))) * lah(n, k - 1)
     }
+    /**
+     Returns the n:th Bell number
+    */
     public func bell() -> DiscreteInt {
         if number < DiscreteInt(Constants.bellSequence.count) {
             for i in 0 ..< Constants.bellSequence.count {
@@ -140,6 +191,9 @@ extension Computation {
         }
         return iterate(number)
     }
+    /**
+     Computes the arithmetic derivative
+    */
     public func derivative() -> DiscreteInt {
         if executionLock { return 1 }
         if number.isZero { return 0 }
@@ -154,10 +208,16 @@ extension Computation {
         return sum * number
         
     }
+    /**
+     Calculates the greatest common divisor of two numbers
+    */
     public func gcd(_ a: DiscreteInt, _ b: DiscreteInt) -> DiscreteInt {
         if a.isNaN || b.isNaN || a.isInfinite || b.isInfinite { return .nan }
         return DiscreteInt(a.value.greatestCommonDivisor(with: b.value))
     }
+    /**
+     Calculates the binomial coefficient
+    */
     public func binomial(_ n: DiscreteInt, _ k: DiscreteInt) -> DiscreteInt {
         if k.isZero { return DiscreteInt(1) }
         if n == k { return DiscreteInt(1) }
@@ -172,6 +232,12 @@ extension Computation {
         
         return product
     }
+    /**
+     Raises a number to a power
+     - parameter lhs: base
+     - parameter rhs: exponent
+     - returns: lhs^rhs
+    */
     public func pow(_ lhs: DiscreteInt, _ rhs: DiscreteInt) -> DiscreteInt {
         if lhs.isZero && rhs.isZero { return .nan }
         if rhs.isZero { return 1 }
@@ -192,6 +258,9 @@ extension Computation {
         }
         return result
     }
+    /**
+     Calculates the tetriation of two numbers
+    */
     public func tetriation(_ a: DiscreteInt, _ n: DiscreteInt) -> DiscreteInt {
         if n.isZero { return 1 }
         if executionLock { return .nan }

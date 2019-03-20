@@ -8,12 +8,28 @@
 
 import UIKit
 
+/**
+ Represents an integer factorization.
+ */
 public struct Factorization {
+    /**
+     The computed factors of an integer. Populated only after calling `factor()`.
+    */
     var factors: [Factor] = []
+    /**
+     The number to be factored.
+    */
     let integer: DiscreteInt
+    /**
+     Initializes a factorization object. Will not perform the actual factoring.
+     - parameter integer: The number to be factored.
+    */
     public init(_ integer: DiscreteInt) {
         self.integer = integer
     }
+    /**
+     Returns the global execution lock flag.
+    */
     fileprivate var executionLock: Bool {
         return ComputationLock.shared.executionLock
     }
@@ -80,17 +96,19 @@ extension Factorization: Result {
         return String(string.dropLast().dropLast().dropLast())
     }
     
-    public var isApproximation: Bool {
-        return false
-    }
-    public var signString: String {
-        return "="
-    }
-    
 }
 
+/**
+ Represents a single factor of an integer.
+ */
 public struct Factor: Equatable {
+    /**
+     The actual prime factor.
+    */
     let factor: DiscreteInt
+    /**
+     The number of times this factor appears in a given integer factorization.
+    */
     let count: DiscreteInt
     public init(_ factor: DiscreteInt, _ count: DiscreteInt) {
         self.factor = factor

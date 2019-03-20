@@ -9,42 +9,77 @@
 import UIKit
 import BigInt
 
+/**
+ Abstraction around BigInt
+*/
 public struct DiscreteInt {
+    /**
+     Underlaying value of the abstraction.
+    */
     public var value = BigInt(0)
+    /**
+     True if this instance is marked as not a number. Note that the actual value is still a number but must not be treated as such.
+    */
     public private(set) var isNaN = false
+    /**
+     True if this instance is intended to be used a true/false value.
+    */
     public private(set) var isBoolean = false
+    /**
+     True if this instance represents an infinite amount. Note that the actual value is still a finite number but must not be treated as such.
+    */
     public private(set) var isInfinite = false
     
+    /**
+     Returns the sign of this number
+    */
     public var sign: BigInt.Sign {
         return value.sign
     }
-    
+    /**
+     Initializes an instance from a BigInt
+    */
     public init(_ value: BigInt) {
         self.value = value
     }
     
-    // Absolute value
+    /**
+     Returns the absolute value
+     */
     public var magnitude: DiscreteInt {
         if isNaN { return .nan }
         if isZero { return 0 }
         if isInfinite { return .infinity }
         return DiscreteInt(value.magnitude)
     }
-    
+    /**
+     True if the number is (probably) a prime. For small values, this is definite, but for large numbers, it only returns a strong guess.
+    */
     public var isPrime: Bool {
         return value.isPrime()
     }
+    /**
+     Returns true if the number is probably a prime, computed with a specified amount of rounds.
+     - parameter rounds: Number of rounds of the primality algorithm
+    */
     public func isPrime(_ rounds: Int) -> Bool {
         return value.isPrime(rounds: rounds)
     }
 }
 
-
+/**
+ Conforms DiscreteInt to the NumericResult protocol used for displaying results.
+*/
 extension DiscreteInt: NumericResult {
+    /**
+     Returns the numberic value (which in this case is the value itself)
+    */
     public var numericValue: DiscreteInt {
         return self
     }
-    
+    /**
+     Returns a human-readable description. Usually just the number itself, but in special cases (NaN, infinity, ...) a textual representation.
+     */
     public var description: String {
         if isNaN {
             return "NaN"
@@ -63,7 +98,9 @@ extension DiscreteInt: NumericResult {
         return value.description
     }
     
-    
+    /**
+     Checks whether two results are equal.
+    */
     public func isEqual(to result: Result) -> Bool {
         if let number = result as? DiscreteInt {
             return self.value == number.value
@@ -78,6 +115,9 @@ extension DiscreteInt: CustomDebugStringConvertible {
     }
 }
 
+/**
+ Conforms DiscreteInt to Substitution protocol, used in the math parses.
+*/
 extension DiscreteInt: Substitution {
     public func simplified(using evaluator: Evaluator, substitutions: Substitutions) -> Substitution {
         return self
@@ -89,6 +129,9 @@ extension DiscreteInt: Substitution {
     
 }
 
+/**
+ Adds a few shorthands to DiscreteInts. Might be removed in the future.
+ */
 extension DiscreteInt {
     public var factorial: DiscreteInt {
         return Computation(self).factorial()
@@ -164,7 +207,6 @@ extension DiscreteInt: ExpressibleByStringLiteral {
 }
 
 extension DiscreteInt: CustomPlaygroundDisplayConvertible {
-    
     /// Return the playground quick look representation of this integer.
     public var playgroundDescription: Any {
         let text = self.description
@@ -188,58 +230,104 @@ extension DiscreteInt {
 }
 
 extension DiscreteInt {
+    /**
+     Returns a zero.
+    */
     public static var zero: DiscreteInt {
         return DiscreteInt(0)
     }
+    /**
+     Returns a one.
+    */
     public static var unity: DiscreteInt {
         return DiscreteInt(1)
     }
+    /**
+     Returns a boolean true.
+    */
     public static var `true`: DiscreteInt {
         var d = DiscreteInt(1)
         d.isBoolean = true
         return d
     }
+    /**
+     Returns a boolean false.
+    */
     public static var `false`: DiscreteInt {
         var d = DiscreteInt(1)
         d.isBoolean = true
         return d
     }
+    /**
+     Returns an instance representing an infinite amount.
+    */
     public static var infinity: DiscreteInt {
         var instance = DiscreteInt(1)
         instance.isInfinite = true
         return instance
     }
+    /**
+     Returns an instance representing a negatively infinite amount.
+    */
     public static var negativeInfinity: DiscreteInt {
         var instance = DiscreteInt(-1)
         instance.isInfinite = true
         return instance
     }
-    
+    /**
+     Returns an instance representing a NaN (not a number).
+    */
     public static var nan: DiscreteInt {
         var instance = DiscreteInt(0)
         instance.isNaN = true
         return instance
     }
 
-    
+    /**
+     True if the number is divisible by 2.
+    */
     public var isEven: Bool {
         return (self % 2) == 0
     }
+    /**
+     True if the number is not even.
+    */
+    public var isOdd: Bool {
+        return !isEven
+    }
+    /**
+     True if the number is stricly greater than zero.
+    */
     public var isPositive: Bool {
         return self.sign == .plus && !self.isZero
     }
+    /**
+     True if the number is stricly less than zero.
+    */
     public var isNegative: Bool {
         return self.sign == .minus && !self.isZero
     }
+    /**
+     True if the number is zero.
+    */
     public var isZero: Bool {
         return self.value.magnitude.isZero
     }
+    /**
+     True is the number is one.
+    */
     public var isUnity: Bool {
         return self.value == 1
     }
+    /**
+     True if the instance represents a positive infinity.
+    */
     public var isPositiveInfinity: Bool {
         return isPositive && isInfinite
     }
+    /**
+     True if the instance represents a negative infinity.
+    */
     public var isNegativeInfinity: Bool {
         return isNegative && isInfinite
     }
@@ -254,7 +342,9 @@ infix operator %
 
 // MARK: Operations
 extension DiscreteInt {
-    // Addition
+    /**
+     Addition
+     */
     public static func + (lhs: DiscreteInt, rhs: DiscreteInt) -> DiscreteInt {
         if lhs.isNaN || rhs.isNaN { return .nan }
         if lhs.isPositiveInfinity && rhs.isNegativeInfinity { return .nan }
@@ -267,14 +357,18 @@ extension DiscreteInt {
     public static func += (lhs: inout DiscreteInt, rhs: DiscreteInt) {
         lhs = lhs + rhs
     }
-    // Subtraction
+    /**
+     Subtraction
+    */
     public static func - (lhs: DiscreteInt, rhs: DiscreteInt) -> DiscreteInt {
         return lhs + rhs.negation
     }
     public static func -= (lhs: inout DiscreteInt, rhs: DiscreteInt) {
         lhs = lhs - rhs
     }
-    // Multiplication
+    /**
+     Multiplication
+    */
     public static func * (lhs: DiscreteInt, rhs: DiscreteInt) -> DiscreteInt {
         if lhs.isNaN || rhs.isNaN { return .nan }
         if lhs.isZero && rhs.isInfinite { return .nan }
@@ -289,7 +383,9 @@ extension DiscreteInt {
     public static func *= (lhs: inout DiscreteInt, rhs: DiscreteInt) {
         lhs = lhs * rhs
     }
-    // Division
+    /**
+     Integer division
+    */
     public static func / (lhs: DiscreteInt, rhs: DiscreteInt) -> DiscreteInt {
         if lhs.isNaN || rhs.isNaN { return .nan }
         if lhs.isInfinite && rhs.isInfinite { return .nan }
@@ -305,28 +401,39 @@ extension DiscreteInt {
     public static func /= (lhs: inout DiscreteInt, rhs: DiscreteInt) {
         lhs = lhs / rhs
     }
-    // Integer exponentiation
+    /**
+     Exponentiation
+    */
     public static func ** (lhs: DiscreteInt, rhs: DiscreteInt) -> DiscreteInt {
         return Computation.shell.pow(lhs, rhs)
     }
-    // Modulo
+    /**
+     Modulo
+    */
     public static func % (lhs: DiscreteInt, rhs: DiscreteInt) -> DiscreteInt {
         return DiscreteInt(lhs.value % rhs.value)
     }
     public static func % (lhs: DiscreteInt, rhs: Int) -> DiscreteInt {
         return lhs % DiscreteInt(rhs)
     }
-    // Inversion
+    /**
+     Inversion
+    */
     public var inverse: DiscreteInt {
         return 1 / self
     }
+    /**
+     Inverts the current instance.
+    */
     public mutating func invert() {
         self = self.inverse
     }
     public static prefix func ! (value: DiscreteInt) -> DiscreteInt {
         return value.inverse
     }
-    // Negation
+    /**
+     Negation
+    */
     public var negation: DiscreteInt {
         if isNaN { return .nan }
         if isPositiveInfinity { return .negativeInfinity }
@@ -334,6 +441,9 @@ extension DiscreteInt {
         if isZero { return 0 }
         return DiscreteInt(-self.value)
     }
+    /**
+     Negates the current instance.
+    */
     public mutating func negate() {
         self = self.negation
     }
