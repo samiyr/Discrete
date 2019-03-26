@@ -9,7 +9,7 @@
 import Foundation
 
 fileprivate extension GroupedToken {
-    fileprivate var groupedOperator: Operator? {
+    var groupedOperator: Operator? {
         guard case .operator(let o) = self.kind else { return nil }
         return o
     }

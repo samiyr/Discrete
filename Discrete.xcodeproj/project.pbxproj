@@ -69,6 +69,7 @@
 		888BA60322414A0500872D82 /* FunctionDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 888BA60222414A0500872D82 /* FunctionDetailTableViewController.swift */; };
 		8899A92B223FD0E400D5FA06 /* DiscreteInt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8899A92A223FD0E400D5FA06 /* DiscreteInt.swift */; };
 		B5C4889142B70F01BFCC6AB5 /* Pods_Arbitrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8559AC844E71CA3C4F302D2D /* Pods_Arbitrary.framework */; };
+		CBA1C00561ABC95011B454DD /* Pods_Discrete.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B0E7AB40F3B80E2C0C1DC7 /* Pods_Discrete.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,7 +111,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		075BD4F1A5C41EE43B7C7BCF /* Pods-Discrete.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Discrete.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Discrete/Pods-Discrete.debug.xcconfig"; sourceTree = "<group>"; };
 		2053A08CC1EE0B959E72C120 /* Pods_Computation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Computation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		43B0E7AB40F3B80E2C0C1DC7 /* Pods_Discrete.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Discrete.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		77BB78EC9FF253F49989AA93 /* Pods-Arbitrary.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Arbitrary.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Arbitrary/Pods-Arbitrary.debug.xcconfig"; sourceTree = "<group>"; };
 		8419D1E0AFA18AB97C5D90CA /* Pods-Computation.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Computation.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Computation/Pods-Computation.debug.xcconfig"; sourceTree = "<group>"; };
 		8559AC844E71CA3C4F302D2D /* Pods_Arbitrary.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Arbitrary.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -178,6 +181,7 @@
 		888BA6042241532200872D82 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		8899A92A223FD0E400D5FA06 /* DiscreteInt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscreteInt.swift; sourceTree = "<group>"; };
 		88A6366521DE51FD005915AB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		AA9841D2F14211530238BCEB /* Pods-Discrete.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Discrete.release.xcconfig"; path = "Pods/Target Support Files/Pods-Discrete/Pods-Discrete.release.xcconfig"; sourceTree = "<group>"; };
 		C096037A0BEF136F168C8EA3 /* Pods-Computation.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Computation.release.xcconfig"; path = "Pods/Target Support Files/Pods-Computation/Pods-Computation.release.xcconfig"; sourceTree = "<group>"; };
 		CA19E59AF7ABD3FCCB5369AE /* Pods-Arbitrary.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Arbitrary.release.xcconfig"; path = "Pods/Target Support Files/Pods-Arbitrary/Pods-Arbitrary.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -189,6 +193,7 @@
 			files = (
 				885EE2D3221EC0D100449F68 /* Computation.framework in Frameworks */,
 				B5C4889142B70F01BFCC6AB5 /* Pods_Arbitrary.framework in Frameworks */,
+				CBA1C00561ABC95011B454DD /* Pods_Discrete.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,6 +223,8 @@
 				CA19E59AF7ABD3FCCB5369AE /* Pods-Arbitrary.release.xcconfig */,
 				8419D1E0AFA18AB97C5D90CA /* Pods-Computation.debug.xcconfig */,
 				C096037A0BEF136F168C8EA3 /* Pods-Computation.release.xcconfig */,
+				075BD4F1A5C41EE43B7C7BCF /* Pods-Discrete.debug.xcconfig */,
+				AA9841D2F14211530238BCEB /* Pods-Discrete.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -268,6 +275,7 @@
 			children = (
 				8559AC844E71CA3C4F302D2D /* Pods_Arbitrary.framework */,
 				2053A08CC1EE0B959E72C120 /* Pods_Computation.framework */,
+				43B0E7AB40F3B80E2C0C1DC7 /* Pods_Discrete.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -436,12 +444,15 @@
 				TargetAttributes = {
 					8804E83321D239B400959CF3 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 					};
 					885EE2BD221EC0D100449F68 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 					};
 					885EE2C5221EC0D100449F68 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						TestTargetID = 8804E83321D239B400959CF3;
 					};
 				};
@@ -531,7 +542,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Arbitrary-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Discrete-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -546,7 +557,7 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Arbitrary/Pods-Arbitrary-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Discrete/Pods-Discrete-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
 				"${BUILT_PRODUCTS_DIR}/SipHash/SipHash.framework",
 			);
@@ -559,7 +570,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Arbitrary/Pods-Arbitrary-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Discrete/Pods-Discrete-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -797,7 +808,7 @@
 		};
 		8804E84721D239B600959CF3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 77BB78EC9FF253F49989AA93 /* Pods-Arbitrary.debug.xcconfig */;
+			baseConfigurationReference = 075BD4F1A5C41EE43B7C7BCF /* Pods-Discrete.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -810,14 +821,14 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.samiyrjanheikki.Discrete;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		8804E84821D239B600959CF3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CA19E59AF7ABD3FCCB5369AE /* Pods-Arbitrary.release.xcconfig */;
+			baseConfigurationReference = AA9841D2F14211530238BCEB /* Pods-Discrete.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -830,7 +841,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.samiyrjanheikki.Discrete;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -857,7 +868,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.samiyrjanheikki.Computation;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -886,7 +897,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.samiyrjanheikki.Computation;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -907,7 +918,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.samiyrjanheikki.ComputationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Discrete.app/Discrete";
 			};
@@ -927,7 +938,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.samiyrjanheikki.ComputationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Discrete.app/Discrete";
 			};

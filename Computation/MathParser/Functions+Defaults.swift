@@ -12,7 +12,7 @@ import BigInt
 public extension Function {
     
     
-    public static let standardFunctions: Array<Function> = [
+    static let standardFunctions: Array<Function> = [
         add, subtract, multiply, divide,
         modulo, greatestCommonDivisor, negate, factorial, factorial2, choose, variations, prime, cycles, stirling, lahNumber, arithmeticDerivative, factor,
         pow, tetriate,
@@ -29,28 +29,28 @@ public extension Function {
     
     // MARK: - Basic functions
     
-    public static let add = Function(name: "add", evaluator: { state throws -> Result in
+    static let add = Function(name: "add", evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
         return args[0] + args[1]
     })
     
-    public static let subtract = Function(name: "subtract", evaluator: { state throws -> Result in
+    static let subtract = Function(name: "subtract", evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
         return args[0] - args[1]
     })
     
-    public static let multiply = Function(names: ["multiply", "implicitMultiply"], evaluator: { state throws -> Result in
+    static let multiply = Function(names: ["multiply", "implicitMultiply"], evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
         return args[0] * args[1]
     })
     
-    public static let divide = Function(name: "divide", evaluator: { state throws -> Result in
+    static let divide = Function(name: "divide", evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -58,13 +58,13 @@ public extension Function {
         return args[0] / args[1]
     })
     
-    public static let modulo = Function(names: ["mod", "modulo"], evaluator: { state throws -> Result in
+    static let modulo = Function(names: ["mod", "modulo"], evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
         return args[0] % args[1]
     })
-    public static let greatestCommonDivisor = Function(name: "gcd", evaluator: { state throws -> Result in
+    static let greatestCommonDivisor = Function(name: "gcd", evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -77,21 +77,21 @@ public extension Function {
         return computation.gcd(arg1, arg2)
     })
 
-    public static let negate = Function(name: "negate", evaluator: { state throws -> Result in
+    static let negate = Function(name: "negate", evaluator: { state throws -> Result in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
         return -args[0]
     })
  
-    public static let factorial = Function(name: "factorial", evaluator: { state throws -> Result in
+    static let factorial = Function(name: "factorial", evaluator: { state throws -> Result in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
         return args[0].factorial
     })
     
-    public static let factorial2 = Function(name: "factorial2", evaluator: { state throws -> Result in
+    static let factorial2 = Function(name: "factorial2", evaluator: { state throws -> Result in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -112,7 +112,7 @@ public extension Function {
         }
     })
     
-    public static let pow = Function(name: "pow", evaluator: { state throws -> Result in
+    static let pow = Function(name: "pow", evaluator: { state throws -> Result in
         if state.arguments.count == 2 {
             let args = try state.defaultArguments()
             let arg1 = args[0]
@@ -130,7 +130,7 @@ public extension Function {
             throw MathParserError(kind: .invalidArguments, range: state.expressionRange)
         }
     })
-    public static let tetriate = Function(names: ["tetr", "tetriation"], evaluator: { state throws -> Result in
+    static let tetriate = Function(names: ["tetr", "tetriation"], evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -143,7 +143,7 @@ public extension Function {
     
     
     
-    public static let random = Function(name: "random", evaluator: { state throws -> Result in
+    static let random = Function(name: "random", evaluator: { state throws -> Result in
         if state.arguments.count == 1 {
             let args = try state.defaultArguments()
             let n = args[0]
@@ -163,7 +163,7 @@ public extension Function {
         }
     })
  
-    public static let abs = Function(name: "abs", evaluator: { state throws -> Result in
+    static let abs = Function(name: "abs", evaluator: { state throws -> Result in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -171,7 +171,7 @@ public extension Function {
         return arg1.magnitude
     })
     
-    public static let percent = Function(name: "percent", evaluator: { state throws -> Result in
+    static let percent = Function(name: "percent", evaluator: { state throws -> Result in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let percentArgument = state.arguments[0]
@@ -200,7 +200,7 @@ public extension Function {
     
     // MARK: - Bitwise functions
     
-    public static let and = Function(name: "and", evaluator: { state throws -> Result in
+    static let and = Function(name: "and", evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -209,7 +209,7 @@ public extension Function {
         return DiscreteInt(arg1.value & arg2.value)
     })
     
-    public static let or = Function(name: "or", evaluator: { state throws -> Result in
+    static let or = Function(name: "or", evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -218,7 +218,7 @@ public extension Function {
         return DiscreteInt(arg1.value | arg2.value)
     })
     
-    public static let not = Function(name: "not", evaluator: { state throws -> Result in
+    static let not = Function(name: "not", evaluator: { state throws -> Result in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -226,7 +226,7 @@ public extension Function {
         return DiscreteInt(~arg1.value)
     })
     
-    public static let xor = Function(name: "xor", evaluator: { state throws -> Result in
+    static let xor = Function(name: "xor", evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -235,7 +235,7 @@ public extension Function {
         return DiscreteInt(arg1.value ^ arg2.value)
     })
     
-    public static let rshift = Function(name: "rshift", evaluator: { state throws -> Result in
+    static let rshift = Function(name: "rshift", evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -244,7 +244,7 @@ public extension Function {
         return DiscreteInt(arg1.value >> arg2.value)
     })
     
-    public static let lshift = Function(name: "lshift", evaluator: { state throws -> Result in
+    static let lshift = Function(name: "lshift", evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -256,7 +256,7 @@ public extension Function {
     // MARK: - Aggregate functions
     
     
-    public static let sum = Function(names: ["sum", "∑"], evaluator: { state throws -> Result in
+    static let sum = Function(names: ["sum", "∑"], evaluator: { state throws -> Result in
         guard state.arguments.count > 0 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         var value = DiscreteInt(0)
@@ -266,7 +266,7 @@ public extension Function {
         return value
     })
     
-    public static let product = Function(names: ["product", "∏"], evaluator: { state throws -> Result in
+    static let product = Function(names: ["product", "∏"], evaluator: { state throws -> Result in
         guard state.arguments.count > 0 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         var value = DiscreteInt(1)
@@ -276,11 +276,11 @@ public extension Function {
         return value
     })
     
-    public static let count = Function(name: "count", evaluator: { state throws -> Result in
+    static let count = Function(name: "count", evaluator: { state throws -> Result in
         return DiscreteInt(state.arguments.count)
     })
     
-    public static let minimum = Function(name: "min", evaluator: { state throws -> Result in
+    static let minimum = Function(name: "min", evaluator: { state throws -> Result in
         guard state.arguments.count > 0 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         var value = DiscreteInt.infinity
@@ -292,7 +292,7 @@ public extension Function {
         return value
     })
     
-    public static let maximum = Function(name: "max", evaluator: { state throws -> Result in
+    static let maximum = Function(name: "max", evaluator: { state throws -> Result in
         guard state.arguments.count > 0 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         var value = DiscreteInt.negativeInfinity
@@ -307,12 +307,12 @@ public extension Function {
     
     // MARK: - Constant functions
     
-    public static let `true` = Function(names: ["true", "yes"], evaluator: { state throws -> Result in
+    static let `true` = Function(names: ["true", "yes"], evaluator: { state throws -> Result in
         guard state.arguments.count == 0 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         return DiscreteInt.true
     })
     
-    public static let `false` = Function(names: ["false", "no"], evaluator: { state throws -> Result in
+    static let `false` = Function(names: ["false", "no"], evaluator: { state throws -> Result in
         guard state.arguments.count == 0 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         return DiscreteInt.false
     })
@@ -320,7 +320,7 @@ public extension Function {
     
     // MARK: - Logical Functions
 
-    public static let l_and = Function(name: "l_and", evaluator: { state throws -> Result in
+    static let l_and = Function(name: "l_and", evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -332,7 +332,7 @@ public extension Function {
         return (arg1 == .true && arg2 == .true) ? DiscreteInt.true : DiscreteInt.false
     })
     
-    public static let l_or = Function(name: "l_or", evaluator: { state throws -> Result in
+    static let l_or = Function(name: "l_or", evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -344,7 +344,7 @@ public extension Function {
         return (arg1 == .true || arg2 == .true) ? DiscreteInt.true : DiscreteInt.false
     })
     
-    public static let l_not = Function(name: "l_not", evaluator: { state throws -> Result in
+    static let l_not = Function(name: "l_not", evaluator: { state throws -> Result in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -355,7 +355,7 @@ public extension Function {
         return arg1 == .false ? DiscreteInt.true : DiscreteInt.false
     })
     
-    public static let l_eq = Function(name: "l_eq", evaluator: { state throws -> Result in
+    static let l_eq = Function(name: "l_eq", evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -364,7 +364,7 @@ public extension Function {
         return (arg1 == arg2) ? DiscreteInt.true : DiscreteInt.false
     })
     
-    public static let l_neq = Function(name: "l_neq", evaluator: { state throws -> Result in
+    static let l_neq = Function(name: "l_neq", evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -373,7 +373,7 @@ public extension Function {
         return (arg1 != arg2) ? DiscreteInt.true : DiscreteInt.false
     })
     
-    public static let l_lt = Function(name: "l_lt", evaluator: { state throws -> Result in
+    static let l_lt = Function(name: "l_lt", evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -382,7 +382,7 @@ public extension Function {
         return (arg1 < arg2) ? DiscreteInt.true : DiscreteInt.false
     })
     
-    public static let l_gt = Function(name: "l_gt", evaluator: { state throws -> Result in
+    static let l_gt = Function(name: "l_gt", evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -391,7 +391,7 @@ public extension Function {
         return (arg1 > arg2) ? DiscreteInt.true : DiscreteInt.false
     })
     
-    public static let l_ltoe = Function(name: "l_ltoe", evaluator: { state throws -> Result in
+    static let l_ltoe = Function(name: "l_ltoe", evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -400,7 +400,7 @@ public extension Function {
         return (arg1 <= arg2) ? DiscreteInt.true : DiscreteInt.false
     })
     
-    public static let l_gtoe = Function(name: "l_gtoe", evaluator: { state throws -> Result in
+    static let l_gtoe = Function(name: "l_gtoe", evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -409,7 +409,7 @@ public extension Function {
         return (arg1 >= arg2) ? DiscreteInt.true : DiscreteInt.false
     })
     
-    public static let l_if = Function(names: ["l_if", "if"], evaluator: { state throws -> Result in
+    static let l_if = Function(names: ["l_if", "if"], evaluator: { state throws -> Result in
         guard state.arguments.count == 3 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -426,7 +426,7 @@ public extension Function {
     })
     
     // MARK: Custom functions
-    public static let fibonacci = Function(names: ["fibonacci", "F"], evaluator: { state throws -> Result in
+    static let fibonacci = Function(names: ["fibonacci", "F"], evaluator: { state throws -> Result in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -434,7 +434,7 @@ public extension Function {
         let computation = Computation(arg1, state.evaluator.parameters)
         return computation.fibonacci()
     })
-    public static let lucas = Function(names: ["lucas", "L"], evaluator: { state throws -> Result in
+    static let lucas = Function(names: ["lucas", "L"], evaluator: { state throws -> Result in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -448,7 +448,7 @@ public extension Function {
         let c2 = Computation(arg1 + 1, state.evaluator.parameters)
         return c1.fibonacci() + c2.fibonacci()
     })
-    public static let catalan = Function(name: "catalan", evaluator: { state throws -> Result in
+    static let catalan = Function(name: "catalan", evaluator: { state throws -> Result in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -465,7 +465,7 @@ public extension Function {
         
         return product
     })
-    public static let bell = Function(names: ["B", "bell"], evaluator: { state throws -> Result in
+    static let bell = Function(names: ["B", "bell"], evaluator: { state throws -> Result in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -477,7 +477,7 @@ public extension Function {
         return computation.bell()
     })
 
-    public static let choose = Function(names: ["C", "choose"], evaluator: { state throws -> Result in
+    static let choose = Function(names: ["C", "choose"], evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -488,7 +488,7 @@ public extension Function {
         let computation = Computation.shell(state.evaluator.parameters)
         return computation.binomial(n, k)
     })
-    public static let variations = Function(name: "P", evaluator: { state throws -> Result in
+    static let variations = Function(name: "P", evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -501,7 +501,7 @@ public extension Function {
         return c1.factorial() / c2.factorial()
     })
 
-    public static let l_implication = Function(name: "l_impl", evaluator: { state throws -> Result in
+    static let l_implication = Function(name: "l_impl", evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -517,7 +517,7 @@ public extension Function {
             return DiscreteInt.true
         }
     })
-    public static let l_equivalence = Function(name: "l_eqv", evaluator: { state throws -> Result in
+    static let l_equivalence = Function(name: "l_eqv", evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -529,7 +529,7 @@ public extension Function {
         
         return (p == q) ? DiscreteInt.true : DiscreteInt.false
     })
-    public static let prime = Function(names: ["p", "prime"], evaluator: { state throws -> Result in
+    static let prime = Function(names: ["p", "prime"], evaluator: { state throws -> Result in
         if state.arguments.count == 1 {
             let args = try state.defaultArguments()
             let n = args[0]
@@ -543,14 +543,14 @@ public extension Function {
             throw MathParserError(kind: .invalidArguments, range: state.expressionRange)
         }
     })
-    public static let digits = Function(name: "digits", evaluator: { state throws -> Result in
+    static let digits = Function(name: "digits", evaluator: { state throws -> Result in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
         let n = args[0]
         return DiscreteInt(n.value.magnitude.count)
     })
-    public static let cycles = Function(names: ["s", "StirlingS1"], evaluator: { state throws -> Result in
+    static let cycles = Function(names: ["s", "StirlingS1"], evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -561,7 +561,7 @@ public extension Function {
         let computation = Computation.shell(state.evaluator.parameters)
         return computation.stirlingCycles(n, k)
     })
-    public static let stirling = Function(names: ["S", "StirlingS2"], evaluator: { state throws -> Result in
+    static let stirling = Function(names: ["S", "StirlingS2"], evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -573,7 +573,7 @@ public extension Function {
         return computation.stirlingPartition(n, k)
     })
 
-    public static let lahNumber = Function(names: ["lah"], evaluator: { state throws -> Result in
+    static let lahNumber = Function(names: ["lah"], evaluator: { state throws -> Result in
         guard state.arguments.count == 2 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -584,7 +584,7 @@ public extension Function {
         let computation = Computation.shell(state.evaluator.parameters)
         return computation.lah(n, k)
     })
-    public static let arithmeticDerivative = Function(names: ["derivative"], evaluator: { state throws -> Result in
+    static let arithmeticDerivative = Function(names: ["derivative"], evaluator: { state throws -> Result in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -593,7 +593,7 @@ public extension Function {
         return computation.derivative()
     })
     
-    public static let factor = Function(names: ["factor"], evaluator: { state throws -> Result in
+    static let factor = Function(names: ["factor"], evaluator: { state throws -> Result in
         guard state.arguments.count == 1 else { throw MathParserError(kind: .invalidArguments, range: state.expressionRange) }
         
         let args = try state.defaultArguments()
@@ -606,7 +606,7 @@ public extension Function {
 
 
     // MARK: Overrides
-    public static let thermalOverride = Function(name: "thermalOverride", evaluator: { state throws -> Result in
+    static let thermalOverride = Function(name: "thermalOverride", evaluator: { state throws -> Result in
         if state.arguments.count == 0 {
             return Preferences.shared.thermalOverride ? DiscreteInt.true : DiscreteInt.false
         } else if state.arguments.count == 1 {
@@ -620,7 +620,7 @@ public extension Function {
         }
         
     })
-    public static let irrationalFunctionOverride = Function(name: "irrationalFunctionOverride", evaluator: { state throws -> Result in
+    static let irrationalFunctionOverride = Function(name: "irrationalFunctionOverride", evaluator: { state throws -> Result in
         if state.arguments.count == 0 {
             return Preferences.shared.thermalOverride ? DiscreteInt.true : DiscreteInt.false
         } else if state.arguments.count == 1 {

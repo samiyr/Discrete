@@ -49,7 +49,7 @@ public enum BuiltInOperator: String {
 
 public extension Operator {
     
-    public static let defaultPowerAssociativity: Associativity = {
+    static let defaultPowerAssociativity: Associativity = {
         
         //determine what associativity NSPredicate/NSExpression is using
         //mathematically, it should be Right associative, but it's usually parsed as Left associative
@@ -67,7 +67,7 @@ public extension Operator {
     
     internal var builtInOperator: BuiltInOperator? { return BuiltInOperator(rawValue: self.function) }
     
-    public convenience init(builtInOperator: BuiltInOperator) {
+    convenience init(builtInOperator: BuiltInOperator) {
         let arity: Arity
         let associativity: Associativity
         let tokens: Set<String>
